@@ -1,12 +1,12 @@
 skautis:
-     applicationId: 4cc8a3f6-1e11-4386-84c2-95d1e35f4dd1
+     applicationId: f0c41007-c6c5-46e3-96f6-00efc9eb1a56
      testMode: true
 
 parameters:
     database:
         host: localhost
-        name: test-h
-        user: test-h
+        name: db010533
+        user: us010533
         password: "__CONFIG_DATABASE_PASSWORD__"
 
     sendEmail: true

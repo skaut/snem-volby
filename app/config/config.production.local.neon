@@ -2,14 +2,14 @@
 # These placeholders are defined in build.xml
 #
 skautis:
-     applicationId: 08a5328c-4127-4bcb-a9c5-b6945391a6dd
+     applicationId: 0ca6c858-c4ac-4cbe-af3d-d272dd266102
      testMode: false
 
 parameters:
     database:
         host: localhost
-        name: h
-        user: h
+        name: db010534
+        user: us010534
         password: __CONFIG_DATABASE_PASSWORD__
 
     sendEmail: true
