@@ -261,12 +261,12 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - name: Deploy to test-h.skauting.cz
+            - name: Deploy to volby-snem-dev.skauting.cz
               run: phing deploy
               env:
                   ENVIRONMENT: test
-                  ROOT_DIR: /home/vu009010
-                  SSH_USERNAME: vu009010
+                  ROOT_DIR: /home/vu010533
+                  SSH_USERNAME: vu010533
                   SSH_KEY_FILE: /root/.ssh/id_key
                   CONFIG_DATABASE_PASSWORD: ${{ secrets.CONFIG_TEST_DATABASE_PASSWORD }}
 
@@ -303,12 +303,12 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - name: Deploy to h.skauting.cz
+            - name: Deploy to volby-snem.skauting.cz
               run: phing deploy
               env:
                   ENVIRONMENT: production
-                  ROOT_DIR: /home/vu008930
-                  SSH_USERNAME: vu008930
+                  ROOT_DIR: /home/vu010534
+                  SSH_USERNAME: vu010534
                   SSH_KEY_FILE: /root/.ssh/id_key
                   CONFIG_DATABASE_PASSWORD: ${{ secrets.CONFIG_PRODUCTION_DATABASE_PASSWORD }}
                   CONFIG_SENTRY_DSN: ${{ secrets.CONFIG_SENTRY_DSN }}
