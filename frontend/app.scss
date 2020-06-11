@@ -1,0 +1,60 @@
+@import "~bootstrap/scss/bootstrap";
+@import  "~nprogress/nprogress";
+
+.btn-light {
+  @include button-variant($light, darken($light, 30%));
+}
+
+@each $color, $value in $theme-colors {
+  .bg-#{$color}-lighter {
+    background-color: lighten($value, 30%) !important;
+  }
+}
+
+body {
+  min-height: 100vh;
+}
+
+body > footer {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.pairForm {
+    width: 280px;
+}
+
+.col-action {
+  text-align: right;
+}
+
+.w-15 {
+  width: 15%;
+}
+
+.w-18 {
+  width: 18%;
+}
+
+#submenu .navbar-light {
+  padding-bottom: 0;
+  .nav-item {
+    padding-bottom: $navbar-padding-y;
+
+    &.active {
+      box-sizing: border-box;
+      padding-bottom: $navbar-brand-padding-y;
+      border-bottom: 2px solid $primary;
+    }
+  }
+}
+
+.bg-test {
+  background-color: #ffff00;
+}
+
+.bg-dark #timer {
+  color: #fff;
+}
+

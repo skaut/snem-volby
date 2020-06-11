@@ -1,0 +1,74 @@
+parameters:
+    mappingDir: %appDir%/model/Infrastructure/mapping
+    domainModelDir: %appDir%/model
+
+extensions:
+    migrations: Nettrine\Migrations\DI\MigrationsExtension
+    dbal: Nettrine\DBAL\DI\DbalExtension
+
+migrations:
+    directory: %appDir%/../migrations
+
+dbal:
+    debug:
+        panel: %debugMode%
+
+    configuration:
+        filterSchemaAssetsExpression: '~^(?!ac_object)~'
+
+    connection:
+        host: %database.host%
+        user: %database.user%
+        password: %database.password%
+        dbname: %database.name%
+
+
+        types:
+            string_enum:
+                class: Consistence\Doctrine\Enum\Type\StringEnumType
+                commented: true
+            money:
+                class: Model\Infrastructure\Types\MoneyType
+                commented: true
+            variable_symbol:
+                class: Model\Infrastructure\Types\VariableSymbolType
+                commented: true
+            chit_number:
+                class: Model\Infrastructure\Types\ChitNumberType
+                commented: true
+            recipient:
+                class: Model\Infrastructure\Types\RecipientType
+                commented: true
+            chronos_date:
+                class: Warhuhn\Doctrine\DBAL\Types\ChronosDateType
+                commented: true
+            cashbook_id:
+                class: Model\Infrastructure\Types\CashbookIdType
+                commented: true
+            unit_id:
+                class: Model\Infrastructure\Types\UnitIdType
+                commented: true
+            payment_id:
+                class: Model\Infrastructure\Types\PaymentIdType
+                commented: true
+            file_path:
+                class: Model\Infrastructure\Types\FilePathType
+                commented: true
+            transport_types:
+                class: Model\Infrastructure\Types\TransportTypeListType
+                commented: true
+
+services:
+    - Model\Infrastructure\EntityManagerFactory(%debugMode%, %tempDir%)
+    - @Model\Infrastructure\EntityManagerFactory::create()
+    - Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper
+decorator:
+    Symfony\Component\Console\Command\Command:
+        tags: [ kdyby.console.command ]
+
+    Symfony\Component\Console\Helper\Helper:
+        tags: [ kdyby.console.helper ]
+
+    Doctrine\Migrations\Configuration\Configuration:
+        setup:
+            - setCheckDatabasePlatform(false)

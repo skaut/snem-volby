@@ -1,0 +1,117 @@
+parameters:
+    uploadDirectory: %appDir%/../uploads
+    testBackground: false
+
+php:
+    date.timezone: Europe/Prague
+    # zlib.output_compression: yes
+
+session:
+    autoStart: smart
+    expiration: "+ 3 days"
+application:
+    errorPresenter: Error
+    #catchExceptions: true
+    mapping:
+        *: App\*Module\*Presenter
+    debugger:
+        email:
+            - sinacek@gmail.com
+            - frantisekmasa1@gmail.com
+        strictMode: TRUE
+        maxDepth: 6
+        maxLen: 500
+
+console:
+    url: https://snem.skauting.cz
+
+messageBus:
+    commandBus:
+    	middlewares:
+    		before:
+    			- @SimpleBus\Message\Logging\LoggingMiddleware
+    eventBus:
+    queryBus:
+
+extensions:
+    autoDI: Fmasa\AutoDI\DI\AutoDIExtension
+    skautis: Skautis\Nette\SkautisExtension
+    messageBus: eGen\MessageBus\DI\MessageBusExtension
+    console: Contributte\Console\DI\ConsoleExtension(%isCli%)
+
+autoDI:
+    errorOnNotMatchedDefinitions: false
+
+    services:
+        # Domain services
+        - class: Model\*\Services\**
+
+        # Aggregate repositories
+        - class: Model\Infrastructure\Repositories\**Repository
+
+        # Domain event subscribers
+        - class: Model\*\Subscribers\*Subscriber
+          tags: [eventBus.subscriber]
+
+        # Command handlers
+        - class: Model\**\Handlers\**Handler
+          tags: [commandBus.handler]
+
+        # Query handlers
+        - class: Model\**\ReadModel\**
+          tags: [queryBus.handler]
+          exclude:
+              - Model\*\ReadModel\Queries\**
+
+        - class: Model\Infrastructure\Services\**
+
+services:
+    - SimpleBus\Message\Logging\LoggingMiddleware(level: 'debug')
+    - Model\AuthService
+    - Model\UserService
+    - Model\Skautis\SkautisMaintenanceChecker
+
+    skautisCache:
+        factory: Nette\Caching\Cache(namespace: 'skautis')
+        autowired: false
+
+    - App\RouterFactory
+
+    router: @App\RouterFactory::createRouter
+
+    @Skautis\Wsdl\WsdlManager:
+        setup:
+            - @Model\Infrastructure\Services\SkautisCallListener::register
+
+    nette.mailer: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
+
+    - class: Doctrine\DBAL\Logging\LoggerChain
+      setup:
+      	  - addLogger(Model\Infrastructure\SQLLogger())
+
+    - Model\Infrastructure\Log\UserContextProvider
+
+    - factory: Monolog\Logger
+      arguments:
+          name: snem_volby
+          handlers: [] # We register handlers via setHandlers and pushHandler later
+          processors:
+              - Model\Infrastructure\Log\Monolog\UserContextProcessor()
+              - Model\Infrastructure\Log\Monolog\FormContextProcessor()
+
+    - App\Console\LintLatte(%appDir%)
+    - Doctrine\Common\Cache\ArrayCache
+
+decorator:
+    Doctrine\DBAL\Configuration:
+        setup:
+            - setSQLLogger()
+
+    Monolog\Logger:
+        setup:
+            - pushHandler(Monolog\Handler\RotatingFileHandler(%logDir%/log.log, 90, Monolog\Logger::INFO))
+
+includes:
+    - model/doctrine.neon
+    - components.neon
+    - sentry.neon
