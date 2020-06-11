@@ -1,0 +1,25 @@
+class_name: IntegrationTester
+bootstrap: _bootstrap.php
+modules:
+    enabled:
+        - \Helper\Integration
+
+        - Contributte\Codeception\Module\NetteDIModule:
+            tempDir: ../_temp/integration
+            appDir: ../../app
+            configFiles:
+                - config/doctrine.neon
+            newContainerForEachTest: true
+            removeDefaultExtensions: true
+
+        - MailCatcher:
+            url: 'http://smtp-hospodareni.loc'
+            port: 80
+
+        - \Helper\WaitForDb
+        - Db:
+            dsn: 'mysql:host=mysql-test;dbname=snem_volby;charset=utf8'
+            user: 'root'
+            password: 'root'
+
+        - Mockery

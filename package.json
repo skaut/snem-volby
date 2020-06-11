@@ -1,0 +1,54 @@
+{
+    "private": true,
+    "scripts": {
+        "build": "yarn webpack",
+        "build-production": "webpack --mode=production",
+        "check-types": "yarn tsc --noEmit"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.28",
+        "@fortawesome/free-brands-svg-icons": "^5.13.0",
+        "@fortawesome/free-regular-svg-icons": "^5.13.0",
+        "@fortawesome/free-solid-svg-icons": "^5.13.0",
+        "@types/naja": "^1.6.2",
+        "@types/nprogress": "^0.2.0",
+        "@types/pikaday": "^1.7.4",
+        "bootstrap": "^4.4.1",
+        "bootstrap.native": "^2.0.27",
+        "moment": "^2.24.0",
+        "naja": "^1.7.0",
+        "nprogress": "^0.2.0",
+        "pikaday": "^1.8.0",
+        "postcss-cli": "^7.1.0",
+        "postcss-loader": "^3.0.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/preset-env": "^7.9.0",
+        "@types/webpack-env": "^1.15.1",
+        "autoprefixer": "^9.7.5",
+        "babel-loader": "^8.1.0",
+        "css-loader": "^3.4.2",
+        "husky": "^4.2.3",
+        "lint-staged": "^10.2.4",
+        "mini-css-extract-plugin": "^0.9.0",
+        "sass": "^1.26.5",
+        "sass-loader": "^8.0.2",
+        "ts-loader": "^7.0.4",
+        "typescript": "^3.8.3",
+        "uglify-js": "^3.9.3",
+        "webpack": "^4.43.0",
+        "webpack-bundle-analyzer": "^3.6.0",
+        "webpack-cli": "^3.3.11"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.php": [
+            "bin/phpcbf"
+        ]
+    }
+}

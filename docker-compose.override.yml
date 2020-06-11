@@ -1,0 +1,33 @@
+version: "3.4"
+
+services:
+    app:
+        ports:
+            - 80:80
+        volumes:
+            - /var/www/html/temp
+            - nfsmount:/var/www/html
+    mysql:
+        ports:
+            - 3306:3306
+
+    adminer:
+        container_name: snem.adminer
+        image: adminer
+        ports:
+            - 8080:8080
+        networks:
+            main:
+                aliases:
+                    - mysql
+volumes:
+    mysql:
+        name: snem_mysql
+        external: true
+
+    nfsmount:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+            device: ":${PWD}"

@@ -1,0 +1,31 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://hospodareni.loc
+            browser: chrome
+            host: chrome
+            capabilities:
+                chromeOptions:
+                    args: ["--headless", "--disable-gpu", "--no-sandbox", "--window-size=1920,1080"]
+                    binary: "/usr/bin/google-chrome"
+
+        - \Helper\Acceptance
+
+        - MailCatcher:
+            url: 'http://smtp-hospodareni.loc'
+            port: 80
+
+        - \Helper\WaitForDb
+        - Db:
+            dsn: 'mysql:host=mysql-test;dbname=snem_volby'
+            user: 'root'
+            password: 'root'
+            populate: true
+            dump: 'tests/_data/cleanup.sql'

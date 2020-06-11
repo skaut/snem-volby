@@ -1,0 +1,4 @@
+autoDI:
+    services:
+        - implement: App\AuthenticatedModule\**\I*Factory
+

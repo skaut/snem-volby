@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+    app:
+        container_name: snem.app
+        image: fmasa/lebeda:7.4
+        volumes:
+            - www:/var/www
+            - .:/var/www/html
+        depends_on:
+            - mysql
+        environment:
+            DEVELOPMENT_MACHINE: 'true'
+        networks:
+            main:
+                aliases:
+                    - hospodareni.loc
+
+    mysql:
+        container_name: snem.mysql
+        image: mysql:8.0
+        volumes:
+            - mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: snem_volby
+        networks:
+            main:
+                aliases:
+                    - mysql
+
+    mysql-test:
+        container_name: snem.mysql-test
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: snem_volby
+        networks:
+            main:
+                aliases:
+                    - mysql-test
+
+    chrome:
+        container_name: snem.chrome
+        image: selenium/standalone-chrome:3.141
+        networks:
+            main:
+                aliases:
+                    - chrome
+
+    smtp:
+        container_name: snem.smtp
+        image: tophfr/mailcatcher:0.6.5_3
+        environment:
+            SMTP_HOST: snem-hospodareni.loc
+        networks:
+            main:
+                aliases:
+                    - snem-hospodareni.loc
+        ports:
+            - 1080:1080
+
+volumes:
+    mysql:
+    www:
+
+networks:
+    main:

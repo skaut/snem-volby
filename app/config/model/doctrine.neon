@@ -1,0 +1,42 @@
+parameters:
+    mappingDir: %appDir%/model/Infrastructure/mapping
+    domainModelDir: %appDir%/model
+
+extensions:
+    dbal: Nettrine\DBAL\DI\DbalExtension
+    migrations: Nettrine\Migrations\DI\MigrationsExtension
+
+migrations:
+    directory: %appDir%/../migrations
+
+dbal:
+    debug:
+        panel: %debugMode%
+
+    configuration:
+        sqlLogger: Model\Infrastructure\SQLLogger()
+        filterSchemaAssetsExpression: '~^(?!ac_object)~'
+
+    connection:
+        host: %database.host%
+        user: %database.user%
+        password: %database.password%
+        dbname: %database.name%
+
+
+        types:
+            string_enum:
+                class: Consistence\Doctrine\Enum\Type\StringEnumType
+                commented: true
+            chronos_date:
+                class: Warhuhn\Doctrine\DBAL\Types\ChronosDateType
+                commented: true
+
+services:
+    - Model\Infrastructure\EntityManagerFactory(%debugMode%, %tempDir%)
+    - @Model\Infrastructure\EntityManagerFactory::create()
+    - Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper
+decorator:
+    Doctrine\Migrations\Configuration\Configuration:
+        setup:
+            - setCheckDatabasePlatform(false)

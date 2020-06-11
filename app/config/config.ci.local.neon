@@ -1,0 +1,24 @@
+application:
+    catchExceptions: false
+    debugger: true
+
+skautis:
+    applicationId: 48104fe2-b447-47f5-9a26-051c710da74e
+    testMode: true
+
+parameters:
+    sendEmail: true
+    testBackground: true
+
+    database:
+        host: mysql-test
+        user: root
+        password: root
+        name: snem_volby
+
+tracy:
+    showBar: false
+
+services:
+    # Pro produkci
+    # nette.mailer: Nette\Mail\SendmailMailer
