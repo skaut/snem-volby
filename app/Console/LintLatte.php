@@ -19,6 +19,7 @@ use function sprintf;
 
 final class LintLatte extends Command
 {
+    protected static $defaultName = 'app:lint-latte';
     private string $appDir;
 
     private ILatteFactory $latteFactory;
@@ -32,7 +33,6 @@ final class LintLatte extends Command
 
     protected function configure() : void
     {
-        $this->setName('app:lint-latte');
         $this->setDescription('Lints all Latte templates in application');
     }
 

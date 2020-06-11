@@ -5,7 +5,7 @@
         <exec command="composer install" passthru="true"/>
         <phingcall target="static-analysis"/>
         <phingcall target="coding-standard"/>
-        <exec command="php www/index.php orm:validate-schema --skip-sync"/>
+        <exec command="bin/console orm:validate-schema --skip-sync"/>
         <phingcall target="tests"/>
     </target>
 
@@ -194,7 +194,7 @@
     <target name="deploy:app-command">
         <phingcall target="deploy:ssh">
             <property name="command"
-                      value="php74-cli &quot;${deploy.release}/www/index.php ${command}&quot;"/>
+                      value="php74-cli &quot;${deploy.release}/bin/console ${command}&quot;"/>
         </phingcall>
     </target>
 
@@ -242,6 +242,6 @@
         <exec command="yarn build" passthru="true"/>
 
         <!-- Prepare database schema -->
-        <exec command="php www/index.php migrations:migrate" passthru="true"/>
+        <exec command="bin/console migrations:migrate" passthru="true"/>
     </target>
 </project>

@@ -24,6 +24,7 @@ application:
 
 console:
     url: https://snem.skauting.cz
+    lazy: true
 
 messageBus:
     commandBus:
@@ -38,6 +39,7 @@ extensions:
     skautis: Skautis\Nette\SkautisExtension
     messageBus: eGen\MessageBus\DI\MessageBusExtension
     console: Contributte\Console\DI\ConsoleExtension(%isCli%)
+    nettrine.dbal.console: Nettrine\DBAL\DI\DbalConsoleExtension(%consoleMode%)
 
 autoDI:
     errorOnNotMatchedDefinitions: false
@@ -85,10 +87,6 @@ services:
 
     nette.mailer: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
 
-    - class: Doctrine\DBAL\Logging\LoggerChain
-      setup:
-      	  - addLogger(Model\Infrastructure\SQLLogger())
-
     - Model\Infrastructure\Log\UserContextProvider
 
     - factory: Monolog\Logger
@@ -103,10 +101,6 @@ services:
     - Doctrine\Common\Cache\ArrayCache
 
 decorator:
-    Doctrine\DBAL\Configuration:
-        setup:
-            - setSQLLogger()
-
     Monolog\Logger:
         setup:
             - pushHandler(Monolog\Handler\RotatingFileHandler(%logDir%/log.log, 90, Monolog\Logger::INFO))
