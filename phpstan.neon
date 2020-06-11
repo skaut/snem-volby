@@ -31,9 +31,6 @@ services:
 
 	  tags: [ phpstan.broker.dynamicMethodReturnTypeExtension ]
 
-	- class: UnusedMoneyMethodResultRule
-	  tags: [ phpstan.rules.rule ]
-
 	#
 	# Dynamic method return types
 	#

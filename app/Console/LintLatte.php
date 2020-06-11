@@ -19,6 +19,7 @@ use function sprintf;
 
 final class LintLatte extends Command
 {
+    /** @var string */
     protected static $defaultName = 'app:lint-latte';
     private string $appDir;
 
