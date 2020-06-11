@@ -4,7 +4,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far }  from '@fortawesome/free-regular-svg-icons';
 
 library.add(
-
+    far.faLightbulb,
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';

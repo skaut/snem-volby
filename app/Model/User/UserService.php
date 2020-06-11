@@ -8,14 +8,17 @@ use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
 use Model\User\SkautisRole;
 use Skautis\Skautis;
 use stdClass;
+use function property_exists;
 
 final class UserService
 {
     private Skautis $skautis;
+    private int $congressGroupId;
 
-    public function __construct(Skautis $skautis)
+    public function __construct(int $congressGroupId, Skautis $skautis)
     {
-        $this->skautis = $skautis;
+        $this->skautis         = $skautis;
+        $this->congressGroupId = $congressGroupId;
     }
 
     /**
@@ -88,5 +91,31 @@ final class UserService
     public function updateLogoutTime() : void
     {
         $this->skautis->getUser()->updateLogoutTime()->getLogoutDate();
+    }
+
+    public function isSuperUser() : bool
+    {
+        foreach ($this->getAllSkautisRoles() as $role) {
+            if ($role->Key === 'superadmin') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isDelegate() : bool
+    {
+        foreach ($this->getAllSkautisRoles() as $role) {
+            if (property_exists($role, 'Key')
+                && property_exists($role, 'ID_Group')
+                && $role->Key === 'EventCongress'
+                && $role->ID_Group === $this->congressGroupId
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

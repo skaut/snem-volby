@@ -16,6 +16,8 @@ parameters:
         password: root
         name: snem_volby
 
+    congressId: 123
+
 tracy:
     showBar: false
 
