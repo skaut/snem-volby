@@ -87,6 +87,12 @@ jobs:
               run: docker-compose up -d app mysql-test smtp
             - name: Run tests with coverage
               run: docker-compose exec -T -u www-data app phing tests-with-coverage
+            - name: Upload code coverage
+              uses: codecov/codecov-action@v1
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  file: tests/_output/coverage.xml
+                  fail_ci_if_error: true
 
     tests-acceptance:
         name: "Run acceptance tests"
