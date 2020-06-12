@@ -106,6 +106,6 @@ class AuthPresenter extends BasePresenter
         } else {
             $this->flashMessage('Odhlášení ze skautisu se nezdařilo', 'danger');
         }
-        $this->redirect(':Default:');
+        $this->redirect(':Homepage:');
     }
 }

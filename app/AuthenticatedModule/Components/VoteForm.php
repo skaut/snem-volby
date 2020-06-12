@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\AccountancyModule\Components;
+namespace App\Components;
 
 use App\AuthenticatedModule\Components\BaseControl;
 use App\Forms\BaseForm;
@@ -10,7 +10,7 @@ use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
 use Model\Commands\Vote\SaveVote;
-use Model\Vote;
+use Model\Vote\Option;
 
 final class VoteForm extends BaseControl
 {
@@ -38,18 +38,18 @@ final class VoteForm extends BaseControl
     {
         $form = new BaseForm();
 
-        $form->addSubmit(Vote::YES, 'PRO návrh');
-        $form->addSubmit(Vote::NO, 'PROTI návrhu');
-        $form->addSubmit(Vote::ABSTAIN, 'Zdržuji se');
+        $form->addSubmit(Option::YES, 'PRO návrh');
+        $form->addSubmit(Option::NO, 'PROTI návrhu');
+        $form->addSubmit(Option::ABSTAIN, 'Zdržuji se');
 
         $form->onSuccess[] = function (BaseForm $form) : void {
             $vote = null;
-            if ($form[Vote::YES]->isSubmittedBy()) {
-                $vote = Vote::YES();
-            } elseif ($form[Vote::NO]->isSubmittedBy()) {
-                $vote = Vote::NO();
-            } elseif ($form[Vote::ABSTAIN]->isSubmittedBy()) {
-                $vote = Vote::ABSTAIN();
+            if ($form[Option::YES]->isSubmittedBy()) {
+                $vote = Option::YES();
+            } elseif ($form[Option::NO]->isSubmittedBy()) {
+                $vote = Option::NO();
+            } elseif ($form[Option::ABSTAIN]->isSubmittedBy()) {
+                $vote = Option::ABSTAIN();
             } else {
                 throw new InvalidArgumentException('Neplatná možnost hlasování!');
             }

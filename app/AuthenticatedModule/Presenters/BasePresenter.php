@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule;
 
-use Model\Common\UnitId;
 use Model\Skautis\SkautisMaintenanceChecker;
-use Model\User\ReadModel\Queries\UserUnitIdQuery;
 use stdClass;
 
 abstract class BasePresenter extends \App\BasePresenter
@@ -59,11 +57,6 @@ abstract class BasePresenter extends \App\BasePresenter
         $this->redrawControl('flash');
 
         return parent::flashMessage($message, $type);
-    }
-
-    public function getCurrentUnitId() : UnitId
-    {
-        return $this->queryBus->handle(new UserUnitIdQuery());
     }
 
     public function renderAccessDenied() : void

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\AuthenticatedModule\Factories\ILoginPanelFactory;
 use App\Components\LoginPanel;
+use App\Components\TipBox;
+use App\Components\VotingStateBox;
+use App\Factories\ILoginPanelFactory;
+use App\Factories\ITipBoxFactory;
+use App\Factories\IVotingStateBoxFactory;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Common\Services\NotificationsCollector;
@@ -30,6 +34,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     private ILoginPanelFactory $loginPanelFactory;
     private NotificationsCollector $notificationsCollector;
     protected LoggerInterface $logger;
+    private IVotingStateBoxFactory $votingStateBoxFactory;
+    private ITipBoxFactory $tipBoxFactory;
 
     public function injectAll(
         UserService $userService,
@@ -37,7 +43,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         QueryBus $queryBus,
         ILoginPanelFactory $loginPanelFactory,
         NotificationsCollector $notificationsCollector,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        IVotingStateBoxFactory $votingStateBoxFactory,
+        ITipBoxFactory $tipBoxFactory
     ) : void {
         $this->userService            = $userService;
         $this->commandBus             = $commandBus;
@@ -45,6 +53,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $this->loginPanelFactory      = $loginPanelFactory;
         $this->logger                 = $logger;
         $this->notificationsCollector = $notificationsCollector;
+        $this->votingStateBoxFactory  = $votingStateBoxFactory;
+        $this->tipBoxFactory          = $tipBoxFactory;
     }
 
     protected function startup() : void
@@ -104,6 +114,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     protected function createComponentLoginPanel() : LoginPanel
     {
         return $this->loginPanelFactory->create();
+    }
+
+    protected function createComponentVotingStateBox() : VotingStateBox
+    {
+        return $this->votingStateBoxFactory->create();
+    }
+
+    protected function createComponentTipBox() : TipBox
+    {
+        return $this->tipBoxFactory->create();
     }
 
     /**

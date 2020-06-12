@@ -111,6 +111,9 @@ services:
     skautis.webservice.user:
         factory: Model\Skautis\WebserviceFactory::createCached('user')
         tags: [lookyman.lazy]
+    - App\Factories\ILoginPanelFactory
+    - App\Factories\IVotingStateBoxFactory
+    - App\Factories\ITipBoxFactory
 
 decorator:
     Monolog\Logger:
