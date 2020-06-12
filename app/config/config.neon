@@ -25,6 +25,7 @@ application:
 console:
     url: https://snem.skauting.cz
     lazy: true
+    helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
 
 messageBus:
     commandBus:
@@ -99,8 +100,10 @@ services:
 
     - App\Console\LintLatte(%appDir%)
     - Doctrine\Common\Cache\ArrayCache
-
 decorator:
+    Symfony\Component\Console\Application:
+        setup:
+            - Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands()
     Monolog\Logger:
         setup:
             - pushHandler(Monolog\Handler\RotatingFileHandler(%logDir%/log.log, 90, Monolog\Logger::INFO))
