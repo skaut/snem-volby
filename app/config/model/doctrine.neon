@@ -18,6 +18,7 @@ dbal:
         filterSchemaAssetsExpression: '~^(?!ac_object)~'
 
     connection:
+        driver: pdo_mysql
         host: %database.host%
         user: %database.user%
         password: %database.password%
