@@ -22,6 +22,8 @@ parameters:
         password: root
         name: snem_volby
 
+    congressId: 122
+
 services:
     # Pro produkci
     # nette.mailer: Nette\Mail\SendmailMailer

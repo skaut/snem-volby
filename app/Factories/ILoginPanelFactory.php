@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\AuthenticatedModule\Factories;
+namespace App\Factories;
 
 use App\Components\LoginPanel;
 

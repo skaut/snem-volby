@@ -1,0 +1,3 @@
+{if ! $user->isLoggedIn()}
+    <a href="{plink :Auth:logOnSkautIs (isset($backlink)) ? $backlink : NULL}" class="btn btn-sm btn-primary my-2 my-sm-0">Přihlásit se účtem ve skautisu</a>
+{/if}

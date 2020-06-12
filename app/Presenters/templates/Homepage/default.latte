@@ -1,3 +1,20 @@
-{block title}Sněm{/block}
+{block title}Online hlasování{/block}
 
 {block #content}
+<div class="row">
+    <div class="col-12">
+        <img src="{$baseUrl}/images/logo.svg" alt="Logo Junák – český skaut" height="200em" />
+        <h1>Hlasování o změně stanov</h1>
+
+        {control tipBox}
+        {control votingStateBox}
+
+        <p>
+            hlasování se mohou účastnit pouze delegáti Valného sněmu 2020 <br />
+            (musí být řádně zvoleni a zadáni do výsledků příslušného sněmu OJ a tento sněm musí být ve skautISu uzavřený)
+        </p>
+
+        {control loginPanel:loginButton}
+
+    </div>
+</div>

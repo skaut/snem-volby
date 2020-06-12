@@ -58,4 +58,10 @@ final class LoginPanel extends BaseControl
 
         $this->template->render();
     }
+
+    public function renderLoginButton() : void
+    {
+        $this->template->setFile(__DIR__ . '/templates/LoginPanel.loginButton.latte');
+        $this->template->render();
+    }
 }
