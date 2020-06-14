@@ -13,7 +13,7 @@ modules:
             removeDefaultExtensions: true
 
         - MailCatcher:
-            url: 'http://smtp-hospodareni.loc'
+            url: 'http://smtp-snem-volby.loc'
             port: 80
 
         - \Helper\WaitForDb

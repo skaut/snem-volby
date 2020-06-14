@@ -22,7 +22,8 @@ parameters:
         password: root
         name: snem_volby
 
-    congressId: 122
+    congress:
+        groupId: 122
 
 services:
     # Pro produkci

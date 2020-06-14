@@ -8,7 +8,7 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://hospodareni.loc
+            url: http://snem-volby.loc
             browser: chrome
             host: chrome
             capabilities:
@@ -19,7 +19,7 @@ modules:
         - \Helper\Acceptance
 
         - MailCatcher:
-            url: 'http://smtp-hospodareni.loc'
+            url: 'http://smtp-snem-volby.loc'
             port: 80
 
         - \Helper\WaitForDb
