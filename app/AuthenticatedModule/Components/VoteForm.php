@@ -10,6 +10,8 @@ use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
 use Model\Commands\Vote\SaveVote;
+use Model\Infrastructure\Repositories\VoteRepository;
+use Model\UserService;
 use Model\Vote\Option;
 
 final class VoteForm extends BaseControl
@@ -20,17 +22,30 @@ final class VoteForm extends BaseControl
     /** @var QueryBus */
     private $queryBus;
 
+    /** @var VoteRepository */
+    private $voteRepository;
+
+    /** @var UserService */
+    private $userService;
+
     public function __construct(
         CommandBus $commandBus,
-        QueryBus $queryBus
+        QueryBus $queryBus,
+        VoteRepository $voteRepository,
+        UserService $userService
     ) {
-        $this->commandBus = $commandBus;
-        $this->queryBus   = $queryBus;
+        $this->commandBus     = $commandBus;
+        $this->queryBus       = $queryBus;
+        $this->voteRepository = $voteRepository;
+        $this->userService    = $userService;
     }
 
     public function render() : void
     {
+        $personId = $this->userService->getUserDetail()->ID_Person;
+
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
+        $this->template->userVote = $this->voteRepository->getUserVote($personId);;
         $this->template->render();
     }
 

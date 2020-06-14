@@ -10,4 +10,6 @@ use Model\Vote;
 interface IVoteRepository
 {
     public function saveUserVote(Vote $vote, UsersVote $usersVote) : void;
+
+    public function getUserVote(int $personId) : ?UsersVote;
 }

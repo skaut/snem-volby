@@ -1,2 +1,6 @@
 <h2>Hlasuji</h2>
-{control form}
+{if $userVote}
+    Delegát již hlasoval {$userVote->getCreatedAt()|date:App\Utils\Helpers::DATETIME_FORMAT}.
+{else}
+    {control form}
+{/if}

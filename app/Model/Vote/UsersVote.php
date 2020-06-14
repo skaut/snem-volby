@@ -42,4 +42,9 @@ class UsersVote extends Aggregate
         $this->personId  = $personId;
         $this->createdAt = new DateTimeImmutable();
     }
+
+    public function getCreatedAt() : DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }
