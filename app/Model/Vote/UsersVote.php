@@ -24,7 +24,7 @@ class UsersVote extends Aggregate
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      *
      * @var int
      */
