@@ -14,7 +14,7 @@ services:
         networks:
             main:
                 aliases:
-                    - hospodareni.loc
+                    - snem.loc
 
     mysql:
         container_name: snem.mysql
@@ -52,11 +52,11 @@ services:
         container_name: snem.smtp
         image: tophfr/mailcatcher:0.6.5_3
         environment:
-            SMTP_HOST: snem-hospodareni.loc
+            SMTP_HOST: smtp-snem.loc
         networks:
             main:
                 aliases:
-                    - snem-hospodareni.loc
+                    - smtp-snem.loc
         ports:
             - 1080:1080
 
