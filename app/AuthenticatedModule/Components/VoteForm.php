@@ -53,12 +53,30 @@ final class VoteForm extends BaseControl
     {
         $form = new BaseForm();
 
+        $confirmationOkLabel = 'Závazně odeslat hlas';
+        $confirmationCancelLabel = 'Storno';
+
         $form->addSubmit(Option::YES, 'PRO návrh')
-            ->setHtmlAttribute('class', 'btn btn-success');
+            ->setHtmlAttribute('class', 'btn btn-success')
+            ->setHtmlAttribute('data-toggle', 'confirmation')
+            ->setHtmlAttribute('data-singleton', 'true')
+            ->setHtmlAttribute('data-title', 'Opravdu chceš hlasovat PRO návrh? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit.')
+            ->setHtmlAttribute('data-btn-ok-label', $confirmationOkLabel)
+            ->setHtmlAttribute('data-btn-cancel-label', $confirmationCancelLabel);
         $form->addSubmit(Option::NO, 'PROTI návrhu')
-            ->setHtmlAttribute('class', 'btn btn-danger');
+            ->setHtmlAttribute('class', 'btn btn-danger')
+            ->setHtmlAttribute('data-toggle', 'confirmation')
+            ->setHtmlAttribute('data-singleton', 'true')
+            ->setHtmlAttribute('data-title', 'Opravdu chceš hlasovat PROTI návrhu? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit.')
+            ->setHtmlAttribute('data-btn-ok-label', $confirmationOkLabel)
+            ->setHtmlAttribute('data-btn-cancel-label', $confirmationCancelLabel);
         $form->addSubmit(Option::ABSTAIN, 'Zdržuji se')
-            ->setHtmlAttribute('class', 'btn btn-warning');
+            ->setHtmlAttribute('class', 'btn btn-warning')
+            ->setHtmlAttribute('data-toggle', 'confirmation')
+            ->setHtmlAttribute('data-singleton', 'true')
+            ->setHtmlAttribute('data-title', 'Opravdu se chceš zdržet hlasování? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit.')
+            ->setHtmlAttribute('data-btn-ok-label', $confirmationOkLabel)
+            ->setHtmlAttribute('data-btn-cancel-label', $confirmationCancelLabel);
 
         $form->onSuccess[] = function (BaseForm $form) : void {
             $vote = null;

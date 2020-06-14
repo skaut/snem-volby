@@ -1,6 +1,6 @@
 <h2>Hlasuji</h2>
 {if $userVote}
-    Delegát již hlasoval {$userVote->getCreatedAt()|date:App\Utils\Helpers::DATETIME_FORMAT}.
+    Již bylo hlasováno {$userVote->getCreatedAt()|date:App\Utils\Helpers::DATETIME_FORMAT}.
 {else}
     {control form}
 {/if}
