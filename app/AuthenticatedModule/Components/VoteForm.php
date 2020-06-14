@@ -38,9 +38,12 @@ final class VoteForm extends BaseControl
     {
         $form = new BaseForm();
 
-        $form->addSubmit(Option::YES, 'PRO návrh');
-        $form->addSubmit(Option::NO, 'PROTI návrhu');
-        $form->addSubmit(Option::ABSTAIN, 'Zdržuji se');
+        $form->addSubmit(Option::YES, 'PRO návrh')
+            ->setHtmlAttribute('class', 'btn btn-success');
+        $form->addSubmit(Option::NO, 'PROTI návrhu')
+            ->setHtmlAttribute('class', 'btn btn-danger');
+        $form->addSubmit(Option::ABSTAIN, 'Zdržuji se')
+            ->setHtmlAttribute('class', 'btn btn-warning');
 
         $form->onSuccess[] = function (BaseForm $form) : void {
             $vote = null;
