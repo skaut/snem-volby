@@ -26,7 +26,7 @@ class Vote extends Aggregate
     private $id;
 
     /**
-     * @ORM\Column(type="string_enum")
+     * @ORM\Column(name="`option`", type="string_enum")
      *
      * @var Option
      * @EnumAnnotation(class=Option::class)
