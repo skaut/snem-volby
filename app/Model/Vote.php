@@ -16,9 +16,6 @@ use Model\Vote\Option;
  */
 class Vote extends Aggregate
 {
-    public const VOTING_BEGIN_AT = '2020-06-25 09:00:00';
-    public const VOTING_END_AT   = '2020-06-29 23:59:00';
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
