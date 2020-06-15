@@ -3,26 +3,33 @@
 {varType \DateTimeImmutable $endAt}
 
 <p>
-    {if $now < $endAt}probíhá{else}proběhlo{/if} v termínu od  {$beginAt|date:'j. n. Y H:i'} do {$endAt|date:'j. n. Y H:i'}
+    <strong>{if $now < $endAt}probíhá{else}proběhlo{/if} v termínu od  {$beginAt|date:'j. n. Y H:i'} do {$endAt|date:'j. n. Y H:i'}</strong>
 </p>
 
-<p>
+
     {if $now < $beginAt}
-        {var \DateInterval $beginDiff = $beginAt->diff($now)}
-        hlasování začne za
-        {if $beginDiff->d}{$beginDiff->d} dní{/if}
-        {if $beginDiff->h}{$beginDiff->h} h{/if}
-        {if $beginDiff->i}{$beginDiff->i} m{/if}
-        <br />
+        <p class="text-success">
+            <strong>
+                {var \DateInterval $beginDiff = $beginAt->diff($now)}
+                hlasování začne za
+                {if $beginDiff->d}{$beginDiff->d} dní{/if}
+                {if $beginDiff->h}{$beginDiff->h} h{/if}
+                {if $beginDiff->i}{$beginDiff->i} m{/if}
+            </strong>
+        </p>
     {elseif $beginAt < $now && $now < $endAt}
-        {var \DateInterval $endDiff = $now->diff($endAt)}
-        do konce hlasování zbývá
-        {if $endDiff->d}{$endDiff->d} dní{/if}
-        {if $endDiff->h}{$endDiff->h} h{/if}
-        {if $endDiff->i}{$endDiff->i} m{/if}<br />
+        <p class="text-warning">
+            <strong>
+                {var \DateInterval $endDiff = $now->diff($endAt)}
+                do konce hlasování zbývá
+                {if $endDiff->d}{$endDiff->d} dní{/if}
+                {if $endDiff->h}{$endDiff->h} h{/if}
+                {if $endDiff->i}{$endDiff->i} m{/if}
+            </strong>
+        </p>
     {else}
-        hlasování již bylo uzavřeno
+        <p class="text-danger"><strong>hlasování již bylo uzavřeno</strong></p>
     {/if}
-</p>
+
 
 
