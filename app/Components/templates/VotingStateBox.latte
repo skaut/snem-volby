@@ -1,10 +1,28 @@
+{varType \DateTimeImmutable $now}
+{varType \DateTimeImmutable $beginAt}
+{varType \DateTimeImmutable $endAt}
 
 <p>
-    probíhá v termínu od  25. 6. 2020 9.00 do 29. 6. 2020 23.59
+    {if $now < $endAt}probíhá{else}proběhlo{/if} v termínu od  {$beginAt|date:'j. n. Y H:i'} do {$endAt|date:'j. n. Y H:i'}
 </p>
 
 <p>
-    hlasování začne za 13 h 27 m<br />
-    do konce hlasování zbývá 68 h 15 m<br />
-    hlasování již bylo uzavřeno
+    {if $now < $beginAt}
+        {var \DateInterval $beginDiff = $beginAt->diff($now)}
+        hlasování začne za
+        {if $beginDiff->d}{$beginDiff->d} dní{/if}
+        {if $beginDiff->h}{$beginDiff->h} h{/if}
+        {if $beginDiff->i}{$beginDiff->i} m{/if}
+        <br />
+    {elseif $beginAt < $now && $now < $endAt}
+        {var \DateInterval $endDiff = $now->diff($endAt)}
+        do konce hlasování zbývá
+        {if $endDiff->d}{$endDiff->d} dní{/if}
+        {if $endDiff->h}{$endDiff->h} h{/if}
+        {if $endDiff->i}{$endDiff->i} m{/if}<br />
+    {else}
+        hlasování již bylo uzavřeno
+    {/if}
 </p>
+
+
