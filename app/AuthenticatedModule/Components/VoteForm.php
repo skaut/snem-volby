@@ -6,8 +6,10 @@ namespace App\Components;
 
 use App\AuthenticatedModule\Components\BaseControl;
 use App\Forms\BaseForm;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
+use Exception;
 use InvalidArgumentException;
 use Model\Commands\Vote\SaveVote;
 use Model\Infrastructure\Repositories\VoteRepository;
@@ -45,7 +47,7 @@ final class VoteForm extends BaseControl
         $personId = $this->userService->getUserDetail()->ID_Person;
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
-        $this->template->userVote = $this->voteRepository->getUserVote($personId);;
+        $this->template->userVote = $this->voteRepository->getUserVote($personId);
         $this->template->render();
     }
 
@@ -58,19 +60,31 @@ final class VoteForm extends BaseControl
         $form->addSubmit(Option::ABSTAIN);
 
         $form->onSuccess[] = function (BaseForm $form) : void {
-            $vote = null;
+            $vote     = null;
+            $voteName = null;
             if ($form[Option::YES]->isSubmittedBy()) {
-                $vote = Option::YES();
+                $vote     = Option::YES();
+                $voteName = "PRO";
             } elseif ($form[Option::NO]->isSubmittedBy()) {
-                $vote = Option::NO();
+                $vote     = Option::NO();
+                $voteName = "PROTI";
             } elseif ($form[Option::ABSTAIN]->isSubmittedBy()) {
-                $vote = Option::ABSTAIN();
+                $vote     = Option::ABSTAIN();
+                $voteName = "ZDRŽUJI SE";
             } else {
                 throw new InvalidArgumentException('Neplatná možnost hlasování!');
             }
-            $this->commandBus->handle(new SaveVote($vote));
-//            $this->redrawControl();
-            $this->redirect('this');
+
+            try {
+                $this->commandBus->handle(new SaveVote($vote));
+                $this->flashMessage('Tvůj hlas "' . $voteName . '" byl úspěšně uložen.', 'success');
+            } catch (UniqueConstraintViolationException $e) {
+                $this->flashMessage('Tvůj hlas byl odeslán již dříve.', 'danger');
+            } catch (Exception $e) {
+                $this->flashMessage('Hlasování bylo neúspěšné.', 'danger');
+            }
+
+            $this->redrawControl();
         };
 
         return $form;
