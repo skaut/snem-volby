@@ -25,7 +25,6 @@ application:
 console:
     url: https://snem.skauting.cz
     lazy: true
-    helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
 
 messageBus:
     commandBus:
