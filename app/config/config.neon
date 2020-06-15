@@ -72,6 +72,7 @@ services:
     - Model\AuthService
     - Model\UserService(%congress.groupId%)
     - Model\Skautis\SkautisMaintenanceChecker
+    - Model\Vote\VoteService
 
     skautisCache:
         factory: Nette\Caching\Cache(namespace: 'skautis')

@@ -7,16 +7,19 @@ namespace App\Components;
 use App\AuthenticatedModule\Components\BaseControl;
 use DateTimeImmutable;
 use eGen\MessageBus\Bus\QueryBus;
-use Model\Vote;
+use Model\Vote\VoteService;
 
 final class VotingStateBox extends BaseControl
 {
     /** @var QueryBus */
     private $queryBus;
 
-    public function __construct(QueryBus $queryBus)
+    private VoteService $voteService;
+
+    public function __construct(QueryBus $queryBus, VoteService $voteService)
     {
-        $this->queryBus = $queryBus;
+        $this->queryBus    = $queryBus;
+        $this->voteService = $voteService;
     }
 
     public function render() : void
@@ -25,8 +28,8 @@ final class VotingStateBox extends BaseControl
 
         $this->template->setParameters([
             'now' => new DateTimeImmutable(),
-            'beginAt' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', Vote::VOTING_BEGIN_AT),
-            'endAt' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', Vote::VOTING_END_AT),
+            'beginAt' => $this->voteService->getVoteBegin(),
+            'endAt' => $this->voteService->getVoteEnd(),
         ]);
 
         $this->template->render();
