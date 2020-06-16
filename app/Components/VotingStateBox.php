@@ -7,8 +7,8 @@ namespace App\Components;
 use App\AuthenticatedModule\Components\BaseControl;
 use DateTimeImmutable;
 use eGen\MessageBus\Bus\QueryBus;
-use Model\Vote\ReadModel\Queries\VotingBeginQuery;
-use Model\Vote\ReadModel\Queries\VotingEndQuery;
+use Model\Vote\ReadModel\Queries\VotingTimeQuery;
+use Model\Vote\VotingTime;
 
 final class VotingStateBox extends BaseControl
 {
@@ -24,10 +24,13 @@ final class VotingStateBox extends BaseControl
     {
         $this->template->setFile(__DIR__ . '/templates/VotingStateBox.latte');
 
+        /** @var VotingTime $votingTime */
+        $votingTime = $this->queryBus->handle(new VotingTimeQuery());
+
         $this->template->setParameters([
             'now' => new DateTimeImmutable(),
-            'beginAt' => $this->queryBus->handle(new VotingBeginQuery()),
-            'endAt' => $this->queryBus->handle(new VotingEndQuery()),
+            'beginAt' => $votingTime->getBegin(),
+            'endAt' => $votingTime->getEnd(),
         ]);
 
         $this->template->render();
