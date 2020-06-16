@@ -1,5 +1,5 @@
 <h2>Hlasuji</h2>
-{if $userVote}
+{if $userVote !== null}
     Již bylo hlasováno {$userVote->getCreatedAt()|date:App\Utils\Helpers::DATETIME_FORMAT}.
 {else}
     {form form}
