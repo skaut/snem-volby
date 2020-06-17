@@ -105,6 +105,11 @@ services:
     - App\Factories\IVotingStateBoxFactory
     - App\Factories\ITipBoxFactory
 
+    latte.latteFactory:
+        setup:
+            - addFilter('formatdate', [App\Utils\Helpers::class, 'formatDate'])
+            - addFilter('formatdatetime', [App\Utils\Helpers::class, 'formatDateTime'])
+            - addFilter('formatTimeToText', [App\Utils\Helpers::class, 'formatTimeToText'])
 decorator:
     Symfony\Component\Console\Application:
         setup:

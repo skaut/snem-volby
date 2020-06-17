@@ -48,7 +48,6 @@ final class EntityManagerFactory
 
         $configuration->setMetadataDriverImpl(new AnnotationDriver($annotationsReader, [__DIR__ . '/../']));
         $configuration->setNamingStrategy(new UnderscoreNamingStrategy());
-        $configuration->addCustomStringFunction('field', Field::class);
         $configuration->setSecondLevelCacheEnabled(true);
 
         $cacheConfiguration = new CacheConfiguration();

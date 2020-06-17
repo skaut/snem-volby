@@ -31,7 +31,7 @@ abstract class BasePresenter extends \App\BasePresenter
             if ($this->isAjax()) {
                 $this->forward(':Auth:ajax', ['backlink' => $this->backlink]);
             } else {
-                $this->redirect(':Homepage:', ['backlink' => $this->backlink]);
+                $this->redirect(':Default:', ['backlink' => $this->backlink]);
             }
         }
 
@@ -44,9 +44,9 @@ abstract class BasePresenter extends \App\BasePresenter
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $message
      */
-    public function flashMessage($message, $type = 'info') : stdClass
+    public function flashMessage($message, string $type = 'info') : stdClass
     {
         $this->redrawControl('flash');
 
