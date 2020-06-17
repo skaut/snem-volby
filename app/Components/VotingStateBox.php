@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Components;
 
 use App\AuthenticatedModule\Components\BaseControl;
-use DateTimeImmutable;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Vote\ReadModel\Queries\VotingTimeQuery;
-use Model\Vote\VotingTime;
-use function assert;
 
 final class VotingStateBox extends BaseControl
 {
@@ -25,13 +22,8 @@ final class VotingStateBox extends BaseControl
     {
         $this->template->setFile(__DIR__ . '/templates/VotingStateBox.latte');
 
-        $votingTime = $this->queryBus->handle(new VotingTimeQuery());
-        assert($votingTime instanceof VotingTime);
-
         $this->template->setParameters([
-            'now' => new DateTimeImmutable(),
-            'beginAt' => $votingTime->getBegin(),
-            'endAt' => $votingTime->getEnd(),
+            'votingTime' => $this->queryBus->handle(new VotingTimeQuery()),
         ]);
 
         $this->template->render();

@@ -1,26 +1,31 @@
-{varType \DateTimeImmutable $now}
-{varType \DateTimeImmutable $beginAt}
-{varType \DateTimeImmutable $endAt}
+{varType Model\Vote\VotingTime $votingTime}
 
 <p>
-    <strong>{if $now < $endAt}probíhá{else}proběhlo{/if} v termínu od  {$beginAt|date:'j. n. Y H:i'} do {$endAt|date:'j. n. Y H:i'}</strong>
+    <strong>
+        {if $votingTime->isBeforeVoting() || $votingTime->isVotingInProgress()}
+            probíhá
+        {else}
+            proběhlo
+        {/if}
+        v termínu od  {$votingTime->getBegin()|date:'j. n. Y H:i'} do {$votingTime->getEnd()|date:'j. n. Y H:i'}
+    </strong>
 </p>
 
 
-    {if $now < $beginAt}
+    {if $votingTime->isBeforeVoting()}
         <p class="text-success">
             <strong>
-                {var \DateInterval $beginDiff = $beginAt->diff($now)}
+                {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
                 hlasování začne za
                 {if $beginDiff->d}{$beginDiff->d} dní{/if}
                 {if $beginDiff->h}{$beginDiff->h} h{/if}
                 {if $beginDiff->i}{$beginDiff->i} m{/if}
             </strong>
         </p>
-    {elseif $beginAt < $now && $now < $endAt}
+    {elseif $votingTime->isVotingInProgress()}
         <p class="text-warning">
             <strong>
-                {var \DateInterval $endDiff = $now->diff($endAt)}
+                {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
                 do konce hlasování zbývá
                 {if $endDiff->d}{$endDiff->d} dní{/if}
                 {if $endDiff->h}{$endDiff->h} h{/if}
