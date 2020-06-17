@@ -5,6 +5,9 @@ import { far }  from '@fortawesome/free-regular-svg-icons';
 
 library.add(
     far.faLightbulb,
+    fas.faCheck,
+    fas.faTimes,
+    fas.faBan
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';
