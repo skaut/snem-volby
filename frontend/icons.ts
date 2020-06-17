@@ -7,7 +7,8 @@ library.add(
     far.faLightbulb,
     fas.faCheck,
     fas.faTimes,
-    fas.faBan
+    fas.faBan,
+    far.faClock
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';
