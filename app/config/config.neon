@@ -101,17 +101,6 @@ services:
     - App\Console\LintLatte(%appDir%)
     - Doctrine\Common\Cache\ArrayCache
 
-    - Model\Skautis\Common\Repositories\UserRepository(@skautis.webservice.user, @skautis.org)
-    # Skautis webservices
-    skautis.org:
-        factory: Model\Skautis\WebserviceFactory::createCached('org')
-        tags: [lookyman.lazy]
-    skautis.event:
-        factory: Model\Skautis\WebserviceFactory::create('event')
-        tags: [lookyman.lazy]
-    skautis.webservice.user:
-        factory: Model\Skautis\WebserviceFactory::createCached('user')
-        tags: [lookyman.lazy]
     - App\Factories\ILoginPanelFactory
     - App\Factories\IVotingStateBoxFactory
     - App\Factories\ITipBoxFactory
