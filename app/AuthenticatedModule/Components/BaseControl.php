@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration
+
 namespace App\AuthenticatedModule\Components;
 
 use App\BasePresenter;

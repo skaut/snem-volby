@@ -19,14 +19,11 @@ use Throwable;
 
 final class VoteForm extends BaseControl
 {
-    /** @var CommandBus */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /** @var QueryBus */
-    private $queryBus;
+    private QueryBus $queryBus;
 
-    /** @var UserService */
-    private $userService;
+    private UserService $userService;
 
     private bool $isUserDelegate;
 
@@ -63,7 +60,7 @@ final class VoteForm extends BaseControl
         $noButton      = $form->addSubmit(Choice::NO, 'PROTI návrhu');
         $abstainButton = $form->addSubmit(Choice::ABSTAIN, 'Zdržuji se');
 
-        $form->onSuccess[] = function (BaseForm $form) use ($yesButton, $noButton, $abstainButton) : void {
+        $form->onSuccess[] = function () use ($yesButton, $noButton, $abstainButton) : void {
             $vote = null;
             if ($yesButton->isSubmittedBy()) {
                 $vote     = Choice::YES();
