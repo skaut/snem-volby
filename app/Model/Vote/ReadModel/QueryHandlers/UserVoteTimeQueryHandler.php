@@ -19,9 +19,9 @@ final class UserVoteTimeQueryHandler
         $this->voteRepository = $voteRepository;
     }
 
-    public function __invoke(UserVoteTimeQuery $_) : ?DateTimeImmutable
+    public function __invoke(UserVoteTimeQuery $query) : ?DateTimeImmutable
     {
-        $userVote = $this->voteRepository->getUserVote($_->getPersonId());
+        $userVote = $this->voteRepository->getUserVote($query->getPersonId());
         return $userVote !== null ? $userVote->getCreatedAt() : null;
     }
 }
