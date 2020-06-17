@@ -13,7 +13,7 @@ use Exception;
 use InvalidArgumentException;
 use Model\UserService;
 use Model\Vote\Commands\SaveVote;
-use Model\Vote\Option;
+use Model\Vote\Choice;
 use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
 
 final class VoteForm extends BaseControl
@@ -50,21 +50,21 @@ final class VoteForm extends BaseControl
     {
         $form = new BaseForm();
 
-        $form->addSubmit(Option::YES);
-        $form->addSubmit(Option::NO);
-        $form->addSubmit(Option::ABSTAIN);
+        $form->addSubmit(Choice::YES);
+        $form->addSubmit(Choice::NO);
+        $form->addSubmit(Choice::ABSTAIN);
 
         $form->onSuccess[] = function (BaseForm $form) : void {
             $vote     = null;
             $voteName = null;
-            if ($form[Option::YES]->isSubmittedBy()) {
-                $vote     = Option::YES();
+            if ($form[Choice::YES]->isSubmittedBy()) {
+                $vote     = Choice::YES();
                 $voteName = "PRO";
-            } elseif ($form[Option::NO]->isSubmittedBy()) {
-                $vote     = Option::NO();
+            } elseif ($form[Choice::NO]->isSubmittedBy()) {
+                $vote     = Choice::NO();
                 $voteName = "PROTI";
-            } elseif ($form[Option::ABSTAIN]->isSubmittedBy()) {
-                $vote     = Option::ABSTAIN();
+            } elseif ($form[Choice::ABSTAIN]->isSubmittedBy()) {
+                $vote     = Choice::ABSTAIN();
                 $voteName = "ZDRŽUJI SE";
             } else {
                 throw new InvalidArgumentException('Neplatná možnost hlasování!');

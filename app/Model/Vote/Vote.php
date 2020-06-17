@@ -25,12 +25,12 @@ class Vote extends Aggregate
     private $id;
 
     /**
-     * @ORM\Column(name="`option`", type="string_enum")
+     * @ORM\Column(type="string_enum")
      *
-     * @var Option
-     * @EnumAnnotation(class=Option::class)
+     * @var Choice
+     * @EnumAnnotation(class=Choice::class)
      */
-    private $option;
+    private $choice;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -39,14 +39,14 @@ class Vote extends Aggregate
      */
     private $createdAt;
 
-    public function __construct(Option $option)
+    public function __construct(Choice $choice)
     {
-        $this->option    = $option;
+        $this->choice    = $choice;
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function getOption() : Option
+    public function getChoice() : Choice
     {
-        return $this->option;
+        return $this->choice;
     }
 }

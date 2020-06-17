@@ -27,6 +27,6 @@ final class SaveVoteHandler
     public function __invoke(SaveVote $command) : void
     {
         $personId = $this->userService->getUserDetail()->ID_Person;
-        $this->voteRepository->saveUserVote(new Vote($command->getOption()), new UsersVote($personId));
+        $this->voteRepository->saveUserVote(new Vote($command->getChoice()), new UsersVote($personId));
     }
 }
