@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Model\Vote;
 
+use DateInterval;
 use DateTimeImmutable;
 
 class VotingTime
@@ -33,5 +34,36 @@ class VotingTime
     public function getEnd() : DateTimeImmutable
     {
         return $this->end;
+    }
+
+    public function isBeforeVoting() : bool
+    {
+        $now = new DateTimeImmutable();
+
+        return $now < $this->getBegin();
+    }
+
+    public function isVotingInProgress() : bool
+    {
+        $now = new DateTimeImmutable();
+
+        return $this->getBegin() < $now && $now < $this->getEnd();
+    }
+
+    public function isAfterVoting() : bool
+    {
+        return $this->getEnd() < new DateTimeImmutable();
+    }
+
+    public function getBeforeInterval() : DateInterval
+    {
+        return $this->getBegin()->diff(new DateTimeImmutable());
+    }
+
+    public function getToEndInterval() : DateInterval
+    {
+        $now = new DateTimeImmutable();
+
+        return $now->diff($this->getEnd());
     }
 }
