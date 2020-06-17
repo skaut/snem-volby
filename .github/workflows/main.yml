@@ -191,13 +191,6 @@ jobs:
         container:
             image: fmasa/lebeda:7.4
         needs: workdir
-        services:
-            mysql-test:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: 'root'
-                    MYSQL_DATABASE: hskauting
-                options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
         env:
             DEVELOPMENT_MACHINE: true
         steps:
