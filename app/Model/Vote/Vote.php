@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Model;
+namespace Model\Vote;
 
 use Consistence\Doctrine\Enum\EnumAnnotation;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Model\Common\Aggregate;
-use Model\Vote\Option;
 
 /**
  * @ORM\Entity()

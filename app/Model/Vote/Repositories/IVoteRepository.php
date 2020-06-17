@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Model\Vote\Repositories;
 
-use Model\UsersVote;
-use Model\Vote;
+use Model\Vote\UsersVote;
+use Model\Vote\Vote;
 
 interface IVoteRepository
 {

@@ -1,6 +1,6 @@
 <h2>Hlasuji</h2>
-{if $userVote !== null}
-    Již bylo hlasováno {$userVote->getCreatedAt()|date:App\Utils\Helpers::DATETIME_FORMAT}.
+{if $userVoteTime !== null}
+    Již bylo hlasováno {$userVoteTime|date:App\Utils\Helpers::DATETIME_FORMAT}.
 {else}
     {form form}
         <button n:name="yes"

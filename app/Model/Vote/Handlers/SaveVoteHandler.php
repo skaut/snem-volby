@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Model\Cashbook\Handlers\Cashbook;
+namespace Model\Vote\Handlers;
 
-use Model\Commands\Vote\SaveVote;
 use Model\Infrastructure\Repositories\VoteRepository;
 use Model\UserService;
-use Model\UsersVote;
-use Model\Vote;
+use Model\Vote\Commands\SaveVote;
 use Model\Vote\Repositories\IVoteRepository;
+use Model\Vote\UsersVote;
+use Model\Vote\Vote;
 
 final class SaveVoteHandler
 {

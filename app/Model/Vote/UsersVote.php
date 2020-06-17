@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Model;
+namespace Model\Vote;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;

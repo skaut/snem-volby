@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Model\Commands\Vote;
+namespace Model\Vote\Commands;
 
-use Model\Cashbook\Handlers\Cashbook\SaveVoteHandler;
 use Model\Vote\Option;
 
 /**
