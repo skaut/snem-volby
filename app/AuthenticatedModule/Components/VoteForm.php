@@ -16,6 +16,7 @@ use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
 use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
 use Model\User\ReadModel\Queries\IsUserDelegateQuery;
+use Model\Vote\ReadModel\Queries\VotingTimeQuery;
 
 final class VoteForm extends BaseControl
 {
@@ -47,6 +48,7 @@ final class VoteForm extends BaseControl
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
         $this->template->userVoteTime = $this->queryBus->handle(new UserVoteTimeQuery($personId));
+        $this->template->votingTime = $this->queryBus->handle(new VotingTimeQuery());
         $this->template->setParameters([
             'isUserDelegate' => $this->isUserDelegate,
         ]);
