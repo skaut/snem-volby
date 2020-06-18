@@ -9,7 +9,7 @@ use Consistence\Enum\Enum;
 /**
  * @method string getValue()
  */
-class Option extends Enum
+class Choice extends Enum
 {
     public const YES     = 'yes';
     public const NO      = 'no';

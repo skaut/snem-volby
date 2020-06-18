@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Model\Infrastructure\Repositories;
 
 use Doctrine\ORM\EntityManager;
-use Model\UsersVote;
-use Model\Vote;
 use Model\Vote\Repositories\IVoteRepository;
+use Model\Vote\UsersVote;
+use Model\Vote\Vote;
 
 final class VoteRepository extends AggregateRepository implements IVoteRepository
 {
@@ -17,5 +17,12 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
             $em->persist($vote);
             $em->persist($usersVote);
         });
+    }
+
+    public function getUserVote(int $personId) : ?UsersVote
+    {
+        return $this->getEntityManager()->getRepository(UsersVote::class)->findOneBy([
+            'personId' => $personId
+        ]);
     }
 }

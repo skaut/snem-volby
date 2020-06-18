@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Model;
+namespace Model\Vote;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ class UsersVote extends Aggregate
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      *
      * @var int
      */
@@ -41,5 +41,10 @@ class UsersVote extends Aggregate
     {
         $this->personId  = $personId;
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function getCreatedAt() : DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

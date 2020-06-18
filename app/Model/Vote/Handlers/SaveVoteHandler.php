@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Model\Cashbook\Handlers\Cashbook;
+namespace Model\Vote\Handlers;
 
-use Model\Commands\Vote\SaveVote;
 use Model\Infrastructure\Repositories\VoteRepository;
 use Model\UserService;
-use Model\UsersVote;
-use Model\Vote;
+use Model\Vote\Commands\SaveVote;
 use Model\Vote\Repositories\IVoteRepository;
+use Model\Vote\UsersVote;
+use Model\Vote\Vote;
 
 final class SaveVoteHandler
 {
@@ -27,6 +27,6 @@ final class SaveVoteHandler
     public function __invoke(SaveVote $command) : void
     {
         $personId = $this->userService->getUserDetail()->ID_Person;
-        $this->voteRepository->saveUserVote(new Vote($command->getOption()), new UsersVote($personId));
+        $this->voteRepository->saveUserVote(new Vote($command->getChoice()), new UsersVote($personId));
     }
 }

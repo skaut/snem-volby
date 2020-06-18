@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Model;
+namespace Model\Vote;
 
 use Consistence\Doctrine\Enum\EnumAnnotation;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Model\Common\Aggregate;
-use Model\Vote\Option;
 
 /**
  * @ORM\Entity()
@@ -28,10 +27,10 @@ class Vote extends Aggregate
     /**
      * @ORM\Column(type="string_enum")
      *
-     * @var Option
-     * @EnumAnnotation(class=Option::class)
+     * @var Choice
+     * @EnumAnnotation(class=Choice::class)
      */
-    private $option;
+    private $choice;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -40,14 +39,14 @@ class Vote extends Aggregate
      */
     private $createdAt;
 
-    public function __construct(Option $option)
+    public function __construct(Choice $choice)
     {
-        $this->option    = $option;
+        $this->choice    = $choice;
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function getOption() : Option
+    public function getChoice() : Choice
     {
-        return $this->option;
+        return $this->choice;
     }
 }
