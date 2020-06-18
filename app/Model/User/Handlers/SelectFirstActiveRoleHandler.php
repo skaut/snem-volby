@@ -20,7 +20,7 @@ final class SelectFirstActiveRoleHandler
 
     public function __invoke(SelectFirstActiveRole $command) : void
     {
-        $roles = $this->userService->getAllSkautisRoles();
+        $roles = $this->userService->getRelatedSkautisRoles();
         if (count($roles) === 0) {
             throw new UserHasNoRole();
         }

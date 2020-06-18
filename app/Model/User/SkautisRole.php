@@ -26,6 +26,11 @@ class SkautisRole
         $this->unitName = $unitName;
     }
 
+    public function getKey() : string
+    {
+        return $this->key;
+    }
+
     public function getName() : string
     {
         return $this->name;

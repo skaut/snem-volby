@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use Model\AuthService;
+use Model\User\Exception\UserHasNoRole;
 use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
+use Model\UserService;
 use Nette\Security\Identity;
 use Skautis\Wsdl\AuthenticationException;
 use function strlen;
@@ -26,7 +28,7 @@ class AuthPresenter extends BasePresenter
      */
     public function actionDefault(?string $backlink = null) : void
     {
-        $this->redirect(':Default:');
+        $this->redirect(':Authenticated:Default:');
     }
 
     /**
@@ -47,7 +49,7 @@ class AuthPresenter extends BasePresenter
     {
         $post = $this->getRequest()->getPost();
         if (! isset($post['skautIS_Token'])) { //pokud není nastavený token, tak zde nemá co dělat
-            $this->redirect(':Default:');
+            $this->redirect(':Authenticated:Default:');
         }
         try {
             $this->authService->setInit(
@@ -63,11 +65,15 @@ class AuthPresenter extends BasePresenter
             $user = $this->getUser();
 
             $user->setExpiration('+ 29 minutes'); // nastavíme expiraci
+            $roles = $this->userService->getRelatedSkautisRoles();
+            if (empty($roles)) {
+                throw new AuthenticationException('Nemáte roli delegáta sněmu, tedy se nemůžete přihlásit!');
+            }
             $user->login(new Identity(
                 $this->userService->getUserDetail()->ID,
-                $this->userService->getAllSkautisRoles(),
-                ['currentRole' => $this->queryBus->handle(new ActiveSkautisRoleQuery())],
+                $roles,
             ));
+            $this->setupDefaultRole();
 
             if ($ReturnUrl !== null) {
                 $this->restoreRequest(substr($ReturnUrl, strlen($this->getHttpRequest()->getUrl()->getBaseUrl())));
@@ -77,6 +83,30 @@ class AuthPresenter extends BasePresenter
             $this->redirect(':Auth:');
         }
         $this->redirect(':Authenticated:Default:');
+    }
+
+    private function setupDefaultRole() : void
+    {
+        $roles          = $this->userService->getRelatedSkautisRoles();
+        $superadminRole = null;
+        foreach ($roles as $role) {
+            if ($role->Key === UserService::ROLE_KEY_DELEGATE) {
+                $this->handleChangeRole($role->ID);
+
+                return;
+            }
+            if ($role->Key !== UserService::ROLE_KEY_SUPERADMIN) {
+                continue;
+            }
+
+            $superadminRole = $role;
+        }
+        if ($superadminRole !== null) {
+            $this->handleChangeRole($superadminRole->ID);
+
+            return;
+        }
+        throw new UserHasNoRole("User doesn't have allowed role!");
     }
 
     public function actionAjax(?string $backlink = null) : void

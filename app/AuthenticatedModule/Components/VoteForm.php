@@ -12,9 +12,10 @@ use eGen\MessageBus\Bus\QueryBus;
 use Exception;
 use InvalidArgumentException;
 use Model\UserService;
-use Model\Vote\Commands\SaveVote;
 use Model\Vote\Choice;
+use Model\Vote\Commands\SaveVote;
 use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
+use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 
 final class VoteForm extends BaseControl
 {
@@ -27,6 +28,8 @@ final class VoteForm extends BaseControl
     /** @var UserService */
     private $userService;
 
+    private bool $isUserDelegate;
+
     public function __construct(
         CommandBus $commandBus,
         QueryBus $queryBus,
@@ -35,6 +38,7 @@ final class VoteForm extends BaseControl
         $this->commandBus     = $commandBus;
         $this->queryBus       = $queryBus;
         $this->userService    = $userService;
+        $this->isUserDelegate = $this->queryBus->handle(new IsUserDelegateQuery());
     }
 
     public function render() : void
@@ -43,6 +47,9 @@ final class VoteForm extends BaseControl
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
         $this->template->userVoteTime = $this->queryBus->handle(new UserVoteTimeQuery($personId));
+        $this->template->setParameters([
+            'isUserDelegate' => $this->isUserDelegate,
+        ]);
         $this->template->render();
     }
 

@@ -8,10 +8,14 @@ use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
 use Model\User\SkautisRole;
 use Skautis\Skautis;
 use stdClass;
+use function array_filter;
 use function property_exists;
 
 final class UserService
 {
+    public const ROLE_KEY_SUPERADMIN = 'superadmin';
+    public const ROLE_KEY_DELEGATE   = 'EventCongress';
+
     private Skautis $skautis;
     private int $congressGroupId;
 
@@ -30,15 +34,19 @@ final class UserService
     }
 
     /**
-     * Returns all available roles for current user
-     *
      * @return stdClass[]
      */
-    public function getAllSkautisRoles(bool $activeOnly = true) : array
+    public function getRelatedSkautisRoles() : array
     {
-        $res = $this->skautis->user->UserRoleAll(['ID_User' => $this->getUserDetail()->ID, 'IsActive' => $activeOnly]);
+        $res = $this->skautis->user->UserRoleAll(['ID_User' => $this->getUserDetail()->ID]);
+        $res = $res instanceof stdClass ? [] : $res;
+        $res = array_filter($res, function ($role) {
+            return property_exists($role, 'Key') &&
+                ($role->Key === 'superadmin'
+                    || (property_exists($role, 'ID_Group') && $role->Key === 'EventCongress' && $role->ID_Group === $this->congressGroupId));
+        });
 
-        return $res instanceof stdClass ? [] : $res;
+        return $res;
     }
 
     public function getUserDetail() : stdClass
@@ -71,7 +79,7 @@ final class UserService
      */
     public function getActualRole() : ?SkautisRole
     {
-        foreach ($this->getAllSkautisRoles() as $r) {
+        foreach ($this->getRelatedSkautisRoles() as $r) {
             if ($r->ID === $this->getRoleId()) {
                 return new SkautisRole($r->Key ?? '', $r->DisplayName, $r->ID_Unit, $r->Unit);
             }
@@ -95,27 +103,11 @@ final class UserService
 
     public function isSuperUser() : bool
     {
-        foreach ($this->getAllSkautisRoles() as $role) {
-            if ($role->Key === 'superadmin') {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getActualRole()->getKey() === self::ROLE_KEY_SUPERADMIN;
     }
 
     public function isDelegate() : bool
     {
-        foreach ($this->getAllSkautisRoles() as $role) {
-            if (property_exists($role, 'Key')
-                && property_exists($role, 'ID_Group')
-                && $role->Key === 'EventCongress'
-                && $role->ID_Group === $this->congressGroupId
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getActualRole()->getKey() === self::ROLE_KEY_DELEGATE;
     }
 }

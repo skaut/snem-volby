@@ -24,7 +24,7 @@
 
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav mr-auto">
-                    <li><a n:href="Admin:settings">Nastavení</a></li>
+                    <li n:if="$isSuperuser"><a n:href="Admin:settings">Nastavení</a></li>
                 </ul>
                 <div class="my-2 my-lg-0">
                     {control loginPanel}

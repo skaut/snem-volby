@@ -10,7 +10,6 @@ use stdClass;
 abstract class BasePresenter extends \App\BasePresenter
 {
     protected ?string $backlink = null;
-    protected bool $isCurrentUserDelegate;
 
     private SkautisMaintenanceChecker $skautisMaintenanceChecker;
 
@@ -32,21 +31,16 @@ abstract class BasePresenter extends \App\BasePresenter
             if ($this->isAjax()) {
                 $this->forward(':Auth:ajax', ['backlink' => $this->backlink]);
             } else {
-                $this->redirect(':Default:', ['backlink' => $this->backlink]);
+                $this->redirect(':Homepage:', ['backlink' => $this->backlink]);
             }
         }
 
         $this->userService->updateLogoutTime();
 
-        $this->isCurrentUserDelegate = $this->userService->isDelegate($this->userService->getUserDetail()->ID_Person);
         $this->template->setParameters([
-            'isCurrentUserDelegate'=>$this->isCurrentUserDelegate,
+            'isDelegate'=>$this->userService->isDelegate(),
+            'isSuperuser'=>$this->userService->isSuperUser(),
         ]);
-        if ($this->isCurrentUserDelegate) {
-            $this->flashMessage('Přihlášený uživatel je řádným delegátem sněmu.', 'success');
-        } else {
-            $this->flashMessage('html: Přihlášený uživatel <b>není evidován</b> jako řádný delegát sněmu.', 'danger');
-        }
     }
 
     /**
