@@ -23,7 +23,7 @@ parameters:
         name: snem_volby
 
     congress:
-        groupId: 122
+        groupId: 775402
 
 services:
     # Pro produkci
