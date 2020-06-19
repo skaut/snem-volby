@@ -2,7 +2,7 @@
 
 {block #content}
 <div class="row">
-    <div class="col-12">
+    <div class="col text-center">
         <img src="{$baseUrl}/images/logo.svg" alt="Logo Junák – český skaut" height="200em" />
         <h1>Hlasování o změně stanov</h1>
 
@@ -15,6 +15,12 @@
         </p>
 
         {control loginPanel:loginButton}
+        
+{* FIXME Přidat podmínku na zobrazení pouze je-li uživatel přihlášen  *} 
+     
+        <button class="btn btn-lg btn-success">
+            Přejít na hlasování
+        </button>
 
     </div>
 </div>
