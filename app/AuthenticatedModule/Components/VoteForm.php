@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Components;
+namespace App\AuthenticatedModule\Components;
 
-use App\AuthenticatedModule\Components\BaseControl;
-use App\Forms\BaseForm;
+use App\AuthenticatedModule\Forms\BaseForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
-use Exception;
 use InvalidArgumentException;
+use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\UserService;
 use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
 use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
-use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\Vote\ReadModel\Queries\VotingTimeQuery;
+use Throwable;
 
 final class VoteForm extends BaseControl
 {
@@ -48,7 +47,7 @@ final class VoteForm extends BaseControl
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
         $this->template->userVoteTime = $this->queryBus->handle(new UserVoteTimeQuery($personId));
-        $this->template->votingTime = $this->queryBus->handle(new VotingTimeQuery());
+        $this->template->votingTime   = $this->queryBus->handle(new VotingTimeQuery());
         $this->template->setParameters([
             'isUserDelegate' => $this->isUserDelegate,
         ]);
@@ -68,13 +67,13 @@ final class VoteForm extends BaseControl
             $voteName = null;
             if ($form[Choice::YES]->isSubmittedBy()) {
                 $vote     = Choice::YES();
-                $voteName = "PRO";
+                $voteName = 'PRO';
             } elseif ($form[Choice::NO]->isSubmittedBy()) {
                 $vote     = Choice::NO();
-                $voteName = "PROTI";
+                $voteName = 'PROTI';
             } elseif ($form[Choice::ABSTAIN]->isSubmittedBy()) {
                 $vote     = Choice::ABSTAIN();
-                $voteName = "ZDRŽUJI SE";
+                $voteName = 'ZDRŽUJI SE';
             } else {
                 throw new InvalidArgumentException('Neplatná možnost hlasování!');
             }
@@ -84,7 +83,7 @@ final class VoteForm extends BaseControl
                 $this->flashMessage('Tvůj hlas "' . $voteName . '" byl úspěšně uložen.', 'success');
             } catch (UniqueConstraintViolationException $e) {
                 $this->flashMessage('Tvůj hlas byl odeslán již dříve.', 'danger');
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $this->flashMessage('Hlasování bylo neúspěšné.', 'danger');
             }
 

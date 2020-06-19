@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Model\Cashbook\Commands\Cashbook;
+namespace Model\User\Commands;
 
-use Model\Cashbook\Handlers\Cashbook\SelectFirstActiveRoleHandler;
+use Model\User\Handlers\SelectFirstActiveRoleHandler;
 
 /**
  * @see SelectFirstActiveRoleHandler

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule\Factories;
 
-use App\Components\VoteForm;
+use App\AuthenticatedModule\Components\VoteForm;
 
 interface IVoteFormFactory
 {

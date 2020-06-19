@@ -22,7 +22,7 @@ abstract class BaseControl extends Control
     /**
      * {@inheritDoc}
      */
-    protected function createTemplate(): ITemplate
+    protected function createTemplate() : ITemplate
     {
         $template = parent::createTemplate();
 

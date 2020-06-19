@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Model\Cashbook\Handlers\Cashbook;
+namespace Model\User\Handlers;
 
-use Model\Cashbook\Commands\Cashbook\SelectFirstActiveRole;
+use Model\User\Commands\SelectFirstActiveRole;
 use Model\User\Exception\UserHasNoRole;
 use Model\UserService;
 use function count;

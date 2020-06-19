@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Forms;
+namespace App\AuthenticatedModule\Forms;
 
 use App\Bootstrap4FormRenderer;
 use Nette\Application\UI\Form;

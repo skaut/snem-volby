@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule;
 
+use App\AuthenticatedModule\Components\VoteForm;
 use App\AuthenticatedModule\Factories\IVoteFormFactory;
-use App\Components\VoteForm;
 
 class DefaultPresenter extends BasePresenter
 {

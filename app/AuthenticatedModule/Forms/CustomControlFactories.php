@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Forms;
+namespace App\AuthenticatedModule\Forms;
 
 use App\AuthenticatedModule\Components\FormControls\DateControl;
 
