@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Model\Vote;
+namespace Model\Config;
 
 use Consistence\Enum\Enum;
 
 /**
  * @method string getValue()
  */
-class ConfigItem extends Enum
+class Item extends Enum
 {
     public const VOTING_BEGIN = 'voting_begin';
     public const VOTING_END   = 'voting_end';

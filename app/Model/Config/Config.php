@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Model\Vote;
+namespace Model\Config;
 
 use Consistence\Doctrine\Enum\EnumAnnotation;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,8 +18,8 @@ class Config extends Aggregate
      * @ORM\Id()
      * @ORM\Column(type="string_enum")
      *
-     * @var ConfigItem
-     * @EnumAnnotation(class=ConfigItem::class)
+     * @var Item
+     * @EnumAnnotation(class=Item::class)
      */
     private $item;
 
