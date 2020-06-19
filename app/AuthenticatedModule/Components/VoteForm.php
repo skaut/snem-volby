@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Components;
+namespace App\AuthenticatedModule\Components;
 
-use App\AuthenticatedModule\Components\BaseControl;
-use App\Forms\BaseForm;
+use App\AuthenticatedModule\Forms\BaseForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Model;
+namespace Model\Common;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
