@@ -169,8 +169,6 @@ jobs:
     latte-lint:
         name: "Lint Latte templates"
         runs-on: ubuntu-18.04
-        container:
-            image: fmasa/lebeda:7.4
         needs: workdir
         env:
             DEVELOPMENT_MACHINE: true
@@ -181,15 +179,15 @@ jobs:
                   name: workdir
                   path: .
             - name: Extract workdir
-              run: tar -xzf workdir.tar.gz
+              run: sudo tar --same-owner -xzf workdir.tar.gz
+            - name: Startup containers
+              run: docker-compose up -d && sleep 20
             - run: mv app/config/config.ci.local.neon app/config/config.local.neon
-            - run: bin/console app:lint-latte
+            - run: docker-compose exec -T -u www-data app bin/console app:lint-latte
 
     validate-mapping:
         name: "Validate mapping against migrations"
         runs-on: ubuntu-18.04
-        container:
-            image: fmasa/lebeda:7.4
         needs: workdir
         env:
             DEVELOPMENT_MACHINE: true
@@ -200,10 +198,13 @@ jobs:
                   name: workdir
                   path: .
             - name: Extract workdir
-              run: tar -xzf workdir.tar.gz
+              run: sudo tar --same-owner -xzf workdir.tar.gz
+            - name: Startup containers
+              run: docker-compose up -d && sleep 20
             - run: mv app/config/config.ci.local.neon app/config/config.local.neon
-            - run: bin/console migrations:migrate --no-interaction
-            - run: "! bin/console migrations:diff && bin/console migrations:diff --allow-empty-diff"
+            - run: docker-compose exec -T -u www-data app bin/console migrations:migrate --no-interaction
+            - run: "! docker-compose exec -T -u www-data app bin/console migrations:diff"
+            - run: docker-compose exec -T -u www-data app bin/console migrations:diff --allow-empty-diff
 
     checks-passed:
         name: "Wait for all checks"
