@@ -6,8 +6,8 @@ namespace App;
 
 use App\AuthenticatedModule\SkautisMaintenance;
 use eGen\MessageBus\Bus\CommandBus;
-use Model\Cashbook\Commands\Cashbook\SelectFirstActiveRole;
 use Model\Skautis\Exception\MissingCurrentRole;
+use Model\User\Commands\SelectFirstActiveRole;
 use Model\User\Exception\UserHasNoRole;
 use Model\User\Exception\UserHasNoUnit;
 use Nette;

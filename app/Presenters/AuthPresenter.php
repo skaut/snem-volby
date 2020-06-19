@@ -6,7 +6,6 @@ namespace App;
 
 use Model\AuthService;
 use Model\User\Exception\UserHasNoRole;
-use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
 use Model\UserService;
 use Nette\Security\Identity;
 use Skautis\Wsdl\AuthenticationException;

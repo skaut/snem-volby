@@ -13,7 +13,6 @@ final class UserVoteTimeQueryHandler
     /** @var VoteRepository */
     private $voteRepository;
 
-
     public function __construct(VoteRepository $voteRepository)
     {
         $this->voteRepository = $voteRepository;
@@ -22,6 +21,7 @@ final class UserVoteTimeQueryHandler
     public function __invoke(UserVoteTimeQuery $query) : ?DateTimeImmutable
     {
         $userVote = $this->voteRepository->getUserVote($query->getPersonId());
+
         return $userVote !== null ? $userVote->getCreatedAt() : null;
     }
 }
