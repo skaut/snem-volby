@@ -44,4 +44,12 @@ class AdminPresenter extends BasePresenter
     {
         return $this->votingTimeFormFactory->create();
     }
+
+    public function handleSaveDelegates() : void
+    {
+        if (! $this->queryBus->handle(new DelegatesSavedQuery())) {
+            $this->commandBus->handle(new SaveDelegates());
+        }
+        $this->redirect('this');
+    }
 }
