@@ -15,12 +15,10 @@
         </p>
 
         {control loginPanel:loginButton}
-        
-{* FIXME Přidat podmínku na zobrazení pouze je-li uživatel přihlášen  *} 
-     
-        <button class="btn btn-lg btn-success">
+
+        <a n:href=":Authenticated:Default:" class="btn btn-lg btn-success" n:if="$user->isLoggedIn()">
             Přejít na hlasování
-        </button>
+        </a>
 
     </div>
 </div>
