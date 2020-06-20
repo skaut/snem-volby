@@ -21,6 +21,6 @@ final class PublishVotingHandler
     public function __invoke(PublishVoting $command) : void
     {
         $now = new DateTimeImmutable();
-        $this->configRepository->setValue(Item::VOTING_PUBLISH(), $now->format(DateTimeImmutable::ISO8601));
+        $this->configRepository->setDateTimeValue(Item::VOTING_PUBLISH(), $now);
     }
 }
