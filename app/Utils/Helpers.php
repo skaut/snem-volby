@@ -10,7 +10,7 @@ class Helpers
 {
     public const DATE_FORMAT = 'j. n. Y';
 
-    public const DATETIME_FORMAT = 'j. n. Y H:i';
+    public const DATETIME_FORMAT = 'j. n. Y G:i';
 
     public static function formatDate(DateTimeImmutable $datetime) : string
     {
