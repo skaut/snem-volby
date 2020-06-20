@@ -9,11 +9,11 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
+use Model\Delegate\ReadModel\Queries\DelegateVoteTimeQuery;
 use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\UserService;
 use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
-use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
 use Model\Vote\ReadModel\Queries\VotingTimeQuery;
 use Throwable;
 
@@ -38,7 +38,7 @@ final class VoteForm extends BaseControl
         $this->commandBus     = $commandBus;
         $this->queryBus       = $queryBus;
         $this->userService    = $userService;
-        $this->isUserDelegate = $this->queryBus->handle(new IsUserDelegateQuery());
+        $this->isUserDelegate = $this->queryBus->handle(new IsUserDelegateQuery($userService->getUserPersonId()));
     }
 
     public function render() : void
@@ -46,7 +46,7 @@ final class VoteForm extends BaseControl
         $personId = $this->userService->getUserDetail()->ID_Person;
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
-        $this->template->userVoteTime = $this->queryBus->handle(new UserVoteTimeQuery($personId));
+        $this->template->userVoteTime = $this->queryBus->handle(new DelegateVoteTimeQuery($personId));
         $this->template->votingTime   = $this->queryBus->handle(new VotingTimeQuery());
         $this->template->setParameters([
             'isUserDelegate' => $this->isUserDelegate,

@@ -4,29 +4,36 @@ declare(strict_types=1);
 
 namespace Model\Vote\Handlers;
 
-use Model\Infrastructure\Repositories\VoteRepository;
+use DateTimeImmutable;
+use Model\Delegate\Repositories\IDelegateRepository;
 use Model\UserService;
 use Model\Vote\Commands\SaveVote;
 use Model\Vote\Repositories\IVoteRepository;
-use Model\Vote\UsersVote;
 use Model\Vote\Vote;
 
 final class SaveVoteHandler
 {
-    /** @var IVoteRepository */
-    private $voteRepository;
+    private IVoteRepository $voteRepository;
+
+    private IDelegateRepository $delegateRepository;
 
     private UserService $userService;
 
-    public function __construct(VoteRepository $voteRepository, UserService $userService)
-    {
-        $this->voteRepository = $voteRepository;
-        $this->userService    = $userService;
+    public function __construct(
+        IVoteRepository $voteRepository,
+        IDelegateRepository $delegateRepository,
+        UserService $userService
+    ) {
+        $this->voteRepository     = $voteRepository;
+        $this->delegateRepository = $delegateRepository;
+        $this->userService        = $userService;
     }
 
     public function __invoke(SaveVote $command) : void
     {
         $personId = $this->userService->getUserDetail()->ID_Person;
-        $this->voteRepository->saveUserVote(new Vote($command->getChoice()), new UsersVote($personId));
+        $delegate = $this->delegateRepository->getDelegate($personId);
+        $delegate->setVotedAt(new DateTimeImmutable());
+        $this->voteRepository->saveUserVote(new Vote($command->getChoice()), $delegate);
     }
 }

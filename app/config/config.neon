@@ -25,6 +25,7 @@ application:
 console:
     url: https://snem.skauting.cz
     lazy: true
+#    helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
 
 messageBus:
     commandBus:
@@ -70,7 +71,7 @@ autoDI:
 services:
     - SimpleBus\Message\Logging\LoggingMiddleware(level: 'debug')
     - Model\AuthService
-    - Model\UserService(%congress.groupId%)
+    - Model\UserService(%congress.groupId%, %congress.eventId%)
     - Model\Skautis\SkautisMaintenanceChecker
 
     skautisCache:
