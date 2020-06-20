@@ -24,8 +24,8 @@ final class VotingTimeForm extends BaseControl
         CommandBus $commandBus,
         QueryBus $queryBus
     ) {
-        $this->commandBus     = $commandBus;
-        $this->queryBus       = $queryBus;
+        $this->commandBus = $commandBus;
+        $this->queryBus   = $queryBus;
     }
 
     public function render() : void

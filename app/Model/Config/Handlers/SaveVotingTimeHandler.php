@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Model\Config\Handlers;
 
-use DateTimeImmutable;
 use Model\Config\Commands\SaveVotingTime;
 use Model\Config\Item;
 use Model\Config\Repositories\IConfigRepository;

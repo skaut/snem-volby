@@ -30,7 +30,7 @@ class Vote extends Aggregate
 
     public function __construct(Choice $choice)
     {
-        $this->choice    = $choice;
+        $this->choice = $choice;
     }
 
     public function getChoice() : Choice

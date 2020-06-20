@@ -6,7 +6,6 @@ namespace Model\User\ReadModel\QueryHandlers;
 
 use Model\Delegate\Repositories\IDelegateRepository;
 use Model\User\ReadModel\Queries\IsUserDelegateQuery;
-use Model\UserService;
 
 final class IsUserDelegateQueryHandler
 {
