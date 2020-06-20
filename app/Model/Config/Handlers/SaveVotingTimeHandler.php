@@ -20,7 +20,7 @@ final class SaveVotingTimeHandler
 
     public function __invoke(SaveVotingTime $command) : void
     {
-        $this->configRepository->setValue(Item::VOTING_BEGIN(), $command->getVotingTime()->getBegin()->format(DateTimeImmutable::ISO8601));
-        $this->configRepository->setValue(Item::VOTING_END(), $command->getVotingTime()->getEnd()->format(DateTimeImmutable::ISO8601));
+        $this->configRepository->setDateTimeValue(Item::VOTING_BEGIN(), $command->getVotingTime()->getBegin());
+        $this->configRepository->setDateTimeValue(Item::VOTING_END(), $command->getVotingTime()->getEnd());
     }
 }
