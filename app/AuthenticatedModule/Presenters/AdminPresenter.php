@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule;
 
-use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingResultFactory;
-
+use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 
 class AdminPresenter extends BasePresenter
 {
@@ -21,10 +20,9 @@ class AdminPresenter extends BasePresenter
         IVotingTimeFormFactory $votingTimeFormFactory
     ) {
         parent::__construct();
-        $this->votingResultFactory  = $votingResultFactory;
-        $this->publishResultFactory = $publishResultFactory;
+        $this->votingResultFactory   = $votingResultFactory;
+        $this->publishResultFactory  = $publishResultFactory;
         $this->votingTimeFormFactory = $votingTimeFormFactory;
-
     }
 
     public function startup() : void
@@ -33,6 +31,7 @@ class AdminPresenter extends BasePresenter
 
         if ($this->userService->isSuperUser()) {
             $this->template->delegatesSaved = $this->queryBus->handle(new DelegatesSavedQuery());
+
             return;
         }
 
