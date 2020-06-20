@@ -17,6 +17,7 @@ final class ConfigRepository extends AggregateRepository implements IConfigRepos
         $config = $this->getEntityManager()->getRepository(Config::class)->findOneBy(['item' => $item]);
         $config->setValue($value);
         $this->getEntityManager()->persist($config);
+        $this->getEntityManager()->flush($config);
     }
 
     public function setDateTimeValue(Item $item, ?DateTimeImmutable $value): void
