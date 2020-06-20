@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Model\Vote;
+namespace Model\Delegate;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,39 +12,44 @@ use Model\Common\Aggregate;
  * @ORM\Entity()
  * @ORM\Table()
  */
-class UsersVote extends Aggregate
+class Delegate extends Aggregate
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     *
-     * @var      int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer", unique=true)
-     *
-     * @var int
      */
-    private $personId;
+    private int $personId;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     *
-     * @var DateTimeImmutable
      */
-    private $createdAt;
+    private DateTimeImmutable $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private ?DateTimeImmutable $votedAt;
 
     public function __construct(int $personId)
     {
         $this->personId  = $personId;
         $this->createdAt = new DateTimeImmutable();
+        $this->votedAt   = null;
     }
 
-    public function getCreatedAt() : DateTimeImmutable
+    public function getVotedAt() : ?DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->votedAt;
+    }
+
+    public function setVotedAt(DateTimeImmutable $votedAt) : void
+    {
+        $this->votedAt = $votedAt;
     }
 }

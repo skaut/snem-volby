@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Model;
 
+use eGen\MessageBus\Bus\QueryBus;
+use Model\Delegate\State;
 use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
+use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\User\SkautisRole;
 use Skautis\Skautis;
 use stdClass;
@@ -17,12 +20,21 @@ final class UserService
     public const ROLE_KEY_DELEGATE   = 'EventCongress';
 
     private Skautis $skautis;
-    private int $congressGroupId;
+    private QueryBus $queryBus;
 
-    public function __construct(int $congressGroupId, Skautis $skautis)
-    {
+    private int $congressGroupId;
+    private int $congressEventId;
+
+    public function __construct(
+        int $congressGroupId,
+        int $congressEventId,
+        Skautis $skautis,
+        QueryBus $queryBus
+    ) {
         $this->skautis         = $skautis;
+        $this->queryBus        = $queryBus;
         $this->congressGroupId = $congressGroupId;
+        $this->congressEventId = $congressEventId;
     }
 
     /**
@@ -52,6 +64,11 @@ final class UserService
     public function getUserDetail() : stdClass
     {
         return $this->skautis->user->UserDetail();
+    }
+
+    public function getUserPersonId() : int
+    {
+        return $this->getUserDetail()->ID_Person;
     }
 
     /**
@@ -89,6 +106,18 @@ final class UserService
     }
 
     /**
+     * Vrací seznam platných delegátů.
+     *
+     * @return stdClass[]
+     */
+    public function getValidDelegates() : array
+    {
+        $res = $this->skautis->event->DelegateAll(['ID_EventCongress' => $this->congressEventId, 'ID_DelegateState' => State::VALID]);
+
+        return $res instanceof stdClass ? [] : $res;
+    }
+
+    /**
      * kontroluje jestli je přihlášení platné
      */
     public function isLoggedIn() : bool
@@ -108,6 +137,13 @@ final class UserService
 
     public function isDelegate() : bool
     {
-        return $this->getActualRole()->getKey() === self::ROLE_KEY_DELEGATE;
+        if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
+            return false;
+        }
+        if (! $this->queryBus->handle(new IsUserDelegateQuery($this->getUserPersonId()))) {
+            return false;
+        }
+
+        return true;
     }
 }

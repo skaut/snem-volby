@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Model\Vote\ReadModel\Queries;
+namespace Model\Delegate\ReadModel\Queries;
 
-use Model\Vote\ReadModel\QueryHandlers\UserVoteTimeQueryHandler;
+use Model\Delegate\ReadModel\QueryHandlers\DelegateVoteTimeQueryHandler;
 
 /**
- * @see UserVoteTimeQueryHandler
+ * @see DelegateVoteTimeQueryHandler
  */
-class UserVoteTimeQuery
+class DelegateVoteTimeQuery
 {
-    /** @var int */
-    private $personId;
+    private int $personId;
 
     public function __construct(int $personId)
     {
