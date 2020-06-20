@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule\Components;
 
+use App\AuthenticatedModule\Factories\IVotingResultFactory;
 use App\AuthenticatedModule\Forms\BaseForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
@@ -11,10 +12,12 @@ use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Delegate\ReadModel\Queries\DelegateVoteTimeQuery;
+use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\UserService;
 use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
+use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
 use Throwable;
 
 final class VoteForm extends BaseControl
@@ -28,16 +31,21 @@ final class VoteForm extends BaseControl
     /** @var UserService */
     private $userService;
 
+    private IVotingResultFactory $votingResultFactory;
+
     private bool $isUserDelegate;
 
     public function __construct(
         CommandBus $commandBus,
         QueryBus $queryBus,
-        UserService $userService
+        UserService $userService,
+        IVotingResultFactory $votingResultFactory
     ) {
-        $this->commandBus     = $commandBus;
-        $this->queryBus       = $queryBus;
-        $this->userService    = $userService;
+        $this->commandBus          = $commandBus;
+        $this->queryBus            = $queryBus;
+        $this->userService         = $userService;
+        $this->votingResultFactory = $votingResultFactory;
+
         $this->isUserDelegate = $this->queryBus->handle(new IsUserDelegateQuery($userService->getUserPersonId()));
     }
 
@@ -49,7 +57,8 @@ final class VoteForm extends BaseControl
         $this->template->userVoteTime = $this->queryBus->handle(new DelegateVoteTimeQuery($personId));
         $this->template->votingTime   = $this->queryBus->handle(new VotingTimeQuery());
         $this->template->setParameters([
-            'isUserDelegate' => $this->isUserDelegate,
+            'isUserDelegate'    => $this->isUserDelegate,
+            'isResultPublished' => $this->queryBus->handle(new VotingPublishedQuery()) !== null,
         ]);
         $this->template->render();
     }
@@ -91,5 +100,10 @@ final class VoteForm extends BaseControl
         };
 
         return $form;
+    }
+
+    public function createComponentVotingResult() : VotingResult
+    {
+        return $this->votingResultFactory->create();
     }
 }

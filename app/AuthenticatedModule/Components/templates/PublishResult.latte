@@ -1,0 +1,12 @@
+{varType Model\Vote\VotingTime $votingTime}
+{varType \DateTimeImmutable $published}
+
+{if $votingTime->isAfterVoting()}
+    {snippet publishResult}
+        {if $published}
+            Výsledek byl zveřejnen {$published|date:App\Utils\Helpers::DATETIME_FORMAT}
+        {else}
+            <a n:href="publishResult" class="ajax btn btn-success">Zveřejnit výsledek</a>
+        {/if}
+    {/snippet}
+{/if}
