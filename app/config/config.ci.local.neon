@@ -17,8 +17,8 @@ parameters:
         name: snem_volby
 
     congress:
-        groupId: 123
-
+        groupId: 775402
+        eventId: 122
 tracy:
     showBar: false
 
