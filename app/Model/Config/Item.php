@@ -12,8 +12,9 @@ use Consistence\Enum\Enum;
 // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class Item extends Enum
 {
-    public const VOTING_BEGIN = 'voting_begin';
-    public const VOTING_END   = 'voting_end';
+    public const VOTING_BEGIN   = 'voting_begin';
+    public const VOTING_END     = 'voting_end';
+    public const VOTING_PUBLISH = 'voting_publish';
 
     public function toString() : string
     {
@@ -33,5 +34,10 @@ class Item extends Enum
     public static function VOTING_END() : self
     {
         return self::get(self::VOTING_END);
+    }
+
+    public static function VOTING_PUBLISH() : self
+    {
+        return self::get(self::VOTING_PUBLISH);
     }
 }

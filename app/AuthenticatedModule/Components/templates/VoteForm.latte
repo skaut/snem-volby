@@ -1,9 +1,11 @@
+{varType bool $isUserDelegate}
+{varType \DateTimeImmutable $userVoteTime}
+{varType Model\Vote\VotingTime $votingTime}
+
 {if $isUserDelegate}
-    <h2>Hlasuji</h2>
-    {if $userVoteTime !== null}
-        Již bylo hlasováno {$userVoteTime|formatdatetime} (hlasovat znovu nelze).
-    {else}
-        {if $votingTime->isVotingInProgress()}
+    {if $votingTime->isVotingInProgress()}
+        <h2>Hlasuji</h2>
+        {if $userVoteTime === null}
             {form form}
                 <button n:name="yes"
                         class="btn btn-success"
@@ -27,10 +29,11 @@
                         data-btn-ok-label="Závazně odeslat hlas"
                         data-btn-cancel-label="Storno"><i class="fas fa-ban"></i> Zdržuji se</button>
             {/form}
-        {elseif $votingTime->isBeforeVoting()}
-            Hlasování ještě nezačalo.
         {else}
-            Hlasování skončilo a již nelze hlasovat.
+            Již bylo hlasováno {$userVoteTime|formatdatetime} (hlasovat znovu nelze).
         {/if}
     {/if}
 {/if}
+
+
+

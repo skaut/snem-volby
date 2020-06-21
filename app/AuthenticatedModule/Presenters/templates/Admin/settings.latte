@@ -2,16 +2,28 @@
 
 {block #content}
 
+<h1>Nastavení</h1>
+
 <div class="row">
-    <div class="col">
-        <h1>Nastavení</h1>
+    <div class="col-md-3">
+        {control votingTimeForm}
+    </div>
+    <div class="col-md-3">
         <h2>Delegáti</h2>
-        <a n:href="saveDelegates!" n:class="btn, btn-primary, $delegatesSaved ? disabled">Stáhnout delegáty</a>
+        {if $delegatesSaved}
+            Seznam delegátů je již načten.
+        {else}
+            <a n:href="saveDelegates!" class="btn, btn-primary">Stáhnout delegáty</a>
+        {/if}
+    </div>
+    <div class="col-md-6">
+        {control votingStateBox, true}
+        {control publishResult}
     </div>
 </div>
 
-<div class="row">
-    <div class="col">
-        {control votingTimeForm}
-    </div>
-</div>
+
+
+
+
+

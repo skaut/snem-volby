@@ -28,6 +28,7 @@ abstract class BaseControl extends Control
 
         $template->getLatte()->addFilter('formatdate', '\\App\\Utils\\Helpers::formatDate');
         $template->getLatte()->addFilter('formatdatetime', '\\App\\Utils\\Helpers::formatDateTime');
+        $template->getLatte()->addFilter('formatTimeToText', '\\App\\Utils\\Helpers::formatTimeToText');
 
         return $template;
     }

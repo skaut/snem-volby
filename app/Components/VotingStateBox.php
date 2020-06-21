@@ -6,24 +6,33 @@ namespace App\Components;
 
 use App\AuthenticatedModule\Components\BaseControl;
 use eGen\MessageBus\Bus\QueryBus;
+use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
+use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
+use Model\UserService;
+use Model\Vote\ReadModel\Queries\VotingResultQuery;
 
 final class VotingStateBox extends BaseControl
 {
     /** @var QueryBus */
     private $queryBus;
+    private UserService $userService;
 
-    public function __construct(QueryBus $queryBus)
+    public function __construct(QueryBus $queryBus, UserService $userService)
     {
-        $this->queryBus = $queryBus;
+        $this->queryBus    = $queryBus;
+        $this->userService = $userService;
     }
 
-    public function render() : void
+    public function render(bool $showUnpublished = false) : void
     {
         $this->template->setFile(__DIR__ . '/templates/VotingStateBox.latte');
 
         $this->template->setParameters([
-            'votingTime' => $this->queryBus->handle(new VotingTimeQuery()),
+            'votingTime'    => $this->queryBus->handle(new VotingTimeQuery()),
+            'votingResult' => $this->queryBus->handle(new VotingResultQuery()),
+            'delegatesCount'  => $this->queryBus->handle(new DelegatesCountQuery()),
+            'showResult' => $this->queryBus->handle(new VotingPublishedQuery()) !== null || ($this->userService->isSuperUser() && $showUnpublished),
         ]);
 
         $this->template->render();
