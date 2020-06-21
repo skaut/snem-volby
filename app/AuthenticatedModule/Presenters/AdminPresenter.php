@@ -9,6 +9,7 @@ use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Delegate\Commands\SaveDelegates;
+use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
 use Model\Delegate\ReadModel\Queries\DelegatesSavedQuery;
 
 class AdminPresenter extends BasePresenter
@@ -30,7 +31,13 @@ class AdminPresenter extends BasePresenter
         parent::startup();
 
         if ($this->userService->isSuperUser()) {
-            $this->template->delegatesSaved = $this->queryBus->handle(new DelegatesSavedQuery());
+            if (! $this->queryBus->handle(new CheckVoteCountQuery())) {
+                $this->flashMessage('POZOR! Nesedí počet hlasů a počet delegátů, kteří již odhlasovali!', 'danger');
+            }
+
+            $this->template->setParameters([
+                'delegatesSaved' => $this->queryBus->handle(new DelegatesSavedQuery()),
+            ]);
 
             return;
         }
