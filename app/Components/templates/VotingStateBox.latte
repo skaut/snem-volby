@@ -1,42 +1,32 @@
 {varType Model\Vote\VotingTime $votingTime}
 <div clas="row">
-<div class="col top-margin no-padding">
+    <div class="col top-margin no-padding">
 
-<div class="alert alert-info" role="alert">
-    {if $votingTime->isBeforeVoting() || $votingTime->isVotingInProgress()}
-        Probíhá
-    {else}
-        Proběhlo
-    {/if}
-    v termínu od  <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
-</div>
+        <div class="alert alert-info" role="alert">
+            {if $votingTime->isBeforeVoting() || $votingTime->isVotingInProgress()}
+                Probíhá
+            {else}
+                Proběhlo
+            {/if}
+            v termínu od  <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
+        </div>
 
 
-    {if $votingTime->isBeforeVoting()}
-    <div class="alert alert-success" role="alert">
-        {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
-        Hlasování začne za
-        <strong>
-            {if $beginDiff->d}{$beginDiff->d} dní{/if}
-            {if $beginDiff->h}{$beginDiff->h} hodin{/if}
-            {if $beginDiff->i}{$beginDiff->i} minut{/if}
-        </strong>
+        {if $votingTime->isBeforeVoting()}
+            <div class="alert alert-success" role="alert">
+                {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
+                Hlasování začne za <strong>{$beginDiff|formatTimeToText}</strong>
+            </div>
+        {elseif $votingTime->isVotingInProgress()}
+            <div class="alert alert-warning" role="alert">
+                {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
+                Do konce hlasování zbývá <strong>{$endDiff|formatTimeToText}</strong>
+            </div>
+        {else}
+            <div class="alert alert-error" role="alert">
+                Hlasování již bylo uzavřeno
+            </div>
+        {/if}
+
     </div>
-    {elseif $votingTime->isVotingInProgress()}
-    <div class="alert alert-warning" role="alert">
-        {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
-        Do konce hlasování zbývá
-        <strong>
-            {if $endDiff->d}{$endDiff->d} dny{/if}
-            {if $endDiff->h}{$endDiff->h} hodin{/if}
-            {if $endDiff->i}{$endDiff->i} minut{/if}
-        </strong>
-    <div>
-    {else}
-    <div class="alert alert-error" role="alert">
-        Hlasování již bylo uzavřeno
-    </div>
-    {/if}
-
-</div>
 </div>
