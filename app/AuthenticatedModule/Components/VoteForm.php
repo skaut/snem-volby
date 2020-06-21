@@ -44,8 +44,7 @@ final class VoteForm extends BaseControl
         $this->queryBus            = $queryBus;
         $this->userService         = $userService;
         $this->votingResultFactory = $votingResultFactory;
-
-        $this->isUserDelegate = $this->queryBus->handle(new IsUserDelegateQuery($userService->getUserPersonId()));
+        $this->isUserDelegate = $this->userService->isDelegate();
     }
 
     public function render() : void

@@ -20,7 +20,7 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
         });
     }
 
-    public function getUserVote(int $personId) : ?UsersVote
+    public function getUserVote(int $personId) : ?Delegate
     {
         return $this->getEntityManager()->getRepository(UsersVote::class)->findOneBy(['personId' => $personId]);
     }

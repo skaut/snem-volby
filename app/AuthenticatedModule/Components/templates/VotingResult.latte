@@ -18,8 +18,8 @@
     <p n:class="$result->equalsValue(Model\Vote\Choice::YES) ? text-success : text-danger">
         Hlasování skončilo a byl vyhlášen výsledek<br/>
         {$votingResult->getYesCount()} pro návrh ({$votingResult->getYesPercent()} %),
-        {$votingResult->getNoCount()} proti návrhu,
-        {$votingResult->getAbstainCount()} se zdrželo<br />
+        {$votingResult->getNoCount()} proti návrhu ({$votingResult->getNoPercent()} %),
+        {$votingResult->getAbstainCount()} se zdrželo ({$votingResult->getAbstainPercent()} %)<br />
         <strong>návrh {if $result->equalsValue(Model\Vote\Choice::YES)}BYL{else}NEBYL{/if} přijat</strong>
     </p>
 {/if}

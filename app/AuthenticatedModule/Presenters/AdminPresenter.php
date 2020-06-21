@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule;
 
+use App\AuthenticatedModule\Components\PublishResult;
+use App\AuthenticatedModule\Components\VotingResult;
+use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
+use Model\Delegate\ReadModel\Queries\DelegatesSavedQuery;
 
 class AdminPresenter extends BasePresenter
 {

@@ -11,7 +11,7 @@ interface IVoteRepository
 {
     public function saveUserVote(Vote $vote, Delegate $usersVote) : void;
 
-    public function getUserVote(int $personId) : ?UsersVote;
+    public function getUserVote(int $personId) : ?Delegate;
 
     public function getYesVoteCount() : int;
 
