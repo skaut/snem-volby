@@ -26,6 +26,3 @@ parameters:
         groupId: 775402
         eventId: 122
 
-services:
-    # Pro produkci
-    # nette.mailer: Nette\Mail\SendmailMailer
