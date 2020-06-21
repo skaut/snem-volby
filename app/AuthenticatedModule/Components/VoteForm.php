@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule\Components;
 
-use App\AuthenticatedModule\Factories\IVotingResultFactory;
 use App\AuthenticatedModule\Forms\BaseForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
@@ -29,21 +28,17 @@ final class VoteForm extends BaseControl
     /** @var UserService */
     private $userService;
 
-    private IVotingResultFactory $votingResultFactory;
-
     private bool $isUserDelegate;
 
     public function __construct(
         CommandBus $commandBus,
         QueryBus $queryBus,
-        UserService $userService,
-        IVotingResultFactory $votingResultFactory
+        UserService $userService
     ) {
-        $this->commandBus          = $commandBus;
-        $this->queryBus            = $queryBus;
-        $this->userService         = $userService;
-        $this->votingResultFactory = $votingResultFactory;
-        $this->isUserDelegate      = $this->userService->isDelegate();
+        $this->commandBus     = $commandBus;
+        $this->queryBus       = $queryBus;
+        $this->userService    = $userService;
+        $this->isUserDelegate = $this->userService->isDelegate();
     }
 
     public function render() : void
@@ -97,10 +92,5 @@ final class VoteForm extends BaseControl
         };
 
         return $form;
-    }
-
-    public function createComponentVotingResult() : VotingResult
-    {
-        return $this->votingResultFactory->create();
     }
 }

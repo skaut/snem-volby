@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule\Components;
 
-use App\AuthenticatedModule\Factories\IVotingResultFactory;
+use App\Components\VotingStateBox;
+use App\Factories\IVotingStateBoxFactory;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Config\Commands\PublishVoting;
@@ -15,16 +16,16 @@ class PublishResult extends BaseControl
 {
     private CommandBus              $commandBus;
     private QueryBus                $queryBus;
-    private IVotingResultFactory    $votingResultFactory;
+    private IVotingStateBoxFactory    $votingStateBoxFactory;
 
     public function __construct(
         CommandBus $commandBus,
         QueryBus $queryBus,
-        IVotingResultFactory $votingResultFactory
+        IVotingStateBoxFactory $votingStateBoxFactory
     ) {
-        $this->commandBus          = $commandBus;
-        $this->queryBus            = $queryBus;
-        $this->votingResultFactory = $votingResultFactory;
+        $this->commandBus            = $commandBus;
+        $this->queryBus              = $queryBus;
+        $this->votingStateBoxFactory =$votingStateBoxFactory;
     }
 
     public function render() : void
@@ -43,8 +44,8 @@ class PublishResult extends BaseControl
         $this->reload();
     }
 
-    protected function createComponentVotingResult() : VotingResult
+    protected function createComponentVotingStateBox() : VotingStateBox
     {
-        return $this->votingResultFactory->create();
+        return $this->votingStateBoxFactory->create();
     }
 }

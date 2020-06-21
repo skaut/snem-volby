@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\AuthenticatedModule\Components\VotingResult;
-use App\AuthenticatedModule\Factories\IVotingResultFactory;
 use App\Components\LoginPanel;
 use App\Components\TipBox;
 use App\Components\VotingStateBox;
@@ -38,7 +36,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     protected LoggerInterface $logger;
     private IVotingStateBoxFactory $votingStateBoxFactory;
     private ITipBoxFactory $tipBoxFactory;
-    private IVotingResultFactory $votingResultFactory;
 
     public function injectAll(
         UserService $userService,
@@ -48,8 +45,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         NotificationsCollector $notificationsCollector,
         LoggerInterface $logger,
         IVotingStateBoxFactory $votingStateBoxFactory,
-        ITipBoxFactory $tipBoxFactory,
-        IVotingResultFactory $votingResultFactory
+        ITipBoxFactory $tipBoxFactory
     ) : void {
         $this->userService            = $userService;
         $this->commandBus             = $commandBus;
@@ -59,7 +55,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $this->notificationsCollector = $notificationsCollector;
         $this->votingStateBoxFactory  = $votingStateBoxFactory;
         $this->tipBoxFactory          = $tipBoxFactory;
-        $this->votingResultFactory    = $votingResultFactory;
     }
 
     protected function startup() : void
@@ -129,11 +124,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     protected function createComponentTipBox() : TipBox
     {
         return $this->tipBoxFactory->create();
-    }
-
-    protected function createComponentVotingResult() : VotingResult
-    {
-        return $this->votingResultFactory->create();
     }
 
     /**

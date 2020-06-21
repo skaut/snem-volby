@@ -1,5 +1,3 @@
-{varType bool $isResultPublished}
-
 {block title}Online hlasování{/block}
 
 {block #content}
@@ -10,11 +8,7 @@
 
         {control tipBox}
 
-        {if $isResultPublished}
-            {control votingResult}
-        {else}
-            {control votingStateBox}
-        {/if}
+        {control votingStateBox}
 
         <p>
             hlasování se mohou účastnit pouze delegáti Valného sněmu 2020 <br />

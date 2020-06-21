@@ -7,18 +7,15 @@ namespace App\AuthenticatedModule;
 use App\AuthenticatedModule\Components\PublishResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
-use App\AuthenticatedModule\Factories\IVotingResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Delegate\ReadModel\Queries\DelegatesSavedQuery;
 
 class AdminPresenter extends BasePresenter
 {
-    private IVotingResultFactory $votingResultFactory;
     private IPublishResultFactory $publishResultFactory;
     private IVotingTimeFormFactory $votingTimeFormFactory;
 
     public function __construct(
-        IVotingResultFactory $votingResultFactory,
         IPublishResultFactory $publishResultFactory,
         IVotingTimeFormFactory $votingTimeFormFactory
     ) {
