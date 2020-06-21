@@ -21,9 +21,9 @@ final class VotingTimeQueryHandler
 
     public function __invoke(VotingTimeQuery $_) : VotingTime
     {
-        $begin = $this->configRepository->getDateTimeValue(Item::VOTING_BEGIN()) ?: new DateTimeImmutable();
-        $end   = $this->configRepository->getDateTimeValue(Item::VOTING_END()) ?: new DateTimeImmutable();
-
-        return new VotingTime($begin, $end);
+        return new VotingTime(
+            $this->configRepository->getDateTimeValue(Item::VOTING_BEGIN()) ?: new DateTimeImmutable(),
+            $this->configRepository->getDateTimeValue(Item::VOTING_END()) ?: new DateTimeImmutable()
+        );
     }
 }
