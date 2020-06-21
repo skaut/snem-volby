@@ -87,8 +87,6 @@ services:
         setup:
             - @Model\Infrastructure\Services\SkautisCallListener::register
 
-    nette.mailer: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
-
     - Model\Infrastructure\Log\UserContextProvider
 
     - factory: Monolog\Logger
