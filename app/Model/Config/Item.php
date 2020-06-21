@@ -9,6 +9,7 @@ use Consistence\Enum\Enum;
 /**
  * @method string getValue()
  */
+// phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class Item extends Enum
 {
     public const VOTING_BEGIN = 'voting_begin';
