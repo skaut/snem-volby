@@ -7,7 +7,7 @@ namespace Model;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Delegate\State;
 use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
-use Model\User\ReadModel\Queries\IsUserDelegateQuery;
+use Model\User\ReadModel\Queries\IsUserOnDelegateListQuery;
 use Model\User\SkautisRole;
 use Skautis\Skautis;
 use stdClass;
@@ -141,6 +141,6 @@ final class UserService
             return false;
         }
 
-        return $this->queryBus->handle(new IsUserDelegateQuery($this->getUserPersonId()));
+        return $this->queryBus->handle(new IsUserOnDelegateListQuery($this->getUserPersonId()));
     }
 }
