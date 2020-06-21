@@ -34,7 +34,7 @@ class Helpers
             $result .= $days . ' den ';
         } elseif ($days >=2 && $days < 5) {
             $result .= $days . ' dny ';
-        } elseif ($days < 1 || $days >= 5) {
+        } else {
             $result .= $days . ' dní ';
         }
 
@@ -42,7 +42,7 @@ class Helpers
             $result .= $hours . ' hodina ';
         } elseif ($hours >=2 && $hours < 5) {
             $result .= $hours . ' hodiny ';
-        } elseif ($hours < 1 || $hours >=5) {
+        } else {
             $result .= $hours . ' hodin ';
         }
 
@@ -50,7 +50,7 @@ class Helpers
             $result .= $minutes . ' minuta';
         } elseif ($minutes >=2 && $minutes < 5) {
             $result .= $minutes . ' minuty ';
-        } elseif ($minutes < 1 || $minutes >=5) {
+        } else {
             $result .= $minutes . ' minut ';
         }
 
