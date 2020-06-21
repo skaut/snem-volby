@@ -26,7 +26,8 @@ console:
     url: https://snem.skauting.cz
     lazy: true
     helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
-
+    helpers:
+        question: Symfony\Component\Console\Helper\QuestionHelper()
 messageBus:
     commandBus:
     	middlewares:
@@ -107,9 +108,9 @@ services:
 
     latte.latteFactory:
         setup:
-            - addFilter(null, [App\Utils\Helpers, formatDate])
-            - addFilter(null, [App\Utils\Helpers, formatDateTime])
-            - addFilter(null, [App\Utils\Helpers, formatTimeToText])
+            - addFilter(formatDate, [App\Utils\Helpers, formatDate])
+            - addFilter(formatDateTime, [App\Utils\Helpers, formatDateTime])
+            - addFilter(formatTimeToText, [App\Utils\Helpers, formatTimeToText])
 decorator:
     Symfony\Component\Console\Application:
         setup:
