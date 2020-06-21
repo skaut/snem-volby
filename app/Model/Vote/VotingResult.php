@@ -12,8 +12,6 @@ class VotingResult
     private int $noCount;
     private int $abstainCount;
 
-    private Choice $result;
-
     public function __construct(int $yesCount, int $noCount, int $abstainCount)
     {
         $this->yesCount     = $yesCount;
@@ -28,17 +26,22 @@ class VotingResult
 
     public function getYesPercent() : float
     {
-        return round($this->getYesCount() / ($this->getTotalVotingCount() / 100), 2);
+        return $this->yesCount === 0 ? 0 : $this->formatPercent($this->yesCount / $this->getTotalVotingCount());
+    }
+
+    public function getNoPercent() : float
+    {
+        return $this->noCount === 0 ? 0 : $this->formatPercent($this->noCount / $this->getTotalVotingCount());
+    }
+
+    public function getAbstainPercent() : float
+    {
+        return $this->abstainCount === 0 ? 0 : $this->formatPercent($this->abstainCount / $this->getTotalVotingCount());
     }
 
     public function getNoCount() : int
     {
         return $this->noCount;
-    }
-
-    public function getNoPercent() : float
-    {
-        return round($this->getNoCount() / ($this->getTotalVotingCount() / 100), 2);
     }
 
     public function getAbstainCount() : int
@@ -58,7 +61,7 @@ class VotingResult
 
     public function getMinVotes() : int
     {
-        return (int) round($this->getTotalVotingCount() * (3/5));
+        return (int) max(1, ceil($this->getTotalVotingCount() * (3/5)));
     }
 
     public function getResult() : Choice
@@ -68,5 +71,10 @@ class VotingResult
         }
 
         return Choice::NO();
+    }
+
+    private function formatPercent(float $number) : float
+    {
+        return round($number * 100, 2);
     }
 }

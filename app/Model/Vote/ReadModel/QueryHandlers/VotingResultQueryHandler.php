@@ -19,10 +19,10 @@ class VotingResultQueryHandler
 
     public function __invoke(VotingResultQuery $query) : VotingResult
     {
-        $yesCount     = $this->voteRepository->getYesVoteCount();
-        $noCount      = $this->voteRepository->getNoVoteCount();
-        $abstainCount = $this->voteRepository->getAbstainVoteCount();
-
-        return new VotingResult($yesCount, $noCount, $abstainCount);
+        return new VotingResult(
+            $this->voteRepository->getYesVoteCount(),
+            $this->voteRepository->getNoVoteCount(),
+            $this->voteRepository->getAbstainVoteCount()
+        );
     }
 }
