@@ -140,10 +140,7 @@ final class UserService
         if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
             return false;
         }
-        if (! $this->queryBus->handle(new IsUserDelegateQuery($this->getUserPersonId()))) {
-            return false;
-        }
 
-        return true;
+        return $this->queryBus->handle(new IsUserDelegateQuery($this->getUserPersonId()));
     }
 }

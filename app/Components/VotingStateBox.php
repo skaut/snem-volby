@@ -6,7 +6,7 @@ namespace App\Components;
 
 use App\AuthenticatedModule\Components\BaseControl;
 use eGen\MessageBus\Bus\QueryBus;
-use Model\Vote\ReadModel\Queries\VotingTimeQuery;
+use Model\Config\ReadModel\Queries\VotingTimeQuery;
 
 final class VotingStateBox extends BaseControl
 {
