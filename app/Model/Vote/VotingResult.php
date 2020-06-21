@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Model\Vote;
 
+use function ceil;
 use function round;
 
 class VotingResult
@@ -11,12 +12,14 @@ class VotingResult
     private int $yesCount;
     private int $noCount;
     private int $abstainCount;
+    private int $totalCountOfDelegates;
 
-    public function __construct(int $yesCount, int $noCount, int $abstainCount)
+    public function __construct(int $yesCount, int $noCount, int $abstainCount, int $totalCountOfDelegates)
     {
-        $this->yesCount     = $yesCount;
-        $this->noCount      = $noCount;
-        $this->abstainCount = $abstainCount;
+        $this->yesCount              = $yesCount;
+        $this->noCount               = $noCount;
+        $this->abstainCount          = $abstainCount;
+        $this->totalCountOfDelegates = $totalCountOfDelegates;
     }
 
     public function getYesCount() : int
@@ -26,17 +29,7 @@ class VotingResult
 
     public function getYesPercent() : float
     {
-        return $this->yesCount === 0 ? 0 : $this->formatPercent($this->yesCount / $this->getTotalVotingCount());
-    }
-
-    public function getNoPercent() : float
-    {
-        return $this->noCount === 0 ? 0 : $this->formatPercent($this->noCount / $this->getTotalVotingCount());
-    }
-
-    public function getAbstainPercent() : float
-    {
-        return $this->abstainCount === 0 ? 0 : $this->formatPercent($this->abstainCount / $this->getTotalVotingCount());
+        return $this->yesCount === 0 ? 0 : round(($this->yesCount / $this->totalCountOfDelegates)*100, 2);
     }
 
     public function getNoCount() : int
@@ -46,7 +39,12 @@ class VotingResult
 
     public function getAbstainCount() : int
     {
-        return $this->abstainCount;
+        return $this->abstainCount + $this->getNotVotedCount();
+    }
+
+    public function getNotVotedCount() : int
+    {
+        return $this->totalCountOfDelegates - ($this->yesCount + $this->noCount + $this->abstainCount);
     }
 
     public function getTotalVotingCount() : int
@@ -54,14 +52,14 @@ class VotingResult
         return $this->yesCount + $this->noCount;
     }
 
-    public function getTotalCount() : int
+    public function getCountOfVotes() : int
     {
-        return $this->getTotalVotingCount() + $this->abstainCount;
+        return $this->yesCount + $this->noCount + $this->abstainCount;
     }
 
     public function getMinVotes() : int
     {
-        return (int) max(1, ceil($this->getTotalVotingCount() * (3/5)));
+        return (int) ceil($this->totalCountOfDelegates * (3/5));
     }
 
     public function getResult() : Choice
@@ -71,10 +69,5 @@ class VotingResult
         }
 
         return Choice::NO();
-    }
-
-    private function formatPercent(float $number) : float
-    {
-        return round($number * 100, 2);
     }
 }
