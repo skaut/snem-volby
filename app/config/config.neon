@@ -26,7 +26,8 @@ console:
     url: https://snem.skauting.cz
     lazy: true
     helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
-
+    helpers:
+        question: Symfony\Component\Console\Helper\QuestionHelper()
 messageBus:
     commandBus:
     	middlewares:
