@@ -29,7 +29,7 @@ class AdminPresenter extends BasePresenter
         }
 
         $this->flashMessage('Nemáte oprávnění přistupovat ke stránce!', 'danger');
-        $this->redirect('Default:');
+        $this->redirect(':Homepage:');
     }
 
     public function handleSaveDelegates() : void
