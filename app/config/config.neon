@@ -108,9 +108,9 @@ services:
 
     latte.latteFactory:
         setup:
-            - addFilter(null, [App\Utils\Helpers, formatDate])
-            - addFilter(null, [App\Utils\Helpers, formatDateTime])
-            - addFilter(null, [App\Utils\Helpers, formatTimeToText])
+            - addFilter(formatDate, [App\Utils\Helpers, formatDate])
+            - addFilter(formatDateTime, [App\Utils\Helpers, formatDateTime])
+            - addFilter(formatTimeToText, [App\Utils\Helpers, formatTimeToText])
 decorator:
     Symfony\Component\Console\Application:
         setup:
