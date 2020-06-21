@@ -18,5 +18,4 @@ interface IVoteRepository
     public function getNoVoteCount() : int;
 
     public function getAbstainVoteCount() : int;
-
 }

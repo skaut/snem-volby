@@ -10,14 +10,13 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
+use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Delegate\ReadModel\Queries\DelegateVoteTimeQuery;
-use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\UserService;
 use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
-use Model\Vote\ReadModel\Queries\UserVoteTimeQuery;
 use Throwable;
 
 final class VoteForm extends BaseControl
