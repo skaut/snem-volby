@@ -3,10 +3,11 @@
 {varType \DateTimeImmutable $userVoteTime}
 {varType Model\Vote\VotingTime $votingTime}
 
-{if $isUserDelegate}
-    {if $isResultPublished}
-        {control votingResult}
-    {else}
+
+{if $isResultPublished}
+    {control votingResult}
+{else}
+    {if $isUserDelegate}
         <h2>Hlasuji</h2>
         {if $userVoteTime !== null}
             Již bylo hlasováno {$userVoteTime|formatdatetime} (hlasovat znovu nelze).
@@ -43,3 +44,5 @@
         {/if}
     {/if}
 {/if}
+
+

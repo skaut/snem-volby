@@ -4,9 +4,9 @@
 {if $votingTime->isAfterVoting()}
     {snippet publishResult}
         {if $published}
-            Výsledek byl zveřejnen {$published|date:App\Utils\Helpers::DATETIME_FORMAT}
+            Výsledek byl zveřejnen {$published|formatdatetime}
         {else}
-            <a n:href="publishResult" class="ajax btn btn-success">Zveřejnit výsledek</a>
+            <a n:href="publishResult" class="ajax btn btn-lg btn-success">Zveřejnit výsledek</a>
         {/if}
     {/snippet}
 {/if}

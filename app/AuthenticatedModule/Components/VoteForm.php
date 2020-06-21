@@ -13,7 +13,6 @@ use InvalidArgumentException;
 use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Delegate\ReadModel\Queries\DelegateVoteTimeQuery;
-use Model\User\ReadModel\Queries\IsUserDelegateQuery;
 use Model\UserService;
 use Model\Vote\Choice;
 use Model\Vote\Commands\SaveVote;
@@ -44,7 +43,7 @@ final class VoteForm extends BaseControl
         $this->queryBus            = $queryBus;
         $this->userService         = $userService;
         $this->votingResultFactory = $votingResultFactory;
-        $this->isUserDelegate = $this->userService->isDelegate();
+        $this->isUserDelegate      = $this->userService->isDelegate();
     }
 
     public function render() : void

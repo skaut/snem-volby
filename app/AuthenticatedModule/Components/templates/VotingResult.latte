@@ -1,25 +1,25 @@
 {varType Model\Vote\VotingResult $votingResult}
 {varType Model\Vote\VotingTime $votingTime}
+{var bool $isResultPositive = $votingResult->getResult()->equalsValue(Model\Vote\Choice::YES)}
 
-{var Model\Vote\Choice $result = $votingResult->getResult()}
+<h2>Výsledek hlasování</h2>
 
 {if $votingTime->isBeforeVoting()}
     Hlasování ještě nezačalo.
 {elseif $votingTime->isVotingInProgress()}
     Hlasování není uzavřeno.
 {elseif $votingTime->isAfterVoting()}
-    <p>
-        Účast na hlasování:<br />
-        X oprávněných delegátů<br/> {* TODO počet oprávněných delegátů *}
-        {$votingResult->getTotalCount()} delegátů se hlasování účastnilo<br/>
-        pro přijetí návrhu je třeba 3/5 většina, což je minimálně {$votingResult->getMinVotes()} hlasů pro návrh<br/>
-    </p>
+    <ul>
+        <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
+        <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotes()}</b> delegátů </li>
+        <li>pro přijetí návrhu je třeba 3/5 většina, což je minimálně <b>{$votingResult->getMinVotes()}</b> hlasů pro návrh</li>
+    </ul>
 
-    <p n:class="$result->equalsValue(Model\Vote\Choice::YES) ? text-success : text-danger">
+    <p n:class="$isResultPositive ? text-success : text-danger">
         Hlasování skončilo a byl vyhlášen výsledek<br/>
         {$votingResult->getYesCount()} pro návrh ({$votingResult->getYesPercent()} %),
-        {$votingResult->getNoCount()} proti návrhu ({$votingResult->getNoPercent()} %),
-        {$votingResult->getAbstainCount()} se zdrželo ({$votingResult->getAbstainPercent()} %)<br />
-        <strong>návrh {if $result->equalsValue(Model\Vote\Choice::YES)}BYL{else}NEBYL{/if} přijat</strong>
+        {$votingResult->getNoCount()} proti návrhu,
+        {$votingResult->getAbstainCount()} se zdrželo (z toho {$votingResult->getNotVotedCount()} nehlasovalo)<br />
+        <strong>návrh {if $isResultPositive}BYL{else}NEBYL{/if} přijat</strong>
     </p>
 {/if}

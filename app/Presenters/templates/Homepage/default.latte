@@ -1,3 +1,5 @@
+{varType bool $isResultPublished}
+
 {block title}Online hlasování{/block}
 
 {block #content}
@@ -7,7 +9,12 @@
         <h1>Hlasování o změně stanov</h1>
 
         {control tipBox}
-        {control votingStateBox}
+
+        {if $isResultPublished}
+            {control votingResult}
+        {else}
+            {control votingStateBox}
+        {/if}
 
         <p>
             hlasování se mohou účastnit pouze delegáti Valného sněmu 2020 <br />

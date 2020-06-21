@@ -3,12 +3,8 @@
     <div class="col top-margin no-padding">
 
         <div class="alert alert-info" role="alert">
-            {if $votingTime->isBeforeVoting() || $votingTime->isVotingInProgress()}
-                Probíhá
-            {else}
-                Proběhlo
-            {/if}
-            v termínu od  <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
+            Hlasování {if $votingTime->isAfterVoting ()}proběhlo{else}probíhá{/if}
+            v termínu od <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
         </div>
 
 
@@ -23,7 +19,7 @@
                 Do konce hlasování zbývá <strong>{$endDiff|formatTimeToText}</strong>
             </div>
         {else}
-            <div class="alert alert-error" role="alert">
+            <div class="alert alert-danger" role="alert">
                 Hlasování již bylo uzavřeno
             </div>
         {/if}

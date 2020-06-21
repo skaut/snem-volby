@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\AuthenticatedModule;
 
 use App\AuthenticatedModule\Components\PublishResult;
-use App\AuthenticatedModule\Components\VotingResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingResultFactory;
@@ -24,7 +23,6 @@ class AdminPresenter extends BasePresenter
         IVotingTimeFormFactory $votingTimeFormFactory
     ) {
         parent::__construct();
-        $this->votingResultFactory   = $votingResultFactory;
         $this->publishResultFactory  = $publishResultFactory;
         $this->votingTimeFormFactory = $votingTimeFormFactory;
     }
@@ -54,11 +52,6 @@ class AdminPresenter extends BasePresenter
     public function createComponentVotingTimeForm() : VotingTimeForm
     {
         return $this->votingTimeFormFactory->create();
-    }
-
-    protected function createComponentVotingResult() : VotingResult
-    {
-        return $this->votingResultFactory->create();
     }
 
     protected function createComponentPublishResult() : PublishResult
