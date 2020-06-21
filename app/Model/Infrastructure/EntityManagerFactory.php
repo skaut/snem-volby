@@ -18,7 +18,6 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
-use DoctrineExtensions\Query\Mysql\Field;
 use Fmasa\DoctrineNullableEmbeddables\Subscriber;
 
 final class EntityManagerFactory
@@ -48,7 +47,6 @@ final class EntityManagerFactory
 
         $configuration->setMetadataDriverImpl(new AnnotationDriver($annotationsReader, [__DIR__ . '/../']));
         $configuration->setNamingStrategy(new UnderscoreNamingStrategy());
-        $configuration->addCustomStringFunction('field', Field::class);
         $configuration->setSecondLevelCacheEnabled(true);
 
         $cacheConfiguration = new CacheConfiguration();

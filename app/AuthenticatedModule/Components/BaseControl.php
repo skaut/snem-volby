@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration
+
 namespace App\AuthenticatedModule\Components;
 
 use App\BasePresenter;
 use Nette\Application\UI\Control;
-use Nette\Application\UI\ITemplate;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\InvalidStateException;
 use stdClass;
@@ -18,20 +19,6 @@ use stdClass;
 abstract class BaseControl extends Control
 {
     abstract public function render() : void;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function createTemplate() : ITemplate
-    {
-        $template = parent::createTemplate();
-
-        $template->getLatte()->addFilter('formatdate', '\\App\\Utils\\Helpers::formatDate');
-        $template->getLatte()->addFilter('formatdatetime', '\\App\\Utils\\Helpers::formatDateTime');
-        $template->getLatte()->addFilter('formatTimeToText', '\\App\\Utils\\Helpers::formatTimeToText');
-
-        return $template;
-    }
 
     /**
      * {@inheritDoc}
@@ -50,9 +37,9 @@ abstract class BaseControl extends Control
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $message
      */
-    public function flashMessage($message, $type = 'info') : stdClass
+    public function flashMessage($message, string $type = 'info') : stdClass
     {
         return $this->getPresenter()->flashMessage($message, $type);
     }

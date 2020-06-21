@@ -19,14 +19,11 @@ use Throwable;
 
 final class VoteForm extends BaseControl
 {
-    /** @var CommandBus */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /** @var QueryBus */
-    private $queryBus;
+    private QueryBus $queryBus;
 
-    /** @var UserService */
-    private $userService;
+    private UserService $userService;
 
     private bool $isUserDelegate;
 
@@ -59,20 +56,19 @@ final class VoteForm extends BaseControl
     {
         $form = new BaseForm();
 
-        $form->addSubmit(Choice::YES);
-        $form->addSubmit(Choice::NO);
-        $form->addSubmit(Choice::ABSTAIN);
+        $yesButton     = $form->addSubmit(Choice::YES, 'PRO návrh');
+        $noButton      = $form->addSubmit(Choice::NO, 'PROTI návrhu');
+        $abstainButton = $form->addSubmit(Choice::ABSTAIN, 'Zdržuji se');
 
-        $form->onSuccess[] = function (BaseForm $form) : void {
-            $vote     = null;
-            $voteName = null;
-            if ($form[Choice::YES]->isSubmittedBy()) {
+        $form->onSuccess[] = function () use ($yesButton, $noButton, $abstainButton) : void {
+            $vote = null;
+            if ($yesButton->isSubmittedBy()) {
                 $vote     = Choice::YES();
                 $voteName = 'PRO';
-            } elseif ($form[Choice::NO]->isSubmittedBy()) {
+            } elseif ($noButton->isSubmittedBy()) {
                 $vote     = Choice::NO();
                 $voteName = 'PROTI';
-            } elseif ($form[Choice::ABSTAIN]->isSubmittedBy()) {
+            } elseif ($abstainButton->isSubmittedBy()) {
                 $vote     = Choice::ABSTAIN();
                 $voteName = 'ZDRŽUJI SE';
             } else {

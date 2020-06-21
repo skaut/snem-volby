@@ -8,6 +8,7 @@ use App\AuthenticatedModule\Components\PublishResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
+use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\DelegatesSavedQuery;
 
 class AdminPresenter extends BasePresenter

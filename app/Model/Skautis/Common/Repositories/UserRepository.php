@@ -20,7 +20,7 @@ final class UserRepository implements IUserRepository
 
     private WebServiceInterface $orgWebService;
 
-    public function __construct(WebServiceInterface $userWebService, WebServiceInterface $orgWebService, Skautis $skautis)
+    public function __construct(Skautis $skautis)
     {
         $this->userWebService = new CacheDecorator($skautis->getWebService('user'), new ArrayCache());
         $this->orgWebService  = new CacheDecorator($skautis->getWebService('org'), new ArrayCache());

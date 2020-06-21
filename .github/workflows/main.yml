@@ -70,69 +70,69 @@ jobs:
               run: docker-compose up -d mysql-test smtp
             - run: docker-compose run -T -u www-data app phing tests-integration
 
-    collect-code-coverage:
-        name: "Run tests and collect code coverage"
-        if: github.ref == 'refs/heads/master'
-        runs-on: ubuntu-18.04
-        needs: workdir
-        steps:
-            - name: Download workdir
-              uses: actions/download-artifact@v1
-              with:
-                  name: workdir
-                  path: .
-            - name: Extract workdir
-              run: tar -xzpf workdir.tar.gz
-            - name: Start application containers
-              run: docker-compose up -d app mysql-test smtp
-            - name: Run tests with coverage
-              run: docker-compose exec -T -u www-data app phing tests-with-coverage
-            - name: Upload code coverage
-              uses: codecov/codecov-action@v1
-              with:
-                  token: ${{ secrets.CODECOV_TOKEN }}
-                  file: tests/_output/coverage.xml
-                  fail_ci_if_error: true
+#    collect-code-coverage:
+#        name: "Run tests and collect code coverage"
+#        if: github.ref == 'refs/heads/master'
+#        runs-on: ubuntu-18.04
+#        needs: workdir
+#        steps:
+#            - name: Download workdir
+#              uses: actions/download-artifact@v1
+#              with:
+#                  name: workdir
+#                  path: .
+#            - name: Extract workdir
+#              run: tar -xzpf workdir.tar.gz
+#            - name: Start application containers
+#              run: docker-compose up -d app mysql-test smtp
+#            - name: Run tests with coverage
+#              run: docker-compose exec -T -u www-data app phing tests-with-coverage
+#            - name: Upload code coverage
+#              uses: codecov/codecov-action@v1
+#              with:
+#                  token: ${{ secrets.CODECOV_TOKEN }}
+#                  file: tests/_output/coverage.xml
+#                  fail_ci_if_error: true
 
-    tests-acceptance:
-        name: "Run acceptance tests"
-        runs-on: ubuntu-18.04
-        needs: workdir
-        steps:
-            - name: Download workdir
-              uses: actions/download-artifact@v1
-              with:
-                  name: workdir
-                  path: .
-            - name: Extract workdir
-              run: tar -xzpf workdir.tar.gz
-            - name: Start application containers
-              run: docker-compose up -d
-            - run: mv app/config/config.ci.local.neon app/config/config.local.neon
-            - name: Install Node.js
-              uses: actions/setup-node@v1
-            # Copy & paste from https://github.com/actions/cache/blob/master/examples.md#node---yarn
-            - name: Get yarn cache
-              id: yarn-cache
-              run: echo "::set-output name=dir::$(yarn cache dir)"
-
-            - uses: actions/cache@v1
-              with:
-                  path: ${{ steps.yarn-cache.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-            - run: npm install -g yarn
-            - name: Build frontend assets
-              run: yarn install && yarn build
-            - name: Prepare database
-              run: docker-compose exec -T -u www-data app bin/console migrations:migrate --no-interaction
-            - run: docker-compose exec -T -u www-data app phing tests-acceptance
-            - uses: actions/upload-artifact@v2
-              if: failure()
-              with:
-                    name: error-output
-                    path: tests/_output
+#    tests-acceptance:
+#        name: "Run acceptance tests"
+#        runs-on: ubuntu-18.04
+#        needs: workdir
+#        steps:
+#            - name: Download workdir
+#              uses: actions/download-artifact@v1
+#              with:
+#                  name: workdir
+#                  path: .
+#            - name: Extract workdir
+#              run: tar -xzpf workdir.tar.gz
+#            - name: Start application containers
+#              run: docker-compose up -d
+#            - run: mv app/config/config.ci.local.neon app/config/config.local.neon
+#            - name: Install Node.js
+#              uses: actions/setup-node@v1
+#            # Copy & paste from https://github.com/actions/cache/blob/master/examples.md#node---yarn
+#            - name: Get yarn cache
+#              id: yarn-cache
+#              run: echo "::set-output name=dir::$(yarn cache dir)"
+#
+#            - uses: actions/cache@v1
+#              with:
+#                  path: ${{ steps.yarn-cache.outputs.dir }}
+#                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#                  restore-keys: |
+#                      ${{ runner.os }}-yarn-
+#            - run: npm install -g yarn
+#            - name: Build frontend assets
+#              run: yarn install && yarn build
+#            - name: Prepare database
+#              run: docker-compose exec -T -u www-data app bin/console migrations:migrate --no-interaction
+#            - run: docker-compose exec -T -u www-data app phing tests-acceptance
+#            - uses: actions/upload-artifact@v2
+#              if: failure()
+#              with:
+#                    name: error-output
+#                    path: tests/_output
 
     static-analysis:
         name: "Run PHPStan analysis"
@@ -169,8 +169,6 @@ jobs:
     latte-lint:
         name: "Lint Latte templates"
         runs-on: ubuntu-18.04
-        container:
-            image: fmasa/lebeda:7.4
         needs: workdir
         env:
             DEVELOPMENT_MACHINE: true
@@ -181,23 +179,16 @@ jobs:
                   name: workdir
                   path: .
             - name: Extract workdir
-              run: tar -xzf workdir.tar.gz
+              run: sudo tar --same-owner -xzf workdir.tar.gz
+            - name: Startup containers
+              run: docker-compose up -d && sleep 20
             - run: mv app/config/config.ci.local.neon app/config/config.local.neon
-            - run: bin/console app:lint-latte
+            - run: docker-compose exec -T -u www-data app bin/console app:lint-latte
 
     validate-mapping:
         name: "Validate mapping against migrations"
         runs-on: ubuntu-18.04
-        container:
-            image: fmasa/lebeda:7.4
         needs: workdir
-        services:
-            mysql-test:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: 'root'
-                    MYSQL_DATABASE: hskauting
-                options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
         env:
             DEVELOPMENT_MACHINE: true
         steps:
@@ -207,17 +198,20 @@ jobs:
                   name: workdir
                   path: .
             - name: Extract workdir
-              run: tar -xzf workdir.tar.gz
+              run: sudo tar --same-owner -xzf workdir.tar.gz
+            - name: Startup containers
+              run: docker-compose up -d && sleep 20
             - run: mv app/config/config.ci.local.neon app/config/config.local.neon
-            - run: bin/console migrations:migrate --no-interaction
-            - run: "! bin/console migrations:diff && bin/console migrations:diff --allow-empty-diff"
+            - run: docker-compose exec -T -u www-data app bin/console migrations:migrate --no-interaction
+            - run: "! docker-compose exec -T -u www-data app bin/console migrations:diff"
+            - run: docker-compose exec -T -u www-data app bin/console migrations:diff --allow-empty-diff
 
     checks-passed:
         name: "Wait for all checks"
         needs:
             - tests-unit
             - tests-integration
-            - tests-acceptance
+#            - tests-acceptance
             - coding-standard
             - static-analysis
             - latte-lint
