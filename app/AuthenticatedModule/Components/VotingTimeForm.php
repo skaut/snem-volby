@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\AuthenticatedModule\Components;
 
 use App\AuthenticatedModule\Forms\BaseForm;
+use DateTimeImmutable;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Config\Commands\SaveVotingTime;
@@ -41,9 +42,9 @@ final class VotingTimeForm extends BaseControl
         $votingTime = $this->queryBus->handle(new VotingTimeQuery());
 
         $form->addDateTime('votingBegin', 'Hlasování od')
-            ->setDefaultValue($votingTime->getBegin());
+            ->setDefaultValue($votingTime->getBegin() ?? new DateTimeImmutable('8:00:00'));
         $form->addDateTime('votingEnd', 'Hlasování do')
-            ->setDefaultValue($votingTime->getEnd());
+            ->setDefaultValue($votingTime->getEnd() ?? new DateTimeImmutable('+ 4 days 20:00:00'));
         $form->addSubmit('submit', 'Uložit');
 
         $form->onSuccess[] = function (BaseForm $form, $values) : void {

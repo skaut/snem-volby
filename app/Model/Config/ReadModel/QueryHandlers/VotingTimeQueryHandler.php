@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Model\Config\ReadModel\QueryHandlers;
 
-use DateTimeImmutable;
 use Model\Config\Item;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Config\Repositories\IConfigRepository;
@@ -22,8 +21,8 @@ final class VotingTimeQueryHandler
     public function __invoke(VotingTimeQuery $_) : VotingTime
     {
         return new VotingTime(
-            $this->configRepository->getDateTimeValue(Item::VOTING_BEGIN()) ?: new DateTimeImmutable(),
-            $this->configRepository->getDateTimeValue(Item::VOTING_END()) ?: new DateTimeImmutable()
+            $this->configRepository->getDateTimeValue(Item::VOTING_BEGIN()) ?: null,
+            $this->configRepository->getDateTimeValue(Item::VOTING_END()) ?: null
         );
     }
 }

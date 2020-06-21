@@ -5,43 +5,47 @@
 
 <div clas="row">
     <div class="col top-margin no-padding">
-
-        <div class="alert alert-info" role="alert">
-            Hlasování {if $votingTime->isAfterVoting ()}proběhlo{else}probíhá{/if}
-            v termínu od <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
-        </div>
-
-        {if $votingTime->isBeforeVoting()}
-            <div class="alert alert-success" role="alert">
-                {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
-                Hlasování začne za <strong>{$beginDiff|formatTimeToText}</strong>
-            </div>
-        {elseif $votingTime->isVotingInProgress()}
-            <div class="alert alert-warning" role="alert">
-                {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
-                Do konce hlasování zbývá <strong>{$endDiff|formatTimeToText}</strong>
+        {if $votingTime->getBegin () === null}
+            <div class="alert alert-danger" role="alert">
+                Hlasování nemá nastavený termín.
             </div>
         {else}
-            <div class="alert alert-danger" role="alert">
-                Hlasování již bylo uzavřeno
+            <div class="alert alert-info" role="alert">
+                Hlasování {if $votingTime->isAfterVoting ()}proběhlo{else}probíhá{/if}
+                v termínu od <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
             </div>
-            {if $showResult}
-                <h2>Výsledek hlasování</h2>
-                <ul>
-                    <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
-                    <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotes()}</b> delegátů </li>
-                    <li>pro přijetí návrhu je třeba 3/5 většina, což je minimálně <b>{$votingResult->getMinVotes()}</b> hlasů pro návrh</li>
-                </ul>
 
-                <p n:class="$isResultPositive ? text-success : text-danger">
-                    Hlasování skončilo a byl vyhlášen výsledek<br/>
-                    {$votingResult->getYesCount()} pro návrh ({$votingResult->getYesPercent()} %),
-                    {$votingResult->getNoCount()} proti návrhu,
-                    {$votingResult->getAbstainCount()} se zdrželo (z toho {$votingResult->getNotVotedCount()} nehlasovalo)<br />
-                    <strong>návrh {if $isResultPositive}BYL{else}NEBYL{/if} přijat</strong>
-                </p>
+            {if $votingTime->isBeforeVoting()}
+                <div class="alert alert-success" role="alert">
+                    {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
+                    Hlasování začne za <strong>{$beginDiff|formatTimeToText}</strong>
+                </div>
+            {elseif $votingTime->isVotingInProgress()}
+                <div class="alert alert-warning" role="alert">
+                    {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
+                    Do konce hlasování zbývá <strong>{$endDiff|formatTimeToText}</strong>
+                </div>
+            {else}
+                <div class="alert alert-danger" role="alert">
+                    Hlasování již bylo uzavřeno
+                </div>
+                {if $showResult}
+                    <h2>Výsledek hlasování</h2>
+                    <ul>
+                        <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
+                        <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotes()}</b> delegátů </li>
+                        <li>pro přijetí návrhu je třeba 3/5 většina, což je minimálně <b>{$votingResult->getMinVotes()}</b> hlasů pro návrh</li>
+                    </ul>
+
+                    <p n:class="$isResultPositive ? text-success : text-danger">
+                        Hlasování skončilo a byl vyhlášen výsledek<br/>
+                        {$votingResult->getYesCount()} pro návrh ({$votingResult->getYesPercent()} %),
+                        {$votingResult->getNoCount()} proti návrhu,
+                        {$votingResult->getAbstainCount()} se zdrželo (z toho {$votingResult->getNotVotedCount()} nehlasovalo)<br />
+                        <strong>návrh {if $isResultPositive}BYL{else}NEBYL{/if} přijat</strong>
+                    </p>
+                {/if}
             {/if}
         {/if}
-
     </div>
 </div>

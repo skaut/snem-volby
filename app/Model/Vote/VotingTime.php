@@ -9,10 +9,10 @@ use DateTimeImmutable;
 
 class VotingTime
 {
-    private DateTimeImmutable $begin;
-    private DateTimeImmutable $end;
+    private ?DateTimeImmutable $begin;
+    private ?DateTimeImmutable $end;
 
-    public function __construct(DateTimeImmutable $begin, DateTimeImmutable $end)
+    public function __construct(?DateTimeImmutable $begin, ?DateTimeImmutable $end)
     {
         $this->begin = $begin;
         $this->end   = $end;
@@ -26,12 +26,12 @@ class VotingTime
         return new self($begin, $end);
     }
 
-    public function getBegin() : DateTimeImmutable
+    public function getBegin() : ?DateTimeImmutable
     {
         return $this->begin;
     }
 
-    public function getEnd() : DateTimeImmutable
+    public function getEnd() : ?DateTimeImmutable
     {
         return $this->end;
     }
@@ -40,7 +40,7 @@ class VotingTime
     {
         $now = new DateTimeImmutable();
 
-        return $now < $this->getBegin();
+        return $this->getBegin() === null || $now < $this->getBegin();
     }
 
     public function isVotingInProgress() : bool
@@ -55,15 +55,15 @@ class VotingTime
         return $this->getEnd() < new DateTimeImmutable();
     }
 
-    public function getBeforeInterval() : DateInterval
+    public function getBeforeInterval() : ?DateInterval
     {
-        return $this->getBegin()->diff(new DateTimeImmutable());
+        return $this->getBegin() === null ? null : $this->getBegin()->diff(new DateTimeImmutable());
     }
 
-    public function getToEndInterval() : DateInterval
+    public function getToEndInterval() : ?DateInterval
     {
         $now = new DateTimeImmutable();
 
-        return $now->diff($this->getEnd());
+        return $this->getEnd() === null ? null :$now->diff($this->getEnd());
     }
 }
