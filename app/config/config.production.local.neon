@@ -7,10 +7,10 @@ skautis:
 
 parameters:
     database:
-        host: localhost
-        name: db010534
-        user: us010534
-        password: __CONFIG_DATABASE_PASSWORD__
+        host: snem-volby.mysql.database.azure.com
+        name: snem-volby
+        user: spravce
+        password: iFPa9LuMgzMGiC8ZfEXa
 
     sendEmail: true
     sentry:
