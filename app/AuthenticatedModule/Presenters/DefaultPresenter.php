@@ -9,8 +9,7 @@ use App\AuthenticatedModule\Factories\IVoteFormFactory;
 
 class DefaultPresenter extends BasePresenter
 {
-    /** @var IVoteFormFactory */
-    private $voteFormFactory;
+    private IVoteFormFactory $voteFormFactory;
 
     public function __construct(IVoteFormFactory $voteFormFactory)
     {
