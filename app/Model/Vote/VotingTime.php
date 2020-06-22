@@ -42,7 +42,7 @@ class VotingTime
     {
         $now = new DateTimeImmutable();
 
-        return $this->getBegin() === null || $now <= $this->getBegin();
+        return $this->getBegin() === null || $now < $this->getBegin();
     }
 
     public function isVotingInProgress() : bool
