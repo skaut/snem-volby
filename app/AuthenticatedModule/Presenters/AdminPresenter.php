@@ -10,7 +10,8 @@ use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
-use Model\Delegate\ReadModel\Queries\DelegatesSavedQuery;
+use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
+use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
 
 class AdminPresenter extends BasePresenter
 {
@@ -36,7 +37,8 @@ class AdminPresenter extends BasePresenter
             }
 
             $this->template->setParameters([
-                'delegatesSaved' => $this->queryBus->handle(new DelegatesSavedQuery()),
+                'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
+                'votedDelegatesCount' => $this->queryBus->handle(new VotedDelegatesCountQuery()),
             ]);
 
             return;
@@ -48,7 +50,7 @@ class AdminPresenter extends BasePresenter
 
     public function handleSaveDelegates() : void
     {
-        if (! $this->queryBus->handle(new DelegatesSavedQuery())) {
+        if ($this->queryBus->handle(new DelegatesCountQuery()) === 0) {
             $this->commandBus->handle(new SaveDelegates());
         }
         $this->redirect('this');

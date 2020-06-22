@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Model\Delegate\ReadModel\QueryHandlers;
 
-use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
+use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
 use Model\Delegate\Repositories\IDelegateRepository;
-use Model\Vote\Repositories\IVoteRepository;
 
-final class CheckVoteCountQueryHandler
+final class VotedDelegatesCountQueryHandler
 {
     private IDelegateRepository $delegateRepository;
-    private IVoteRepository $voteRepository;
 
-    public function __construct(IDelegateRepository $delegateRepository, IVoteRepository $voteRepository)
+    public function __construct(IDelegateRepository $delegateRepository)
     {
         $this->delegateRepository = $delegateRepository;
-        $this->voteRepository     = $voteRepository;
     }
 
-    public function __invoke(CheckVoteCountQuery $_) : bool
+    public function __invoke(VotedDelegatesCountQuery $_) : int
     {
-        return $this->delegateRepository->getVotedCount() === $this->voteRepository->getAllVotesCount();
+        return $this->delegateRepository->getVotedCount();
     }
 }
