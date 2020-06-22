@@ -73,7 +73,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
         try {
             if ($this->getUser()->isLoggedIn()) { //prodluzuje přihlášení při každém požadavku
-                $this->userService->isLoggedIn();
+                $this->userService->isLoggedIn(false);
             }
         } catch (AuthenticationException $e) {
             if ($this->getName() !== 'Auth' || $this->params['action'] !== 'skautisLogout') { //pokud jde o odhlaseni, tak to nevadi
