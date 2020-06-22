@@ -13,4 +13,6 @@ interface IDelegateRepository
     public function getDelegate(int $personId) : ?Delegate;
 
     public function getCount() : int;
+
+    public function getVotedCount() : int;
 }

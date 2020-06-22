@@ -34,4 +34,9 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
     {
         return $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::ABSTAIN()]);
     }
+
+    public function getAllVotesCount() : int
+    {
+        return $this->getEntityManager()->getRepository(Vote::class)->count([]);
+    }
 }

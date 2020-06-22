@@ -24,4 +24,13 @@ final class DelegateRepository extends AggregateRepository implements IDelegateR
     {
         return $this->getEntityManager()->getRepository(Delegate::class)->count([]);
     }
+
+    public function getVotedCount() : int
+    {
+        return (int) $this->getEntityManager()->createQueryBuilder()->select('count(d)')
+            ->from(Delegate::class, 'd')
+            ->where('d.votedAt IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
