@@ -7,16 +7,9 @@ namespace App\Utils;
 use DateInterval;
 use DateTimeImmutable;
 
-class Helpers
+final class DateTimeHelpers
 {
-    public const DATE_FORMAT = 'j. n. Y';
-
-    public const DATETIME_FORMAT = 'j. n. Y G:i';
-
-    public static function formatDate(DateTimeImmutable $datetime) : string
-    {
-        return $datetime->format(self::DATE_FORMAT);
-    }
+    private const DATETIME_FORMAT = 'j. n. Y G:i';
 
     public static function formatDateTime(DateTimeImmutable $datetime) : string
     {
