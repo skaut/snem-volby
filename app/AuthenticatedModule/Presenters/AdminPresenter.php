@@ -11,6 +11,7 @@ use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
 use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
+use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
 
 class AdminPresenter extends BasePresenter
 {
@@ -31,13 +32,13 @@ class AdminPresenter extends BasePresenter
         parent::startup();
 
         if ($this->userService->isSuperUser()) {
-
             if (! $this->queryBus->handle(new CheckVoteCountQuery())) {
                 $this->flashMessage('POZOR! Nesedí počet hlasů a počet delegátů, kteří již odhlasovali!', 'danger');
             }
 
             $this->template->setParameters([
                 'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
+                'votedDelegatesCount' => $this->queryBus->handle(new VotedDelegatesCountQuery()),
             ]);
 
             return;

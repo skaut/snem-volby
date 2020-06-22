@@ -11,7 +11,7 @@
     <div class="col-md-3">
         <h2>Delegáti</h2>
         {if $delegatesCount > 0}
-            Seznam delegátů je již načten. Zatím hlasovalo X z {$delegatesCount} načtených delegátů.
+            Seznam delegátů je již načten. Zatím hlasovalo {$votedDelegatesCount} z {$delegatesCount} načtených delegátů.
         {else}
             <a n:href="saveDelegates!" class="btn btn-primary">Stáhnout delegáty</a>
         {/if}
