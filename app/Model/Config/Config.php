@@ -18,14 +18,16 @@ class Config extends Aggregate
      * @ORM\Id()
      * @ORM\Column(type="string_enum")
      *
+     * @var Item
      * @EnumAnnotation(class=Item::class)
      */
-    private Item $item;
+    private $item;
+
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private string $value;
+    private ?string $value;
 
     public function getValue() : ?string
     {
