@@ -21,6 +21,6 @@ final class DelegateVoteTimeQueryHandler
     {
         $delegate = $this->delegateRepository->getDelegate($query->getPersonId());
 
-        return $delegate !== null ? $delegate->getVotedAt() : null;
+        return $delegate->getVotedAt();
     }
 }

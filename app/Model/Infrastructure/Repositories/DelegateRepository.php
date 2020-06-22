@@ -33,7 +33,7 @@ final class DelegateRepository extends AggregateRepository implements IDelegateR
     /**
      * @throws DelegateNotFound
      */
-    public function getDelegate(int $personId) : ?Delegate
+    public function getDelegate(int $personId) : Delegate
     {
         $delegate = $this->getEntityManager()->getRepository(Delegate::class)->findOneBy(['personId' => $personId]);
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Model\Delegate\Repositories;
 
 use Model\Delegate\Delegate;
-use stdClass;
 use Model\Delegate\DelegateNotFound;
+use stdClass;
 
 interface IDelegateRepository
 {
@@ -18,7 +18,7 @@ interface IDelegateRepository
     /**
      * @throws DelegateNotFound
      */
-    public function getDelegate(int $personId) : ?Delegate;
+    public function getDelegate(int $personId) : Delegate;
 
     public function getCount() : int;
 
