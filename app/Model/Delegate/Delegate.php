@@ -43,6 +43,11 @@ class Delegate extends Aggregate
         $this->votedAt   = null;
     }
 
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
     public function getVotedAt() : ?DateTimeImmutable
     {
         return $this->votedAt;

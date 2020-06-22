@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Model\Infrastructure\Repositories;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
 use Model\Delegate\Delegate;
 use Model\Delegate\DelegateAlreadyVoted;
@@ -20,7 +21,10 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
     public function saveUserVote(int $personId, Vote $vote) : void
     {
         $this->getEntityManager()->transactional(function (EntityManager $em) use ($personId, $vote) : void {
-            $delegate = $em->getRepository(Delegate::class)->findOneBy(['personId' => $personId]);
+            $delegateRepository = $em->getRepository(Delegate::class);
+            $delegateId         = $delegateRepository->findOneBy(['personId' => $personId])->getId();
+            $delegate           = $delegateRepository->find($delegateId, LockMode::PESSIMISTIC_WRITE);
+
             assert($delegate instanceof Delegate);
             if ($delegate->getVotedAt() !== null) {
                 throw new DelegateAlreadyVoted();
