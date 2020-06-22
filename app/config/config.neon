@@ -23,7 +23,7 @@ application:
         maxLen: 500
 
 console:
-    url: https://snem.skauting.cz
+    url: https://zmenastanov.skaut.cz
     lazy: true
     helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
     helpers:
