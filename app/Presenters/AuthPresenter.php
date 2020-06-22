@@ -131,7 +131,7 @@ class AuthPresenter extends BasePresenter
     {
         $this->getUser()->logout(true);
         if (isset($this->getRequest()->getPost()['skautIS_Logout'])) {
-            $this->flashMessage('Byl jsi úspěšně odhlášen.');
+            $this->flashMessage('Odhlášení proběhlo úspěšně.');
         } else {
             $this->flashMessage('Odhlášení ze skautisu se nezdařilo', 'danger');
         }

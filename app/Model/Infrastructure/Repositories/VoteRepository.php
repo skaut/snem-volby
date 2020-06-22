@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace Model\Infrastructure\Repositories;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use Model\Delegate\Delegate;
+use Model\Delegate\DelegateAlreadyVoted;
 use Model\Delegate\Repositories\IDelegateRepository;
 use Model\Vote\Choice;
 use Model\Vote\Repositories\IVoteRepository;
 use Model\Vote\Vote;
 use Model\Vote\VotingResult;
+use function assert;
 
 final class VoteRepository extends AggregateRepository implements IVoteRepository
 {
-    public function saveUserVote(Vote $vote, Delegate $delegate) : void
+    public function saveUserVote(int $personId, Vote $vote) : void
     {
-        $this->getEntityManager()->transactional(function (EntityManager $em) use ($vote, $delegate) : void {
+        $this->getEntityManager()->transactional(function (EntityManager $em) use ($personId, $vote) : void {
+            $delegate = $em->getRepository(Delegate::class)->findOneBy(['personId' => $personId]);
+            assert($delegate instanceof Delegate);
+            if ($delegate->getVotedAt() !== null) {
+                throw new DelegateAlreadyVoted();
+            }
+
+            $delegate->setVotedAt(new DateTimeImmutable());
+
             $em->persist($vote);
             $em->persist($delegate);
         });

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\AuthenticatedModule\Components;
 
 use App\AuthenticatedModule\Forms\BaseForm;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use eGen\MessageBus\Bus\CommandBus;
 use eGen\MessageBus\Bus\QueryBus;
 use InvalidArgumentException;
 use Model\Config\ReadModel\Queries\VotingPublishedQuery;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
+use Model\Delegate\DelegateAlreadyVoted;
 use Model\Delegate\ReadModel\Queries\DelegateVoteTimeQuery;
 use Model\UserService;
 use Model\Vote\Choice;
@@ -78,8 +78,8 @@ final class VoteForm extends BaseControl
             try {
                 $this->commandBus->handle(new SaveVote($vote));
                 $this->flashMessage('Tvůj hlas "' . $voteName . '" byl úspěšně uložen.', 'success');
-            } catch (UniqueConstraintViolationException $e) {
-                $this->flashMessage('Tvůj hlas byl odeslán již dříve.', 'danger');
+            } catch (DelegateAlreadyVoted $e) {
+                $this->flashMessage('Tvoje hlasování již bylo dříve zaznamenáno. Nelze hlasovat vícekrát!', 'danger');
             } catch (Throwable $e) {
                 $this->flashMessage('Hlasování bylo neúspěšné.', 'danger');
             }
