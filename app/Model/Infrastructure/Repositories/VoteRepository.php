@@ -6,9 +6,11 @@ namespace Model\Infrastructure\Repositories;
 
 use Doctrine\ORM\EntityManager;
 use Model\Delegate\Delegate;
+use Model\Delegate\Repositories\IDelegateRepository;
 use Model\Vote\Choice;
 use Model\Vote\Repositories\IVoteRepository;
 use Model\Vote\Vote;
+use Model\Vote\VotingResult;
 
 final class VoteRepository extends AggregateRepository implements IVoteRepository
 {
@@ -20,23 +22,20 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
         });
     }
 
-    public function getYesVoteCount() : int
-    {
-        return $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::YES()]);
-    }
-
-    public function getNoVoteCount() : int
-    {
-        return $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::NO()]);
-    }
-
-    public function getAbstainVoteCount() : int
-    {
-        return $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::ABSTAIN()]);
-    }
-
     public function getAllVotesCount() : int
     {
         return $this->getEntityManager()->getRepository(Vote::class)->count([]);
+    }
+
+    public function getVotingResult(IDelegateRepository $delegateRepository) : VotingResult
+    {
+        return $this->getEntityManager()->transactional(function (EntityManager $em) : VotingResult {
+            return new VotingResult(
+                $em->getRepository(Vote::class)->count(['choice' => Choice::YES()]),
+                $em->getRepository(Vote::class)->count(['choice' => Choice::NO()]),
+                $em->getRepository(Vote::class)->count(['choice' => Choice::ABSTAIN()]),
+                $em->getRepository(Delegate::class)->count([])
+            );
+        });
     }
 }

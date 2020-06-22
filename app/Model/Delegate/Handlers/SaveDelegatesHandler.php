@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Model\Delegate\Handlers;
 
 use Model\Delegate\Commands\SaveDelegates;
-use Model\Delegate\Delegate;
 use Model\Delegate\Repositories\IDelegateRepository;
 use Model\UserService;
 
@@ -23,9 +22,6 @@ final class SaveDelegatesHandler
 
     public function __invoke(SaveDelegates $command) : void
     {
-        $delegates = $this->userService->getValidDelegates();
-        foreach ($delegates as $delegate) {
-            $this->delegateRepository->saveDelegate(new Delegate($delegate->ID_Person));
-        }
+        $this->delegateRepository->saveDelegates($this->userService->getValidDelegates());
     }
 }

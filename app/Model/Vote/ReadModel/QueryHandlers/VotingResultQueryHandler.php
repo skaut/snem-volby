@@ -23,11 +23,6 @@ class VotingResultQueryHandler
 
     public function __invoke(VotingResultQuery $query) : VotingResult
     {
-        return new VotingResult(
-            $this->voteRepository->getYesVoteCount(),
-            $this->voteRepository->getNoVoteCount(),
-            $this->voteRepository->getAbstainVoteCount(),
-            $this->delegateRepository->getCount()
-        );
+        return $this->voteRepository->getVotingResult($this->delegateRepository);
     }
 }
