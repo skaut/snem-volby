@@ -40,19 +40,19 @@ class VotingTime
     {
         $now = new DateTimeImmutable();
 
-        return $this->getBegin() === null || $now < $this->getBegin();
+        return $this->getBegin() === null || $now <= $this->getBegin();
     }
 
     public function isVotingInProgress() : bool
     {
         $now = new DateTimeImmutable();
 
-        return $this->getBegin() < $now && $now < $this->getEnd();
+        return $this->getBegin() <= $now && $now < $this->getEnd();
     }
 
     public function isAfterVoting() : bool
     {
-        return $this->getEnd() < new DateTimeImmutable();
+        return $this->getEnd() <= new DateTimeImmutable();
     }
 
     public function getBeforeInterval() : ?DateInterval
