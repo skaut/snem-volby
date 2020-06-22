@@ -6,6 +6,8 @@ namespace Model\Vote;
 
 use DateInterval;
 use DateTimeImmutable;
+use function max;
+use function min;
 
 class VotingTime
 {
@@ -57,13 +59,13 @@ class VotingTime
 
     public function getBeforeInterval() : ?DateInterval
     {
-        return $this->getBegin() === null ? null : $this->getBegin()->diff(new DateTimeImmutable());
+        return $this->getBegin() === null ? null : $this->getBegin()->diff(min(new DateTimeImmutable(), $this->getBegin()));
     }
 
     public function getToEndInterval() : ?DateInterval
     {
         $now = new DateTimeImmutable();
 
-        return $this->getEnd() === null ? null :$now->diff($this->getEnd());
+        return $this->getEnd() === null ? null :$now->diff(max($now, $this->getEnd()));
     }
 }
