@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace Model\Infrastructure\Repositories;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Model\Delegate\Delegate;
 use Model\Delegate\Repositories\IDelegateRepository;
+use stdClass;
 
 final class DelegateRepository extends AggregateRepository implements IDelegateRepository
 {
-    public function saveDelegate(Delegate $delegate) : void
+    /**
+     * @param stdClass[] $delegates
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function saveDelegates(array $delegates) : void
     {
-        $this->getEntityManager()->persist($delegate);
-        $this->getEntityManager()->flush($delegate);
+        $this->getEntityManager()->transactional(function (EntityManager $em) use ($delegates) : void {
+            foreach ($delegates as $delegate) {
+                $this->getEntityManager()->persist(new Delegate($delegate->ID_Person));
+            }
+            $this->getEntityManager()->flush();
+        });
     }
 
     public function getDelegate(int $personId) : ?Delegate

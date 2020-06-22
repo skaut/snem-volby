@@ -31,13 +31,14 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
     {
         $this->getEntityManager()->beginTransaction();
 
-        return new VotingResult(
+        $res = new VotingResult(
             $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::YES()]),
             $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::NO()]),
             $this->getEntityManager()->getRepository(Vote::class)->count(['choice' => Choice::ABSTAIN()]),
             $delegateRepository->getCount()
         );
-
         $this->getEntityManager()->commit();
+
+        return $res;
     }
 }
