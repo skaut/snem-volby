@@ -120,14 +120,9 @@ final class UserService
     /**
      * kontroluje jestli je přihlášení platné
      */
-    public function isLoggedIn() : bool
+    public function isLoggedIn(bool  $hardCheck = false) : bool
     {
-        return $this->skautis->getUser()->isLoggedIn();
-    }
-
-    public function updateLogoutTime() : void
-    {
-        $this->skautis->getUser()->updateLogoutTime()->getLogoutDate();
+        return $this->skautis->getUser()->isLoggedIn($hardCheck);
     }
 
     public function isSuperUser() : bool
