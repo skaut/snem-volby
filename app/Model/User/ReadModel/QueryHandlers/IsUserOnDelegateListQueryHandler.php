@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Model\User\ReadModel\QueryHandlers;
 
+use Model\Delegate\DelegateNotFound;
 use Model\Delegate\Repositories\IDelegateRepository;
 use Model\User\ReadModel\Queries\IsUserOnDelegateListQuery;
 
@@ -18,6 +19,12 @@ final class IsUserOnDelegateListQueryHandler
 
     public function __invoke(IsUserOnDelegateListQuery $query) : bool
     {
-        return $this->delegateRepository->getDelegate($query->getPersonId()) !== null;
+        try {
+            $this->delegateRepository->getDelegate($query->getPersonId());
+
+            return true;
+        } catch (DelegateNotFound $exc) {
+            return false;
+        }
     }
 }

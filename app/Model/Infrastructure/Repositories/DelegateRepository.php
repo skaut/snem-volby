@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Model\Delegate\Delegate;
+use Model\Delegate\DelegateNotFound;
 use Model\Delegate\Repositories\IDelegateRepository;
 use stdClass;
 
@@ -29,9 +30,18 @@ final class DelegateRepository extends AggregateRepository implements IDelegateR
         });
     }
 
-    public function getDelegate(int $personId) : ?Delegate
+    /**
+     * @throws DelegateNotFound
+     */
+    public function getDelegate(int $personId) : Delegate
     {
-        return $this->getEntityManager()->getRepository(Delegate::class)->findOneBy(['personId' => $personId]);
+        $delegate = $this->getEntityManager()->getRepository(Delegate::class)->findOneBy(['personId' => $personId]);
+
+        if ($delegate === null) {
+            throw new DelegateNotFound();
+        }
+
+        return $delegate;
     }
 
     public function getCount() : int
