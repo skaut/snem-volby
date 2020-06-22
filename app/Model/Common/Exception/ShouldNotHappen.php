@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Model\Common;
 
+use LogicException;
+
 /**
  * This exception shouldn't be catched as it means that there is logical error in app (e.g. unexpected enum value)
  */
