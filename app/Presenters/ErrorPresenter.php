@@ -46,18 +46,18 @@ class ErrorPresenter extends Presenter
     {
         if ($exception instanceof SkautisMaintenance || $exception instanceof WsdlException && $this->isSkautisUnavailable($exception)) {
             $this->flashMessage('Nepodařilo se připojit ke Skautisu. Zkuste to prosím za chvíli nebo zkontrolujte, zda neprobíhá jeho údržba.', 'danger');
-            $this->redirect(':Default:');
+            $this->redirect(':Homepage:');
         }
 
         if ($exception instanceof AuthenticationException) {//vypršelo přihlášení do SkautISu
             $this->getUser()->logout(true);
             $this->flashMessage('Vypršelo přihlášení do skautISu', 'danger');
-            $this->redirect(':Default:');
+            $this->redirect(':Homepage:');
         }
 
         if ($exception instanceof PermissionException) {
             $this->flashMessage($exception->getMessage(), 'danger');
-            $this->redirect(':Default:');
+            $this->redirect(':Homepage:');
         }
 
         if ($exception instanceof MissingCurrentRole) {

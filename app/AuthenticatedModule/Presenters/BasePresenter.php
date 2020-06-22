@@ -33,7 +33,7 @@ abstract class BasePresenter extends \App\BasePresenter
             if ($this->isAjax()) {
                 $this->forward(':Auth:ajax', ['backlink' => $this->backlink]);
             } else {
-                $this->redirect(':Default:', ['backlink' => $this->backlink]);
+                $this->redirect(':Homepage:', ['backlink' => $this->backlink]);
             }
         }
 
