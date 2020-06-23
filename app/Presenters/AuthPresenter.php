@@ -57,7 +57,7 @@ class AuthPresenter extends BasePresenter
                 (int) $post['skautIS_IDUnit']
             );
 
-            if (! $this->userService->isLoggedIn()) {
+            if (! $this->userService->isLoggedIn(false)) {
                 throw new AuthenticationException('Nemáte platné přihlášení do skautisu');
             }
 

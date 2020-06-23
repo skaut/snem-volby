@@ -37,7 +37,11 @@ abstract class BasePresenter extends \App\BasePresenter
             }
         }
 
-        $this->userService->updateLogoutTime();
+        if (! $this->userService->isLoggedIn(true)) {
+            $this->getUser()->logout(true);
+            $this->flashMessage('Vypršelo přihlášení do skautISu', 'danger');
+            $this->redirect(':Homepage:');
+        }
 
         $this->template->setParameters([
             'isDelegate'=>$this->userService->isDelegate(),
