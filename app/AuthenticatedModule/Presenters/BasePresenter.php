@@ -43,8 +43,13 @@ abstract class BasePresenter extends \App\BasePresenter
             $this->redirect(':Homepage:');
         }
 
+        $isDelegate = $this->userService->isDelegate();
+        if (! $isDelegate) {
+            $this->flashMessage('K rozhodnému dni (před začátkem elektronického hlasování) jste nebyli řádným delegátem Sněmu, proto nyní nemůžete hlasovat.', 'danger');
+        }
+
         $this->template->setParameters([
-            'isDelegate'=>$this->userService->isDelegate(),
+            'isDelegate'=>$isDelegate,
             'isSuperuser'=>$this->userService->isSuperUser(),
         ]);
     }

@@ -66,7 +66,7 @@ class AuthPresenter extends BasePresenter
             $user->setExpiration('+ 29 minutes'); // nastavíme expiraci
             $roles = $this->userService->getRelatedSkautisRoles();
             if (empty($roles)) {
-                throw new AuthenticationException('Nemáte roli delegáta sněmu, tedy se nemůžete přihlásit!');
+                throw new AuthenticationException('Nemáte roli delegáta Sněmu, proto se nemůžete přihlásit! Hlasovat mohou jen řádní delegáti. Náhradníci ani ostatní osoby hlasovat nemohou.');
             }
             $user->login(new Identity(
                 $this->userService->getUserDetail()->ID,

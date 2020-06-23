@@ -29,6 +29,11 @@
                         data-btn-ok-label="Závazně odeslat hlas"
                         data-btn-cancel-label="Storno"><i class="fas fa-ban"></i> Zdržuji se</button>
             {/form}
+            <br />
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> <b>Upozornění</b>: Pro úspěšné hlasování musíte kliknout na příslušné tlačítko a následně toto potvrdit kliknutím na "Závazně odeslat hlas". Úspěšné přijetí vašeho hlasu bude potvrzeno zobrazením informační hlášky.
+            </div>
+
         {else}
             Již bylo hlasováno {$userVoteTime|formatdatetime} (hlasovat znovu nelze).
         {/if}
