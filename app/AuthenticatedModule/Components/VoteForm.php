@@ -43,12 +43,18 @@ final class VoteForm extends BaseControl
         $personId = $this->userService->getUserDetail()->ID_Person;
 
         $this->template->setFile(__DIR__ . '/templates/VoteForm.latte');
-        $this->template->userVoteTime = $this->queryBus->handle(new DelegateVoteTimeQuery($personId));
-        $this->template->votingTime   = $this->queryBus->handle(new VotingTimeQuery());
         $this->template->setParameters([
             'isUserDelegate'    => $this->isUserDelegate,
-            'isResultPublished' => $this->queryBus->handle(new VotingPublishedQuery()) !== null,
         ]);
+
+        if ($this->isUserDelegate) {
+            $this->template->setParameters([
+                'userVoteTime' => $this->queryBus->handle(new DelegateVoteTimeQuery($personId)),
+                'isResultPublished' => $this->queryBus->handle(new VotingPublishedQuery()) !== null,
+                'votingTime'   => $this->queryBus->handle(new VotingTimeQuery()),
+            ]);
+        }
+
         $this->template->render();
     }
 
