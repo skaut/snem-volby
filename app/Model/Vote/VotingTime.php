@@ -54,7 +54,7 @@ class VotingTime
 
     public function isAfterVoting() : bool
     {
-        return $this->getEnd() <= new DateTimeImmutable();
+        return $this->getEnd() === null ? false : $this->getEnd() <= new DateTimeImmutable();
     }
 
     public function getBeforeInterval() : ?DateInterval
