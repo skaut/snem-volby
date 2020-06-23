@@ -53,9 +53,12 @@ final class UserService
         $res = $this->skautis->user->UserRoleAll(['ID_User' => $this->getUserDetail()->ID]);
         $res = $res instanceof stdClass ? [] : $res;
         $res = array_filter($res, function ($role) {
+            if (! property_exists($role, 'Key')) {
+                return false;
+            }
             $isDelegate = property_exists($role, 'ID_Group') && $role->Key === 'EventCongress' && $role->ID_Group === $this->congressGroupId;
 
-            return property_exists($role, 'Key') && ($role->Key === 'superadmin' || $isDelegate);
+            return $isDelegate || $role->Key === 'superadmin';
         });
 
         return $res;
