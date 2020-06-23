@@ -90,7 +90,7 @@ final class VoteForm extends BaseControl
                 $this->flashMessage('Hlasování bylo neúspěšné.', 'danger');
             }
 
-            $this->redrawControl();
+            $this->redirect('this');
         };
 
         return $form;
