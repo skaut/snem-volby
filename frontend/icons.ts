@@ -8,7 +8,8 @@ library.add(
     fas.faCheck,
     fas.faTimes,
     fas.faBan,
-    far.faClock
+    far.faClock,
+    fas.faExclamationTriangle
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';
