@@ -13,6 +13,8 @@ Aplikace umožňuje oprávněným delegátkám a delegátům Valného sněmu 202
 V systému lze nastavit čas určený pro hlasování (reálně probíhá několik dní), před začátkem samotného hlasování je stáhnut seznam řádných delegátek a delegátů VSJ 2020 ze skautISu (aby během voleb nemohlo dojít ke změně zaregistrovaných oprávněných hlasujících), a pak již mohou oprávněné osoby hlasovat. Při hlasování se zaznamená informace, že daná osoba hlasovala (každý smí hlasovat jen jednou) a zaznamená se daný hlas (pro / proti / zdržel se). Systém nijak neukládá informaci o tom, jak který delegát hlasoval. Je tak už v této fázi zajištěna úplná tajnost hlasování (což je i příprava na druhou fázi, kde tajnost volby bude nutností).
 Po skončení hlasování odpovědný zpravodaj Výkonné rady zveřejní výsledek hlasování o změně Stanov (systém zobrazí počet hlasujících, počet delegátů pro návrh s hlídáním 3/5 většiny, počet proti i počet zdržujících se či neúčastnících se hlasování).
 
+Kompletní release verze webové aplikace, jak zajišťovala hlasování o změně Stanov je dostupná na https://github.com/skaut/snem-volby/releases/tag/volby-zmenastanov
+
 ### Fáze 2 (připravuje se)
 V případě, že bude schválena mimořádná změna Stanov a bude umožněna vzdálená volba do ústředních orgánů, pak bude tato část projektu realizována v průběhu července až poloviny září 2020 a zajistí možnost elektronických voleb.
 
