@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use eGen\MessageBus\Bus\CommandBus;
 use Model\AuthService;
+use Model\User\Commands\SaveFirstLogin;
 use Model\User\Exception\UserHasNoRole;
 use Model\UserService;
 use Nette\Security\Identity;
@@ -16,10 +18,13 @@ class AuthPresenter extends BasePresenter
 {
     protected AuthService $authService;
 
-    public function __construct(AuthService $as)
+    protected CommandBus $commandBus;
+
+    public function __construct(AuthService $as, CommandBus $commandBus)
     {
         parent::__construct();
         $this->authService = $as;
+        $this->commandBus  = $commandBus;
     }
 
     /**
@@ -72,6 +77,7 @@ class AuthPresenter extends BasePresenter
                 $this->userService->getUserDetail()->ID,
                 $roles,
             ));
+            $this->commandBus->handle(new SaveFirstLogin($this->userService->getUserPersonId()));
             $this->setupDefaultRole();
 
             if ($ReturnUrl !== null) {

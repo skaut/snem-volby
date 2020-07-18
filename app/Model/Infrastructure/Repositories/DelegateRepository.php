@@ -57,4 +57,15 @@ final class DelegateRepository extends AggregateRepository implements IDelegateR
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function setDelegateFirstLogin(int $personId) : void
+    {
+        $delegate = $this->getDelegate($personId);
+        if (! $delegate->setFirstLoginAt()) {
+            return;
+        }
+
+        $this->getEntityManager()->persist($delegate);
+        $this->getEntityManager()->flush();
+    }
 }
