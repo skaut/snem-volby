@@ -16,10 +16,11 @@ class Vote extends Aggregate
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="vote_id")
+     *
+     * @var VoteId
      */
-    private int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string_enum")
@@ -31,6 +32,7 @@ class Vote extends Aggregate
     public function __construct(Choice $choice)
     {
         $this->choice = $choice;
+        $this->id     = VoteId::generate();
     }
 
     public function getChoice() : Choice
