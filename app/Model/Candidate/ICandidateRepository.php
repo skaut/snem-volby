@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Model\Candidate\Repositories;
 
-use stdClass;
+use Model\DTO\Candidate\SkautisCandidate;
 
 interface ICandidateRepository
 {
     /**
-     * @param stdClass[] $candidates
+     * @param SkautisCandidate[] $candidates
      */
     public function saveCandidates(array $candidates) : void;
 

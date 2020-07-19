@@ -11,31 +11,34 @@ use Model\Candidate\Candidate;
 use Model\Candidate\CandidateFunction;
 use Model\Candidate\FunctionNotFound;
 use Model\Candidate\Repositories\ICandidateRepository;
-use stdClass;
-use function array_column;
+use Model\DTO\Candidate\SkautisCandidate;
+use function assert;
 
 final class CandidateRepository extends AggregateRepository implements ICandidateRepository
 {
     /**
-     * @param stdClass[] $candidates
+     * @param SkautisCandidate[] $candidates
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
     public function saveCandidates(array $candidates) : void
     {
-        // index array by ID
-        $candidates = array_column($candidates, null, 'ID');
-
         $fillCandidateWith = [];
         $candidateObjs     = [];
         foreach ($candidates as $candidate) {
-            $candidateObjs[$candidate->ID] = new Candidate($candidate->ID, $candidate->ID_Person, $candidate->Person, $this->getFunction($candidate->ID_FunctionType));
-            if (! isset($candidate->ID_CandidateWith) || $candidate->ID_CandidateWith === null) {
+            assert($candidate instanceof SkautisCandidate);
+            $candidateObjs[$candidate->getId()] = new Candidate(
+                $candidate->getId(),
+                $candidate->getPersonId(),
+                $candidate->getName(),
+                $this->getFunction($candidate->getFunctionId())
+            );
+            if (! $candidate->isCandidateWith()) {
                 continue;
             }
 
-            $fillCandidateWith[$candidate->ID] = $candidate->ID_CandidateWith;
+            $fillCandidateWith[$candidate->getId()] = $candidate->getCandidateWith();
         }
         // set relationship for candidate pairs
         foreach ($fillCandidateWith as $primaryId => $secondaryId) {

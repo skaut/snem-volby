@@ -8,7 +8,7 @@ use eGen\MessageBus\Bus\QueryBus;
 use Model\Candidate\Commands\SaveCandidates;
 use Model\Candidate\ReadModel\Queries\CandidatesCountQuery;
 use Model\Candidate\Repositories\ICandidateRepository;
-use Model\DTO\Cashbook\SkautisCandidate;
+use Model\DTO\Candidate\SkautisCandidate;
 use Skautis\Skautis;
 
 final class SaveCandidatesHandler
