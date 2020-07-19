@@ -73,6 +73,7 @@ services:
     - SimpleBus\Message\Logging\LoggingMiddleware(level: 'debug')
     - Model\AuthService
     - Model\UserService(%congress.groupId%, %congress.eventId%)
+    - Model\Candidate\CandidateService(%congress.eventId%)
     - Model\Skautis\SkautisMaintenanceChecker
 
     saveCandidatesHandler:
