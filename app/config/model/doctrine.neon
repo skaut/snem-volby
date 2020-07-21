@@ -32,6 +32,9 @@ dbal:
             chronos_date:
                 class: Warhuhn\Doctrine\DBAL\Types\ChronosDateType
                 commented: true
+            vote_id:
+                class: Model\Infrastructure\Types\VoteIdType
+                commented: true
 
 services:
     - Model\Infrastructure\EntityManagerFactory(%debugMode%, %tempDir%)
