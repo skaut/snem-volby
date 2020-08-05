@@ -34,13 +34,19 @@ class Delegate extends Aggregate
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
+    private ?DateTimeImmutable $firstLoginAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
     private ?DateTimeImmutable $votedAt;
 
     public function __construct(int $personId)
     {
-        $this->personId  = $personId;
-        $this->createdAt = new DateTimeImmutable();
-        $this->votedAt   = null;
+        $this->personId     = $personId;
+        $this->createdAt    = new DateTimeImmutable();
+        $this->firstLoginAt = null;
+        $this->votedAt      = null;
     }
 
     public function getId() : int
@@ -56,5 +62,16 @@ class Delegate extends Aggregate
     public function setVotedAt(DateTimeImmutable $votedAt) : void
     {
         $this->votedAt = $votedAt;
+    }
+
+    public function setFirstLoginAt() : bool
+    {
+        if ($this->firstLoginAt === null) {
+            $this->firstLoginAt = new DateTimeImmutable();
+
+            return true;
+        }
+
+        return false;
     }
 }
