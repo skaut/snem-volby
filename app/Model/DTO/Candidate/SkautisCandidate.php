@@ -10,15 +10,15 @@ class SkautisCandidate
     private int $personId;
     private string $name;
     private int $functionId;
-    private ?int $candidateWith;
+    private ?int $runningMateId;
 
-    public function __construct(int $id, int $personId, string $name, int $functionId, ?int $candidateWith)
+    public function __construct(int $id, int $personId, string $name, int $functionId, ?int $runningMateId)
     {
         $this->id            = $id;
         $this->personId      = $personId;
         $this->name          = $name;
         $this->functionId    = $functionId;
-        $this->candidateWith = $candidateWith;
+        $this->runningMateId = $runningMateId;
     }
 
     public function getId() : int
@@ -41,13 +41,13 @@ class SkautisCandidate
         return $this->functionId;
     }
 
-    public function getCandidateWith() : ?int
+    public function getRunningMateId() : ?int
     {
-        return $this->candidateWith;
+        return $this->runningMateId;
     }
 
-    public function isCandidateWith() : bool
+    public function hasRunningMate() : bool
     {
-        return $this->candidateWith !== null;
+        return $this->runningMateId !== null;
     }
 }

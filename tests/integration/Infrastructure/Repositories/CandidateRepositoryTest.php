@@ -51,7 +51,7 @@ class CandidateRepositoryTest extends IntegrationTest
         $this->tester->seeInDatabase(self::TABLE, [
             'id' => $candidate->getId(),
             'function_id' => $candidate->getFunctionId(),
-            'candidate_with' => $candidate->getCandidateWith(),
+            'candidate_with' => $candidate->getRunningMateId(),
             'person_id' => $candidate->getPersonId(),
             'name' => $candidate->getName(),
         ]);
@@ -83,7 +83,7 @@ class CandidateRepositoryTest extends IntegrationTest
         $this->tester->seeInDatabase(self::TABLE, [
             'id' => $nacelnik->getId(),
             'function_id' => $nacelnik->getFunctionId(),
-            'candidate_with' => $nacelnik->getCandidateWith(),
+            'candidate_with' => $nacelnik->getRunningMateId(),
             'person_id' => $nacelnik->getPersonId(),
             'name' => $nacelnik->getName(),
         ]);

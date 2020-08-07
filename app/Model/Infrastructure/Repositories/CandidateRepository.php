@@ -34,11 +34,11 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
                 $candidate->getName(),
                 $this->getFunction($candidate->getFunctionId())
             );
-            if (! $candidate->isCandidateWith()) {
+            if (! $candidate->hasRunningMate()) {
                 continue;
             }
 
-            $fillCandidateWith[$candidate->getId()] = $candidate->getCandidateWith();
+            $fillCandidateWith[$candidate->getId()] = $candidate->getRunningMateId();
         }
         // set relationship for candidate pairs
         foreach ($fillCandidateWith as $primaryId => $secondaryId) {
