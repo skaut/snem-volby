@@ -21,7 +21,7 @@ final class CandidatesBox extends BaseControl
         $this->template->setFile(__DIR__ . '/templates/CandidatesBox.latte');
 
         $this->template->setParameters([
-            'candidates' => $this->queryBus->handle(new FunctionsCandidatesCountsQuery())
+            'candidates' => $this->queryBus->handle(new FunctionsCandidatesCountsQuery()),
         ]);
 
         $this->template->render();

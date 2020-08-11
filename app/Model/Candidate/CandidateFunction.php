@@ -42,6 +42,7 @@ class CandidateFunction
     /**
      * @ORM\OneToMany(targetEntity="Candidate", mappedBy="function")
      * @ORM\JoinColumn(name="id", referencedColumnName="function_id")
+     * @var Candidate[]|Collection
      */
     private Collection $candidates;
 }

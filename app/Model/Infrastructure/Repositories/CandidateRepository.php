@@ -58,9 +58,13 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
         return $this->getEntityManager()->getRepository(Candidate::class)->count([]);
     }
 
-    public function getFunctionsCounts() : array
+    /**
+     * @return string[][]
+     */
+    public function getFunctionCandidatesCounts() : array
     {
         $qb = $this->getEntityManager()->getRepository(CandidateFunction::class)->createQueryBuilder('f');
+
         return $qb
             ->select('f.label, count(c) as count')
             ->leftJoin('f.candidates', 'c')

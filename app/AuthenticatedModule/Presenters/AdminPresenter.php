@@ -18,7 +18,6 @@ use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
 use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
 use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
-use phpDocumentor\Reflection\Types\This;
 
 class AdminPresenter extends BasePresenter
 {
@@ -92,8 +91,8 @@ class AdminPresenter extends BasePresenter
         return $this->publishResultFactory->create();
     }
 
-     protected function createComponentCandidatesBox() : CandidatesBox
-     {
-         return $this->candidatesBoxFactory->create();
-     }
+    protected function createComponentCandidatesBox() : CandidatesBox
+    {
+        return $this->candidatesBoxFactory->create();
+    }
 }

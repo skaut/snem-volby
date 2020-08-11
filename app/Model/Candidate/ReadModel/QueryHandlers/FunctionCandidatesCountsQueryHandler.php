@@ -16,8 +16,11 @@ final class FunctionCandidatesCountsQueryHandler
         $this->candidateRepository = $candidateRepository;
     }
 
+    /**
+     * @return string[][]
+     */
     public function __invoke(FunctionsCandidatesCountsQuery $_x) : array
     {
-        return $this->candidateRepository->getFunctionsCounts();
+        return $this->candidateRepository->getFunctionCandidatesCounts();
     }
 }
