@@ -14,4 +14,6 @@ interface ICandidateRepository
     public function saveCandidates(array $candidates) : void;
 
     public function getCount() : int;
+
+    public function getFunctionsCounts() : array;
 }

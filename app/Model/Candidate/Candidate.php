@@ -29,7 +29,7 @@ class Candidate
     private string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CandidateFunction")
+     * @ORM\ManyToOne(targetEntity="CandidateFunction", inversedBy="candidates")
      * @ORM\JoinColumn(name="function_id", referencedColumnName="id", nullable=false)
      */
     private CandidateFunction $function;

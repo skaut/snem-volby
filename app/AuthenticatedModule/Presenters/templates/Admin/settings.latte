@@ -11,7 +11,7 @@
     <div class="col-md-4">
         <h2>Kandidáti</h2>
         {if $candidatesCount > 0}
-            Seznam kandidátů je již načten.
+            {control candidatesBox}
         {else}
             <a n:href="saveCandidates!" class="btn btn-primary">Stáhnout kandidáty</a>
         {/if}

@@ -58,6 +58,19 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
         return $this->getEntityManager()->getRepository(Candidate::class)->count([]);
     }
 
+    public function getFunctionsCounts() : array
+    {
+        $qb = $this->getEntityManager()->getRepository(CandidateFunction::class)->createQueryBuilder('f');
+        return $qb
+            ->select('f.label, count(c) as count')
+            ->leftJoin('f.candidates', 'c')
+            ->groupBy('f')
+            ->where('f.show = true')
+            ->orderBy('f.order')
+            ->getQuery()
+            ->getResult();
+    }
+
     private function getFunction(int $functionId) : CandidateFunction
     {
         $function = $this->getEntityManager()->getRepository(CandidateFunction::class)->find($functionId);
