@@ -15,5 +15,8 @@ interface ICandidateRepository
 
     public function getCount() : int;
 
+    /**
+     * @return string[][]
+     */
     public function getFunctionCandidatesCounts() : array;
 }
