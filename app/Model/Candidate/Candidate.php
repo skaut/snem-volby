@@ -36,9 +36,9 @@ class Candidate
 
     /**
      * @ORM\OneToOne(targetEntity="Candidate")
-     * @ORM\JoinColumn(name="candidate_with", referencedColumnName="id")
+     * @ORM\JoinColumn(name="running_mate", referencedColumnName="id")
      */
-    private ?self $candidateWith;
+    private ?self $runningMate;
 
     public function __construct(int $id, int $personId, string $name, CandidateFunction $function)
     {
@@ -48,8 +48,8 @@ class Candidate
         $this->function = $function;
     }
 
-    public function setCandidateWith(self $candidateWith) : void
+    public function setRunningMate(self $runningMate) : void
     {
-        $this->candidateWith = $candidateWith;
+        $this->runningMate = $runningMate;
     }
 }

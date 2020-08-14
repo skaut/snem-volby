@@ -27,17 +27,17 @@ EOF);
 CREATE TABLE candidate (
     id INT NOT NULL,
     function_id INT NOT NULL,
-    candidate_with INT DEFAULT NULL,
+    running_mate INT DEFAULT NULL,
     person_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     INDEX IDX_C8B28E4467048801 (function_id),
-    UNIQUE INDEX UNIQ_C8B28E44A0B9DAAC (candidate_with),
+    UNIQUE INDEX UNIQ_C8B28E442A13057C (running_mate),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB
 EOF);
 
         $this->addSql('ALTER TABLE candidate ADD CONSTRAINT FK_C8B28E4467048801 FOREIGN KEY (function_id) REFERENCES candidate_function (id)');
-        $this->addSql('ALTER TABLE candidate ADD CONSTRAINT FK_C8B28E44A0B9DAAC FOREIGN KEY (candidate_with) REFERENCES candidate (id)');
+        $this->addSql('ALTER TABLE candidate ADD CONSTRAINT FK_C8B28E44A0B9DAAC FOREIGN KEY (running_mate) REFERENCES candidate (id)');
 
         $this->addSql(<<<EOF
 INSERT INTO `candidate_function` (`id`, `label`, `max_count`, `show`, `order`) VALUES

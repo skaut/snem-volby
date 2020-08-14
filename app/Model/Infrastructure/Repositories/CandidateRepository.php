@@ -24,8 +24,8 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
      */
     public function saveCandidates(array $candidates) : void
     {
-        $fillCandidateWith = [];
-        $candidateObjs     = [];
+        $fillRunningMates = [];
+        $candidateObjs    = [];
         foreach ($candidates as $candidate) {
             assert($candidate instanceof SkautisCandidate);
             $candidateObjs[$candidate->getId()] = new Candidate(
@@ -38,18 +38,18 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
                 continue;
             }
 
-            $fillCandidateWith[$candidate->getId()] = $candidate->getRunningMateId();
+            $fillRunningMates[$candidate->getId()] = $candidate->getRunningMateId();
         }
         // set relationship for candidate pairs
-        foreach ($fillCandidateWith as $primaryId => $secondaryId) {
-            $candidateObjs[$primaryId]->setCandidateWith($candidateObjs[$secondaryId]);
+        foreach ($fillRunningMates as $primaryId => $secondaryId) {
+            $candidateObjs[$primaryId]->setRunningMate($candidateObjs[$secondaryId]);
         }
 
         $this->getEntityManager()->transactional(function (EntityManager $em) use ($candidateObjs) : void {
             foreach ($candidateObjs as $candidateObj) {
                 $em->persist($candidateObj);
             }
-            $this->getEntityManager()->flush();
+            $em->flush();
         });
     }
 
