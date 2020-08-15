@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Model\Delegate\Repositories;
 
+use Doctrine\Common\Collections\Collection;
 use Model\Delegate\Delegate;
 use Model\Delegate\DelegateNotFound;
-use stdClass;
+use Model\DTO\Delegate\SkautisDelegate;
 
 interface IDelegateRepository
 {
     /**
-     * @param stdClass[] $delegates
+     * @param SkautisDelegate[] $delegates
      */
     public function saveDelegates(array $delegates) : void;
+
+    /**
+     * @return Collection<int, Delegate>
+     */
+    public function getDelegates() : Collection;
 
     /**
      * @throws DelegateNotFound

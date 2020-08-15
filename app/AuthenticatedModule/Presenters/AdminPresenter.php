@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\AuthenticatedModule;
 
 use App\AuthenticatedModule\Components\CandidatesBox;
+use App\AuthenticatedModule\Components\DelegatesGrid;
 use App\AuthenticatedModule\Components\PublishResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\ICandidatesBoxFactory;
+use App\AuthenticatedModule\Factories\IDelegatesGridFactory;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Candidate\Commands\SaveCandidates;
@@ -24,16 +26,19 @@ class AdminPresenter extends BasePresenter
     private IPublishResultFactory $publishResultFactory;
     private IVotingTimeFormFactory $votingTimeFormFactory;
     private ICandidatesBoxFactory $candidatesBoxFactory;
+    private IDelegatesGridFactory $delegatesGridFactory;
 
     public function __construct(
         IPublishResultFactory $publishResultFactory,
         IVotingTimeFormFactory $votingTimeFormFactory,
-        ICandidatesBoxFactory $candidatesBoxFactory
+        ICandidatesBoxFactory $candidatesBoxFactory,
+        IDelegatesGridFactory $delegatesGridFactory
     ) {
         parent::__construct();
         $this->publishResultFactory  = $publishResultFactory;
         $this->votingTimeFormFactory = $votingTimeFormFactory;
         $this->candidatesBoxFactory  = $candidatesBoxFactory;
+        $this->delegatesGridFactory  = $delegatesGridFactory;
     }
 
     public function startup() : void
@@ -61,9 +66,7 @@ class AdminPresenter extends BasePresenter
 
     public function handleSaveDelegates() : void
     {
-        if ($this->queryBus->handle(new DelegatesCountQuery()) === 0) {
-            $this->commandBus->handle(new SaveDelegates());
-        }
+        $this->commandBus->handle(new SaveDelegates());
         $this->redirect('this');
     }
 
@@ -94,5 +97,10 @@ class AdminPresenter extends BasePresenter
     protected function createComponentCandidatesBox() : CandidatesBox
     {
         return $this->candidatesBoxFactory->create();
+    }
+
+    protected function createComponentDelegatesGrid() : DelegatesGrid
+    {
+        return $this->delegatesGridFactory->create();
     }
 }

@@ -4,30 +4,44 @@ declare(strict_types=1);
 
 namespace Model\Infrastructure\Repositories;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Model\Delegate\Delegate;
 use Model\Delegate\DelegateNotFound;
 use Model\Delegate\Repositories\IDelegateRepository;
-use stdClass;
+use Model\DTO\Delegate\SkautisDelegate;
+use Throwable;
 
 final class DelegateRepository extends AggregateRepository implements IDelegateRepository
 {
     /**
-     * @param stdClass[] $delegates
+     * @param SkautisDelegate[] $delegates
      *
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws Throwable
      */
     public function saveDelegates(array $delegates) : void
     {
         $this->getEntityManager()->transactional(function (EntityManager $em) use ($delegates) : void {
             foreach ($delegates as $delegate) {
-                $this->getEntityManager()->persist(new Delegate($delegate->ID_Person));
+                $this->getEntityManager()->persist(new Delegate(
+                    $delegate->getPersonId(),
+                    $delegate->getName(),
+                    $delegate->getType(),
+                    $delegate->getUnitNumber(),
+                    $delegate->getUnitName()
+                ));
             }
             $this->getEntityManager()->flush();
         });
+    }
+
+    /**
+     * @return Collection<int, Delegate>
+     */
+    public function getDelegates() : Collection
+    {
+        return new ArrayCollection($this->getEntityManager()->getRepository(Delegate::class)->findAll());
     }
 
     /**

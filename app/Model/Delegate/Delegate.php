@@ -27,6 +27,26 @@ class Delegate extends Aggregate
     private int $personId;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private string $name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private string $type;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $unitNumber;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $unitName;
+
+    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private DateTimeImmutable $createdAt;
@@ -41,9 +61,13 @@ class Delegate extends Aggregate
      */
     private ?DateTimeImmutable $votedAt;
 
-    public function __construct(int $personId)
+    public function __construct(int $personId, string $name, string $type, ?string $unitNumber, ?string $unitName)
     {
         $this->personId     = $personId;
+        $this->name         = $name;
+        $this->type         = $type;
+        $this->unitNumber   = $unitNumber;
+        $this->unitName     = $unitName;
         $this->createdAt    = new DateTimeImmutable();
         $this->firstLoginAt = null;
         $this->votedAt      = null;
@@ -52,6 +76,26 @@ class Delegate extends Aggregate
     public function getId() : int
     {
         return $this->id;
+    }
+
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
+    public function getType() : string
+    {
+        return $this->type;
+    }
+
+    public function getUnitNumber() : ?string
+    {
+        return $this->unitNumber;
+    }
+
+    public function getUnitName() : ?string
+    {
+        return $this->unitName;
     }
 
     public function getVotedAt() : ?DateTimeImmutable
@@ -73,5 +117,15 @@ class Delegate extends Aggregate
         }
 
         return false;
+    }
+
+    public function isVoted() : bool
+    {
+        return $this->votedAt !== null;
+    }
+
+    public function isParticipated() : bool
+    {
+        return $this->firstLoginAt !== null;
     }
 }
