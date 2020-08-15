@@ -20,7 +20,8 @@
         "nprogress": "^0.2.0",
         "pikaday": "^1.8.0",
         "postcss-cli": "^7.1.0",
-        "postcss-loader": "^3.0.0"
+        "postcss-loader": "^3.0.0",
+        "ublaboo-datagrid": "^6.2.24"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",

@@ -37,6 +37,8 @@ class GridFactory
         $translator = new SimpleTranslator(self::TRANSLATIONS);
         $grid->setTranslator($translator);
 
+        $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
+
         return $grid;
     }
 }
