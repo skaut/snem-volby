@@ -16,6 +16,14 @@
             <a n:href="saveDelegates!" class="btn btn-primary">Stáhnout delegáty</a>
         {/if}
     </div>
+    <div class="col-md-3">
+        <h2>Komise pro e-volby</h2>
+        {if $commissionMembersCount > 0}
+            Seznam členů komise pro e-volby je již načten.
+        {else}
+            <a n:href="saveCommissionMembers!" class="btn btn-primary">Stáhnout členy komise pro e-volby</a>
+        {/if}
+    </div>
     <div class="col-md-6">
         {control votingStateBox, true}
         {control publishResult}

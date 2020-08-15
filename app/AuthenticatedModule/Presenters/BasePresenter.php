@@ -51,6 +51,7 @@ abstract class BasePresenter extends \App\BasePresenter
         $this->template->setParameters([
             'isDelegate'=>$isDelegate,
             'isSuperuser'=>$this->userService->isSuperUser(),
+            'isCommissionMember'=>$this->userService->isCommissionMember(),
         ]);
     }
 

@@ -8,6 +8,8 @@ use App\AuthenticatedModule\Components\PublishResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
+use Model\Commission\Commands\SaveCommissionMembers;
+use Model\Commission\ReadModel\Queries\CommissionMembersCountQuery;
 use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
 use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
@@ -39,6 +41,7 @@ class AdminPresenter extends BasePresenter
             $this->template->setParameters([
                 'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
                 'votedDelegatesCount' => $this->queryBus->handle(new VotedDelegatesCountQuery()),
+                'commissionMembersCount' => $this->queryBus->handle(new CommissionMembersCountQuery()),
             ]);
 
             return;
@@ -52,6 +55,14 @@ class AdminPresenter extends BasePresenter
     {
         if ($this->queryBus->handle(new DelegatesCountQuery()) === 0) {
             $this->commandBus->handle(new SaveDelegates());
+        }
+        $this->redirect('this');
+    }
+
+    public function handleSaveCommissionMembers() : void
+    {
+        if ($this->queryBus->handle(new CommissionMembersCountQuery()) === 0) {
+            $this->commandBus->handle(new SaveCommissionMembers());
         }
         $this->redirect('this');
     }

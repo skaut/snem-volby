@@ -7,6 +7,7 @@ namespace Model;
 use eGen\MessageBus\Bus\QueryBus;
 use Model\Delegate\State;
 use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
+use Model\User\ReadModel\Queries\IsUserOnCommissionMembersListQuery;
 use Model\User\ReadModel\Queries\IsUserOnDelegateListQuery;
 use Model\User\SkautisRole;
 use Skautis\Skautis;
@@ -121,6 +122,18 @@ final class UserService
     }
 
     /**
+     * Vrací seznam členů komise pro e-volby.
+     *
+     * @return stdClass[]
+     */
+    public function getCommissionMembers() : array
+    {
+        $res = $this->skautis->event->EventCongressEcommissionAll(['ID_EventCongress' => $this->congressEventId]);
+
+        return $res instanceof stdClass ? [] : $res;
+    }
+
+    /**
      * kontroluje jestli je přihlášení platné
      */
     public function isLoggedIn(bool $hardCheck) : bool
@@ -140,5 +153,14 @@ final class UserService
         }
 
         return $this->queryBus->handle(new IsUserOnDelegateListQuery($this->getUserPersonId()));
+    }
+
+    public function isCommissionMember() : bool
+    {
+        if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
+            return false;
+        }
+
+        return $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()));
     }
 }
