@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\AuthenticatedModule;
 
+use App\AuthenticatedModule\Components\CandidatesBox;
 use App\AuthenticatedModule\Components\PublishResult;
 use App\AuthenticatedModule\Components\VotingTimeForm;
+use App\AuthenticatedModule\Factories\ICandidatesBoxFactory;
 use App\AuthenticatedModule\Factories\IPublishResultFactory;
 use App\AuthenticatedModule\Factories\IVotingTimeFormFactory;
 use Model\Candidate\Commands\SaveCandidates;
@@ -21,14 +23,17 @@ class AdminPresenter extends BasePresenter
 {
     private IPublishResultFactory $publishResultFactory;
     private IVotingTimeFormFactory $votingTimeFormFactory;
+    private ICandidatesBoxFactory $candidatesBoxFactory;
 
     public function __construct(
         IPublishResultFactory $publishResultFactory,
-        IVotingTimeFormFactory $votingTimeFormFactory
+        IVotingTimeFormFactory $votingTimeFormFactory,
+        ICandidatesBoxFactory $candidatesBoxFactory
     ) {
         parent::__construct();
         $this->publishResultFactory  = $publishResultFactory;
         $this->votingTimeFormFactory = $votingTimeFormFactory;
+        $this->candidatesBoxFactory  = $candidatesBoxFactory;
     }
 
     public function startup() : void
@@ -84,5 +89,10 @@ class AdminPresenter extends BasePresenter
     protected function createComponentPublishResult() : PublishResult
     {
         return $this->publishResultFactory->create();
+    }
+
+    protected function createComponentCandidatesBox() : CandidatesBox
+    {
+        return $this->candidatesBoxFactory->create();
     }
 }

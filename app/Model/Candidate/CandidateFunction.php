@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Model\Candidate;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,4 +38,12 @@ class CandidateFunction
      * @ORM\Column(type="smallint")
      */
     private int $order;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Candidate", mappedBy="function")
+     * @ORM\JoinColumn(name="id", referencedColumnName="function_id")
+     *
+     * @var Collection<int, Candidate>
+     */
+    private Collection $candidates;
 }
