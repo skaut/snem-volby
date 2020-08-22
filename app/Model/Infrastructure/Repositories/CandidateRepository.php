@@ -31,6 +31,7 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
             $candidateObjs[$candidate->getId()] = new Candidate(
                 $candidate->getId(),
                 $candidate->getPersonId(),
+                $candidate->getSex(),
                 $candidate->getName(),
                 $this->getFunction($candidate->getFunctionId())
             );

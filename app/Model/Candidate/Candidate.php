@@ -24,6 +24,11 @@ class Candidate
     private int $personId;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private string $sex;
+
+    /**
      * @ORM\Column(type="string")
      */
     private string $name;
@@ -40,10 +45,11 @@ class Candidate
      */
     private ?self $runningMate;
 
-    public function __construct(int $id, int $personId, string $name, CandidateFunction $function)
+    public function __construct(int $id, int $personId, string $sex, string $name, CandidateFunction $function)
     {
         $this->id       = $id;
         $this->personId = $personId;
+        $this->sex      = $sex;
         $this->name     = $name;
         $this->function = $function;
     }
@@ -51,5 +57,10 @@ class Candidate
     public function setRunningMate(self $runningMate) : void
     {
         $this->runningMate = $runningMate;
+    }
+
+    public function getSex() : string
+    {
+        return $this->sex;
     }
 }
