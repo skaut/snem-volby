@@ -21,3 +21,4 @@ www/css/app.css
 www/css/app.css.map
 www/js/app.min.js
 config.production.local.neon
+swarmpit.yml

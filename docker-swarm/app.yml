@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  app:
+    image: skaut/snem-volby:latest
+    volumes:
+      - sessions:/var/www/html/temp/sessions
+    networks:
+      - traefik
+    configs:
+      - source: dev-config.local.neon-v2
+        target: /var/www/html/app/config/config.local.neon
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: "64M"
+        limits:
+          cpus: "0.50"
+          memory: "512M"
+      labels:
+        traefik.frontend.rule: 'Host:zmenastanov.skaut.cz,www.zmenastanov.skaut.cz'
+        traefik.port: '80'
+        traefik.docker.network: traefik
+        swarmpit.service.deployment.autoredeploy: 'true'
+        traefik.frontend.headers.STSSeconds: 7884000
+        traefik.frontend.headers.FrameDeny: 'true'
+      update_config:
+        order: start-first
+
+networks:
+  traefik:
+    external: true
+
+configs:
+  dev-config.local.neon-v2:
+    external: true
+
+volumes:
+  sessions:
