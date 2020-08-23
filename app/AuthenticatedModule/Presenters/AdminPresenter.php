@@ -15,7 +15,6 @@ use Model\Candidate\ReadModel\Queries\CandidatesCountQuery;
 use Model\Commission\Commands\SaveCommissionMembers;
 use Model\Commission\ReadModel\Queries\CommissionMembersCountQuery;
 use Model\Delegate\Commands\SaveDelegates;
-use Model\Delegate\ReadModel\Queries\CheckVoteCountQuery;
 use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
 use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
 
@@ -41,10 +40,6 @@ class AdminPresenter extends BasePresenter
         parent::startup();
 
         if ($this->userService->isSuperUser()) {
-            if (! $this->queryBus->handle(new CheckVoteCountQuery())) {
-                $this->flashMessage('POZOR! Nesedí počet hlasů a počet delegátů, kteří již odhlasovali!', 'danger');
-            }
-
             $this->template->setParameters([
                 'candidatesCount' => $this->queryBus->handle(new CandidatesCountQuery()),
                 'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),

@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Model\Vote\Handlers;
 
 use Model\UserService;
-use Model\Vote\Commands\SaveVote;
+use Model\Vote\Commands\SaveVotes;
 use Model\Vote\Repositories\IVoteRepository;
-use Model\Vote\Vote;
 
-final class SaveVoteHandler
+final class SaveVotesHandler
 {
     private IVoteRepository $voteRepository;
 
@@ -23,9 +22,9 @@ final class SaveVoteHandler
         $this->userService    = $userService;
     }
 
-    public function __invoke(SaveVote $command) : void
+    public function __invoke(SaveVotes $command) : void
     {
         $personId = $this->userService->getUserDetail()->ID_Person;
-        $this->voteRepository->saveUserVote($personId, new Vote($command->getChoice()));
+        $this->voteRepository->saveUserVotes($personId, $command->getVotes());
     }
 }

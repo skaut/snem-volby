@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Model\Vote;
 
-use Consistence\Doctrine\Enum\EnumAnnotation;
 use Doctrine\ORM\Mapping as ORM;
+use Model\Candidate\Candidate;
 use Model\Common\Aggregate;
 
 /**
@@ -23,20 +23,14 @@ class Vote extends Aggregate
     private $id;
 
     /**
-     * @ORM\Column(type="string_enum")
-     *
-     * @EnumAnnotation(class=Choice::class)
+     * @ORM\ManyToOne(targetEntity="\Model\Candidate\Candidate", inversedBy="votes")
+     * @ORM\JoinColumn(name="candidate_id", referencedColumnName="id", nullable=false)
      */
-    private Choice $choice;
+    private Candidate $candidate;
 
-    public function __construct(Choice $choice)
+    public function __construct(Candidate $candidate)
     {
-        $this->choice = $choice;
-        $this->id     = VoteId::generate();
-    }
-
-    public function getChoice() : Choice
-    {
-        return $this->choice;
+        $this->id        = VoteId::generate();
+        $this->candidate = $candidate;
     }
 }

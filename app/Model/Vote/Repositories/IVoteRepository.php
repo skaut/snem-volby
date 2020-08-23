@@ -10,7 +10,8 @@ use Model\Vote\VotingResult;
 
 interface IVoteRepository
 {
-    public function saveUserVote(int $personId, Vote $vote) : void;
+    /** @param Vote[] $votes */
+    public function saveUserVotes(int $personId, array $votes) : void;
 
     public function getAllVotesCount() : int;
 

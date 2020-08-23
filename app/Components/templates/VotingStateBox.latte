@@ -1,7 +1,29 @@
 {varType Model\Vote\VotingResult $votingResult}
 {varType Model\Vote\VotingTime $votingTime}
 {varType bool $showResult}
-{var bool $isResultPositive = $votingResult->getResult()->equalsValue(Model\Vote\Choice::YES)}
+
+{define resultRows, $header, $candidates, $limit}
+    <tr>
+        <th>{$header}</th>
+        <th>Hlasů</th>
+        <th>Výsledek</th>
+    </tr>
+    <tr n:foreach="$candidates as $c">
+        <td>{$c->getDisplayName()}</td>
+        <td>{$c->getVotesCount()}</td>
+        <td>
+            {if $c->getVotingResultNote() !== ""}{$c->getVotingResultNote()}
+            {elseif $c->getVotesCount() === 0}Ne{$c->getElectedWord()}
+            {elseif $iterator->counter <= $limit}{$c->getElectedWord()|firstUpper}
+            {else}Náhradník
+            {/if}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+
+{/define}
 
 <div clas="row">
     <div class="col top-margin no-padding">
@@ -33,19 +55,23 @@
                     <h2>Výsledek hlasování</h2>
                     <ul>
                         <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
-                        <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotes()}</b> delegátů </li>
-                        <li>pro přijetí návrhu je třeba 3/5 většina, což je minimálně <b>{$votingResult->getMinVotes()}</b> hlasů pro návrh</li>
+                        <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotedDelegates()}</b> delegátů </li>
                     </ul>
 
-                    <p n:class="$isResultPositive ? text-success : text-danger">
-                        Hlasování skončilo a byl vyhlášen výsledek<br/>
-                        {$votingResult->getYesCount()} pro návrh ({$votingResult->getYesPercent()} %),
-                        {$votingResult->getNoCount()} proti návrhu,
-                        {$votingResult->getAbstainCount()} se zdrželo (z toho {$votingResult->getNotVotedCount()} nehlasovalo)<br />
-                        <strong>návrh {if $isResultPositive}BYL{else}NEBYL{/if} přijat</strong>
-                    </p>
+        <table class="table table-bordered table-hover table-sm">
+                    {include resultRows, "Náčelní a místonáčelní", $votingResult->getNacelni (), 1}
+                    {include resultRows, "Náčelník a místonáčelník", $votingResult->getNacelnik (), 1}
+                    {include resultRows, "Členka náčelnictva", $votingResult->getNacelnictvoFemale (), 5}
+                    {include resultRows, "Člen náčelnictva", $votingResult->getNacelnictvoMale (), 5}
+                    {include resultRows, "Člen ústřední revizní komise", $votingResult->getUrkj (), 7}
+                    {include resultRows, "Člen rozhodčí a smírčí rady", $votingResult->getRsrj (), 5}
+        </table>
+
                 {/if}
             {/if}
         {/if}
     </div>
 </div>
+
+
+

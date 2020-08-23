@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Model\Infrastructure\Repositories;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -13,6 +14,7 @@ use Model\Candidate\FunctionNotFound;
 use Model\Candidate\Repositories\ICandidateRepository;
 use Model\DTO\Candidate\SkautisCandidate;
 use function assert;
+use function count;
 
 final class CandidateRepository extends AggregateRepository implements ICandidateRepository
 {
@@ -59,6 +61,30 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
         return $this->getEntityManager()->getRepository(Candidate::class)->count([]);
     }
 
+    /** @return  CandidateFunction[] */
+    public function getAllFunctions() : array
+    {
+        $res = $this->getEntityManager()->getRepository(CandidateFunction::class)->findAll();
+        if (count($res) === 0) {
+            return [];
+        }
+
+        return $res;
+    }
+
+    /** @return array<int, array<int, Candidate>> */
+    public function getCandidatesByFunction() : array
+    {
+        $byFunction = [];
+        $candidates = $this->getEntityManager()->getRepository(Candidate::class)->findBy([], ['name' => Criteria::ASC]);
+        foreach ($candidates as $candidate) {
+            assert($candidate instanceof Candidate);
+            $byFunction[$candidate->getFunction()->getId()][$candidate->getId()] = $candidate;
+        }
+
+        return $byFunction;
+    }
+
     /**
      * @return string[][]
      */
@@ -70,7 +96,6 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
             ->select('f.label, count(c) as count')
             ->leftJoin('f.candidates', 'c')
             ->groupBy('f')
-            ->where('f.show = true')
             ->orderBy('f.order')
             ->getQuery()
             ->getResult();

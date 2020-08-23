@@ -7,31 +7,41 @@
         <h2>Hlasuji</h2>
         {if $userVoteTime === null}
             {form form}
-                <button n:name="yes"
-                        class="btn btn-success"
+                <h4>{label Model\Candidate\CandidateFunction::NACELNI_ID /}</h4>
+                <p>Zaškrtnutím dejte hlas maximálně 1 dvojici osob</p>
+                {input Model\Candidate\CandidateFunction::NACELNI_ID }
+
+                <h4>{label Model\Candidate\CandidateFunction::NACELNIK_ID /}</h4>
+                <p>Zaškrtnutím dejte hlas maximálně 1 dvojici osob</p>
+                {input Model\Candidate\CandidateFunction::NACELNIK_ID }
+
+                <h4>Členky a členové náčelnictva</h4>
+                <p>Zaškrtnutím dejte hlas maximálně 5 kandidátkám + 5 kandidátům </p>
+                {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."female" }
+                <hr />
+                {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."male" }
+
+                <h4>Člen ústřední revizní komise</h4>
+                <p>Zaškrtnutím dejte hlas maximálně 7 osobám</p>
+                {input Model\Candidate\CandidateFunction::URKJ_ID }
+
+                <h4>Člen revizní komise</h4>
+                <p>Zaškrtnutím dejte hlas maximálně 5 osobám</p>
+                {input Model\Candidate\CandidateFunction::RSRJ_ID }
+                <br /><br />
+
+                <button n:name="save"
+                        class="btn btn-primary"
                         data-toggle="confirmation"
                         data-singleton="true"
-                        data-title="Opravdu chceš hlasovat PRO návrh? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit."
+                        data-title="Opravdu chceš odeslat hlasovací lístek? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit."
                         data-btn-ok-label="Závazně odeslat hlas"
-                        data-btn-cancel-label="Storno"><i class="fas fa-check"></i> PRO návrh</button>
-                <button n:name="no"
-                        class="btn btn-danger"
-                        data-toggle="confirmation"
-                        data-singleton="true"
-                        data-title="Opravdu chceš hlasovat PROTI návrhu? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit."
-                        data-btn-ok-label="Závazně odeslat hlas"
-                        data-btn-cancel-label="Storno"><i class="fas fa-times"></i> PROTI návrhu</button>
-                <button n:name="abstain"
-                        class="btn btn-warning"
-                        data-toggle="confirmation"
-                        data-singleton="true"
-                        data-title="Opravdu se chceš zdržet hlasování? Hlasovat lze jen jednou a po odeslání hlasu již volbu nelze změnit."
-                        data-btn-ok-label="Závazně odeslat hlas"
-                        data-btn-cancel-label="Storno"><i class="fas fa-ban"></i> Zdržuji se</button>
+                        data-btn-cancel-label="Storno">Závazně odeslat hlasovací lístek</button>
+
             {/form}
             <br />
             <div class="alert alert-warning">
-                <i class="fas fa-exclamation-triangle"></i> <b>Upozornění</b>: Pro úspěšné hlasování musíte kliknout na příslušné tlačítko a následně toto potvrdit kliknutím na "Závazně odeslat hlas". Úspěšné přijetí vašeho hlasu bude potvrzeno zobrazením informační hlášky.
+                <i class="fas fa-exclamation-triangle"></i> <b>Upozornění</b>: Pro úspěšné hlasování musíte kliknout na příslušné tlačítko a následně toto potvrdit kliknutím na "Závazně odeslat hlasy". Úspěšné přijetí vašeho hlasu bude potvrzeno zobrazením informační hlášky.
             </div>
 
         {else}
