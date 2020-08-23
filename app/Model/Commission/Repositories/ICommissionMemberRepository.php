@@ -18,7 +18,7 @@ interface ICommissionMemberRepository
     /**
      * @throws CommissionMemberNotFound
      */
-    public function getCommissionMember(int $personId) : CommissionMember;
+    public function findCommissionMember(int $personId) : CommissionMember;
 
     public function getCount() : int;
 }

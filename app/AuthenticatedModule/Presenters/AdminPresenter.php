@@ -39,7 +39,7 @@ class AdminPresenter extends BasePresenter
     {
         parent::startup();
 
-        if ($this->userService->isSuperUser()) {
+        if ($this->userService->isAdmin()) {
             $this->template->setParameters([
                 'candidatesCount' => $this->queryBus->handle(new CandidatesCountQuery()),
                 'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),

@@ -141,18 +141,17 @@ final class UserService
         return $this->skautis->getUser()->isLoggedIn($hardCheck);
     }
 
-    public function isSuperUser() : bool
+    public function isAdmin() : bool
     {
-        return $this->getActualRole()->getKey() === self::ROLE_KEY_SUPERADMIN;
-    }
+        if ($this->getActualRole()->getKey() === self::ROLE_KEY_SUPERADMIN) {
+            return true;
+        }
 
-    public function isDelegate() : bool
-    {
         if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
             return false;
         }
 
-        return $this->queryBus->handle(new IsUserOnDelegateListQuery($this->getUserPersonId()));
+        return $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()));
     }
 
     public function canBeAdmin() : bool
@@ -168,5 +167,14 @@ final class UserService
         }
 
         return false;
+    }
+
+    public function isDelegate() : bool
+    {
+        if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
+            return false;
+        }
+
+        return $this->queryBus->handle(new IsUserOnDelegateListQuery($this->getUserPersonId()));
     }
 }
