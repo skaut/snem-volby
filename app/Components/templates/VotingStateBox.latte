@@ -29,33 +29,33 @@
     <div class="col top-margin no-padding">
         {if $votingTime->getBegin () === null}
             <div class="alert alert-danger" role="alert">
-                Hlasování nemá nastavený termín.
+                Elektronické volby nemají nastavený termín.
             </div>
         {else}
             <div class="alert alert-info" role="alert">
-                Hlasování {if $votingTime->isAfterVoting ()}proběhlo{else}probíhá{/if}
+                Elektronické volby {if $votingTime->isAfterVoting ()}proběhly{else}probíhají{/if}
                 v termínu od <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
             </div>
 
             {if $votingTime->isBeforeVoting()}
                 <div class="alert alert-success" role="alert">
                     {var \DateInterval $beginDiff = $votingTime->getBeforeInterval()}
-                    Hlasování začne za <strong>{$beginDiff|formatTimeToText}</strong>
+                    Elektronické volby začnou za <strong>{$beginDiff|formatTimeToText}</strong>
                 </div>
             {elseif $votingTime->isVotingInProgress()}
                 <div class="alert alert-warning" role="alert">
                     {var \DateInterval $endDiff = $votingTime->getToEndInterval()}
-                    Do konce hlasování zbývá <strong>{$endDiff|formatTimeToText}</strong>
+                    Do konce voleb zbývá <strong>{$endDiff|formatTimeToText}</strong>
                 </div>
             {else}
                 <div class="alert alert-danger" role="alert">
-                    Hlasování již bylo uzavřeno
+                    Volby již byly uzavřeny
                 </div>
                 {if $showResult}
-                    <h2>Výsledek hlasování</h2>
+                    <h2>Výsledek voleb</h2>
                     <ul>
                         <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
-                        <li>hlasování se účastnilo <b>{$votingResult->getCountOfVotedDelegates()}</b> delegátů </li>
+                        <li>elektronických voleb se účastnilo <b>{$votingResult->getCountOfVotedDelegates()}</b> delegátů </li>
                     </ul>
 
         <table class="table table-bordered table-hover table-sm">

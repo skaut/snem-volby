@@ -4,7 +4,7 @@
 
 {if $isUserDelegate}
     {if $votingTime->isVotingInProgress()}
-        <h2>Hlasuji</h2>
+        <h2>Hlasovací lístek</h2>
         {if $userVoteTime === null}
             {form form}
                 <h4>{label Model\Candidate\CandidateFunction::NACELNI_ID /}</h4>
