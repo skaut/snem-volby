@@ -137,6 +137,11 @@ class VotingResult
         ];
     }
 
+    public function isQuorumSatisfied() : bool
+    {
+        return $this->countOfVotedDelegates >= $this->countOfDelegates/2.0;
+    }
+
 //    public function getMinVotes() : int
 //    {
 //        return (int) ceil($this->totalCountOfDelegates * (3/5));

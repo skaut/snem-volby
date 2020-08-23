@@ -1,6 +1,7 @@
 {varType Model\Vote\VotingResult $votingResult}
 {varType Model\Vote\VotingTime $votingTime}
 {varType bool $showResult}
+{varType bool $quorumSatisfied}
 
 {define resultRows, $header, $candidates, $limit}
     <tr>
@@ -57,15 +58,18 @@
                         <li>celkem bylo <b>{$delegatesCount}</b> oprávněných delegátů</li>
                         <li>elektronických voleb se účastnilo <b>{$votingResult->getCountOfVotedDelegates()}</b> delegátů </li>
                     </ul>
-
-        <table class="table table-bordered table-hover table-sm">
-                    {include resultRows, "Náčelní a místonáčelní", $votingResult->getNacelni (), 1}
-                    {include resultRows, "Náčelník a místonáčelník", $votingResult->getNacelnik (), 1}
-                    {include resultRows, "Členka náčelnictva", $votingResult->getNacelnictvoFemale (), 5}
-                    {include resultRows, "Člen náčelnictva", $votingResult->getNacelnictvoMale (), 5}
-                    {include resultRows, "Člen ústřední revizní komise", $votingResult->getUrkj (), 7}
-                    {include resultRows, "Člen rozhodčí a smírčí rady", $votingResult->getRsrj (), 5}
-        </table>
+                    {if $votingResult->isQuorumSatisfied()}
+                        <table class="table table-bordered table-hover table-sm">
+                            {include resultRows, "Náčelní a místonáčelní", $votingResult->getNacelni (), 1}
+                            {include resultRows, "Náčelník a místonáčelník", $votingResult->getNacelnik (), 1}
+                            {include resultRows, "Členka náčelnictva", $votingResult->getNacelnictvoFemale (), 5}
+                            {include resultRows, "Člen náčelnictva", $votingResult->getNacelnictvoMale (), 5}
+                            {include resultRows, "Člen ústřední revizní komise", $votingResult->getUrkj (), 7}
+                            {include resultRows, "Člen rozhodčí a smírčí rady", $votingResult->getRsrj (), 5}
+                        </table>
+                    {else}
+                        <div class="alert-danger alert">Elektronických voleb se zúčastnilo méně než 50% delegátů, volby jsou <b>neplatné</b> a budou se opakovat v pozdějším termínu.</div>
+                    {/if}
 
                 {/if}
             {/if}
