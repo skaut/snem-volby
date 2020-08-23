@@ -155,12 +155,18 @@ final class UserService
         return $this->queryBus->handle(new IsUserOnDelegateListQuery($this->getUserPersonId()));
     }
 
-    public function isCommissionMember() : bool
+    public function canBeAdmin() : bool
     {
-        if ($this->getActualRole()->getKey() !== self::ROLE_KEY_DELEGATE) {
-            return false;
+        $roles = $this->getRelatedSkautisRoles();
+        foreach ($roles as $role) {
+            if ($role->Key === self::ROLE_KEY_SUPERADMIN) {
+                return true;
+            }
+            if ($role->Key === self::ROLE_KEY_DELEGATE && $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()))) {
+                return true;
+            }
         }
 
-        return $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()));
+        return false;
     }
 }
