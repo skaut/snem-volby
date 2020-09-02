@@ -55,7 +55,7 @@ final class VotingTimeForm extends BaseControl
                 $this->flashMessage('Nastavení času hlasování selhalo.', 'danger');
             }
 
-            $this->redrawControl();
+            $this->redirect('this');
         };
 
         return $form;

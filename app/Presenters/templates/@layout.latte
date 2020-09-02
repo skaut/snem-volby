@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/favicon.ico">
 
-    <title>{block #title|stripHtml|trim}Online hlasování{/block}</title>
+    <title>{block #title|stripHtml|trim}Elektronické volby{/block}</title>
 
     <link rel="stylesheet" href="/css/app.css">
 </head>
@@ -16,7 +16,7 @@
 
     <nav n:if="!isset($hideNavBar)" class="navbar navbar-expand-lg {if $testBackground}bg-test navbar-light{else}bg-dark navbar-dark{/if}">
         <div class="container container-lg">
-            <a class="navbar-brand" n:href=":Homepage:">Online hlasování</a>
+            <a class="navbar-brand" n:href=":Homepage:">Elektronické volby</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain"
                     aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,8 +24,7 @@
 
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav mr-auto">
-                    <li n:if="$isSuperuser" class="nav-item"><a n:href="Admin:settings" class="nav-link">Nastavení</a></li>
-                    <li n:if="$isCommissionMember" class="nav-item"><a n:href="Admin:commission" class="nav-link">Informace pro komisi</a></li>
+                    <li n:if="$isAdmin" class="nav-item"><a n:href="Admin:settings" class="nav-link">Nastavení</a></li>
                 </ul>
                 <div class="my-2 my-lg-0">
                     {control loginPanel}

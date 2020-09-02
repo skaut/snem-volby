@@ -33,7 +33,7 @@ final class CommissionMembersRepository extends AggregateRepository implements I
     /**
      * @throws CommissionMemberNotFound
      */
-    public function getCommissionMember(int $personId) : CommissionMember
+    public function findCommissionMember(int $personId) : CommissionMember
     {
         $commissionMember = $this->getEntityManager()->getRepository(CommissionMember::class)->findOneBy(['personId' => $personId]);
 

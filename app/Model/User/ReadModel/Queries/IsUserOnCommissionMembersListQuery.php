@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Model\User\ReadModel\Queries;
 
-use Model\User\ReadModel\QueryHandlers\IsUserOnDelegateListQueryHandler;
+use Model\User\ReadModel\QueryHandlers\IsUserOnCommissionMembersListQueryHandler;
 
 /**
- * @see IsUserOnDelegateListQueryHandler
+ * @see IsUserOnCommissionMembersListQueryHandler
  */
 final class IsUserOnCommissionMembersListQuery
 {

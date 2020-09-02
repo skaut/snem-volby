@@ -1,24 +1,24 @@
-{block title}Online hlasování{/block}
+{block title}Elektronické volby{/block}
 
 {block #content}
 <div class="row">
     <div class="col text-center">
         <img src="/images/logo.svg" alt="Logo Junák – český skaut" height="200em" />
-        <h1>Hlasování o změně stanov</h1>
+        <h1>Elektronické volby do ústředních orgánů</h1>
 
         {control tipBox}
 
         {control votingStateBox}
 
         <p>
-            hlasování se mohou účastnit pouze delegáti Valného sněmu 2020 <br />
+            elektronických voleb se mohou účastnit pouze delegáti Valného sněmu 2020 <br />
             (musí být řádně zvoleni a zadáni do výsledků příslušného sněmu OJ a tento sněm musí být ve skautISu uzavřený)
         </p>
 
         {control loginPanel:loginButton}
 
         <a n:href=":Authenticated:Default:" class="btn btn-lg btn-success" n:if="$user->isLoggedIn()">
-            Přejít na hlasování
+            Přejít k elektronickým volbám
         </a>
 
     </div>

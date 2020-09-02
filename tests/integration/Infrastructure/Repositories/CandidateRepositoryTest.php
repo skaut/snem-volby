@@ -44,7 +44,7 @@ class CandidateRepositoryTest extends IntegrationTest
             'order' => 50,
         ]);
 
-        $candidate = new SkautisCandidate(1024, 123, 'Anna z RSRJ', 25, null);
+        $candidate = new SkautisCandidate(1024, 123, SkautisCandidate::SEX_FEMALE, 'Anna z RSRJ', 25, null);
 
         $this->repository->saveCandidates([$candidate]);
 
@@ -75,8 +75,8 @@ class CandidateRepositoryTest extends IntegrationTest
             'order' => 100,
         ]);
 
-        $nacelnik      = new SkautisCandidate(1027, 234, 'Karel Náčelník', 10, 2038);
-        $mistonacelnik = new SkautisCandidate(2038, 345, 'Joe Místonáčelní', 13, null);
+        $nacelnik      = new SkautisCandidate(1027, 234, SkautisCandidate::SEX_MALE, 'Karel Náčelník', 10, 2038);
+        $mistonacelnik = new SkautisCandidate(2038, 345, SkautisCandidate::SEX_MALE, 'Joe Místonáčelní', 13, null);
 
         $this->repository->saveCandidates([$nacelnik, $mistonacelnik]);
 

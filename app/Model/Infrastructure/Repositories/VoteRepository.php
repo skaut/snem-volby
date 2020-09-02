@@ -7,10 +7,11 @@ namespace Model\Infrastructure\Repositories;
 use DateTimeImmutable;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
+use Model\Candidate\Candidate;
+use Model\Candidate\CandidateFunction;
 use Model\Delegate\Delegate;
 use Model\Delegate\DelegateAlreadyVoted;
 use Model\Delegate\Repositories\IDelegateRepository;
-use Model\Vote\Choice;
 use Model\Vote\Repositories\IVoteRepository;
 use Model\Vote\Vote;
 use Model\Vote\VotingResult;
@@ -18,9 +19,10 @@ use function assert;
 
 final class VoteRepository extends AggregateRepository implements IVoteRepository
 {
-    public function saveUserVote(int $personId, Vote $vote) : void
+    /** @param Vote[] $votes */
+    public function saveUserVotes(int $personId, array $votes) : void
     {
-        $this->getEntityManager()->transactional(function (EntityManager $em) use ($personId, $vote) : void {
+        $this->getEntityManager()->transactional(function (EntityManager $em) use ($personId, $votes) : void {
             $delegateRepository = $em->getRepository(Delegate::class);
             $delegateId         = $delegateRepository->findOneBy(['personId' => $personId])->getId();
             $delegate           = $delegateRepository->find($delegateId, LockMode::PESSIMISTIC_WRITE);
@@ -32,7 +34,10 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
 
             $delegate->setVotedAt(new DateTimeImmutable());
 
-            $em->persist($vote);
+            foreach ($votes as $vote) {
+                assert($vote instanceof Vote);
+                $em->persist($vote);
+            }
             $em->persist($delegate);
         });
     }
@@ -44,13 +49,31 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
 
     public function getVotingResult(IDelegateRepository $delegateRepository) : VotingResult
     {
-        return $this->getEntityManager()->transactional(function (EntityManager $em) : VotingResult {
+        return $this->getEntityManager()->transactional(function (EntityManager $em) use ($delegateRepository) : VotingResult {
             return new VotingResult(
-                $em->getRepository(Vote::class)->count(['choice' => Choice::YES()]),
-                $em->getRepository(Vote::class)->count(['choice' => Choice::NO()]),
-                $em->getRepository(Vote::class)->count(['choice' => Choice::ABSTAIN()]),
-                $em->getRepository(Delegate::class)->count([])
+                $this->getResult($em, CandidateFunction::NACELNIK_ID),
+                $this->getResult($em, CandidateFunction::NACELNI_ID),
+                $this->getResult($em, CandidateFunction::NACELNICTVO_ID),
+                $this->getResult($em, CandidateFunction::URKJ_ID),
+                $this->getResult($em, CandidateFunction::RSRJ_ID),
+                $em->getRepository(Delegate::class)->count([]),
+                $delegateRepository->getVotedCount()
             );
         });
+    }
+
+    /** @return Candidate[] */
+    private function getResult(EntityManager $em, string $functionId) : array
+    {
+        $function = $em->getRepository(CandidateFunction::class)->find($functionId);
+
+        return $em->getRepository(Candidate::class)->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.votes', 'v')
+            ->where('IDENTITY(c.function) = :function')
+            ->groupBy('c')
+            ->orderBy('count(v)', 'DESC')
+            ->setParameter('function', $function)
+            ->getQuery()->getResult();
     }
 }

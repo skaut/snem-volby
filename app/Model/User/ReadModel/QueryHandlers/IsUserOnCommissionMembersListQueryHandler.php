@@ -20,7 +20,7 @@ final class IsUserOnCommissionMembersListQueryHandler
     public function __invoke(IsUserOnCommissionMembersListQuery $query) : bool
     {
         try {
-            $this->commissionMemberRepository->getCommissionMember($query->getPersonId());
+            $this->commissionMemberRepository->findCommissionMember($query->getPersonId());
 
             return true;
         } catch (CommissionMemberNotFound $exc) {
