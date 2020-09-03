@@ -43,6 +43,7 @@ final class SaveCandidatesHandler
             $res[$c->ID] = new SkautisCandidate(
                 $c->ID,
                 $c->ID_Person,
+                $this->skautis->org->PersonDetail(['ID' => $c->ID_Person])->ID_Sex === 'male' ? SkautisCandidate::SEX_MALE : SkautisCandidate::SEX_FEMALE,
                 $c->Person,
                 $c->ID_FunctionType,
                 $c->ID_CandidateWith

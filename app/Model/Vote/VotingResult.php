@@ -4,70 +4,146 @@ declare(strict_types=1);
 
 namespace Model\Vote;
 
-use function ceil;
-use function round;
+use Model\Candidate\Candidate;
+use Model\DTO\Candidate\SkautisCandidate;
+use function array_merge;
+use function in_array;
 
 class VotingResult
 {
-    private int $yesCount;
-    private int $noCount;
-    private int $abstainCount;
-    private int $totalCountOfDelegates;
+    /** @var Candidate[] */
+    private array $nacelnik;
 
-    public function __construct(int $yesCount, int $noCount, int $abstainCount, int $totalCountOfDelegates)
-    {
-        $this->yesCount              = $yesCount;
-        $this->noCount               = $noCount;
-        $this->abstainCount          = $abstainCount;
-        $this->totalCountOfDelegates = $totalCountOfDelegates;
+    /** @var Candidate[] */
+    private array $nacelni;
+
+    /** @var Candidate[] */
+    private array $nacelnictvo;
+
+    /** @var Candidate[] */
+    private array $urkj;
+
+    /** @var Candidate[] */
+    private array $rsrj;
+
+    private int $countOfDelegates;
+
+    private int $countOfVotedDelegates;
+
+    /**
+     * @param Candidate[] $nacelnik
+     * @param Candidate[] $nacelni
+     * @param Candidate[] $nacelnictvo
+     * @param Candidate[] $urkj
+     * @param Candidate[] $rsrj
+     */
+    public function __construct(
+        array $nacelnik,
+        array $nacelni,
+        array $nacelnictvo,
+        array $urkj,
+        array $rsrj,
+        int $countOfDelegates,
+        int $countOfVotedDelegates
+    ) {
+        $this->nacelnik              = $nacelnik;
+        $this->nacelni               = $nacelni;
+        $this->nacelnictvo           = $nacelnictvo;
+        $this->urkj                  = $urkj;
+        $this->rsrj                  = $rsrj;
+        $this->countOfDelegates      = $countOfDelegates;
+        $this->countOfVotedDelegates = $countOfVotedDelegates;
     }
 
-    public function getYesCount() : int
+    public function getCountOfVotedDelegates() : int
     {
-        return $this->yesCount;
+        return $this->countOfVotedDelegates;
     }
 
-    public function getYesPercent() : float
+    /** @return Candidate[] */
+    public function getNacelnik() : array
     {
-        return $this->yesCount === 0 ? 0 : round(($this->yesCount / $this->totalCountOfDelegates)*100, 2);
+        return $this->nacelnik;
     }
 
-    public function getNoCount() : int
+    /** @return Candidate[] */
+    public function getNacelni() : array
     {
-        return $this->noCount;
+        return $this->nacelni;
     }
 
-    public function getAbstainCount() : int
+    /** @return Candidate[] */
+    public function getNacelnictvoMale() : array
     {
-        return $this->abstainCount + $this->getNotVotedCount();
+        return $this->prepareNacelnictvo(SkautisCandidate::SEX_MALE);
     }
 
-    public function getNotVotedCount() : int
+    /** @return Candidate[] */
+    public function getNacelnictvoFemale() : array
     {
-        return $this->totalCountOfDelegates - ($this->yesCount + $this->noCount + $this->abstainCount);
+        return $this->prepareNacelnictvo(SkautisCandidate::SEX_FEMALE);
     }
 
-    public function getTotalVotingCount() : int
+    /** @return Candidate[] */
+    private function prepareNacelnictvo(string $sex) : array
     {
-        return $this->yesCount + $this->noCount;
-    }
+        $personIds = $this->getNovyNacelniciIds();
+        $res       = [];
+        $append    = [];
+        foreach ($this->nacelnictvo as $i => $n) {
+            if ($n->getSex() !== $sex) {
+                continue;
+            }
 
-    public function getCountOfVotes() : int
-    {
-        return $this->yesCount + $this->noCount + $this->abstainCount;
-    }
-
-    public function getMinVotes() : int
-    {
-        return (int) ceil($this->totalCountOfDelegates * (3/5));
-    }
-
-    public function getResult() : Choice
-    {
-        if ($this->getYesCount() >= $this->getMinVotes()) {
-            return Choice::YES();
+            if (in_array($n->getPersonId(), $personIds)) {
+                $n->setVotingResultNote($n->getSex() === SkautisCandidate::SEX_FEMALE ? 'Zvolena (místo)náčelní' : 'Zvolen (místo)náčelníkem');
+                $append[] = $n;
+            } else {
+                $res[] = $n;
+            }
         }
 
-        return Choice::NO();
+        return array_merge($res, $append);
     }
+
+    /** @return Candidate[] */
+    public function getUrkj() : array
+    {
+        return $this->urkj;
+    }
+
+    /** @return Candidate[] */
+    public function getRsrj() : array
+    {
+        return $this->rsrj;
+    }
+
+    public function getCountOfDelegates() : int
+    {
+        return $this->countOfDelegates;
+    }
+
+    /** @return int[] */
+    public function getNovyNacelniciIds() : array
+    {
+        $nacelni  = $this->getNacelni()[0];
+        $nacelnik = $this->getNacelnik()[0];
+
+        return [
+            $nacelni->getPersonId(),
+            $nacelni->getRunningMate()->getPersonId(),
+            $nacelnik->getPersonId(),
+            $nacelnik->getRunningMate()->getPersonId(),
+        ];
+    }
+
+    public function isQuorumSatisfied() : bool
+    {
+        return $this->countOfVotedDelegates >= $this->countOfDelegates/2.0;
+    }
+
+//    public function getMinVotes() : int
+//    {
+//        return (int) ceil($this->totalCountOfDelegates * (3/5));
+//    }
 }

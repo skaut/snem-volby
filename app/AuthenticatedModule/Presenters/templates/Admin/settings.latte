@@ -6,7 +6,12 @@
 
 <div class="row">
     <div class="col-md-4">
-        {control votingTimeForm}
+        <h2>Komise pro e-volby</h2>
+        {if $commissionMembersCount > 0}
+            Seznam členů komise pro e-volby je již načten.
+        {else}
+            <a n:href="saveCommissionMembers!" class="btn btn-primary">Stáhnout členy komise pro e-volby</a>
+        {/if}
     </div>
     <div class="col-md-4">
         <h2>Kandidáti</h2>
@@ -20,29 +25,19 @@
     <div class="col-md-4">
         <h2>Delegáti</h2>
         {if $delegatesCount > 0}
-            Seznam delegátů je již načten. Zatím hlasovalo {$votedDelegatesCount} z {$delegatesCount} načtených delegátů.
+            Seznam delegátů je již načten.<br />Již hlasovalo {$votedDelegatesCount} z {$delegatesCount} načtených delegátů.
         {else}
             <a n:href="saveDelegates!" class="btn btn-primary">Stáhnout delegáty</a>
         {/if}
     </div>
-    <div class="col-md-3">
-        <h2>Komise pro e-volby</h2>
-        {if $commissionMembersCount > 0}
-            Seznam členů komise pro e-volby je již načten.
-        {else}
-            <a n:href="saveCommissionMembers!" class="btn btn-primary">Stáhnout členy komise pro e-volby</a>
-        {/if}
+    <div class="col-md-4">
+        {control votingTimeForm}
     </div>
+
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         {control votingStateBox, true}
         {control publishResult}
     </div>
 </div>
-
-
-
-
-
-

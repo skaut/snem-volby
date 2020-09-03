@@ -6,11 +6,16 @@ namespace App;
 
 use eGen\MessageBus\Bus\CommandBus;
 use Model\AuthService;
+use Model\Config\ReadModel\Queries\VotingTimeQuery;
+use Model\Delegate\DelegateNotFound;
 use Model\User\Commands\SaveFirstLogin;
 use Model\User\Exception\UserHasNoRole;
 use Model\UserService;
+use Model\Vote\VotingTime;
 use Nette\Security\Identity;
 use Skautis\Wsdl\AuthenticationException;
+use function assert;
+use function sprintf;
 use function strlen;
 use function substr;
 
@@ -77,7 +82,21 @@ class AuthPresenter extends BasePresenter
                 $this->userService->getUserDetail()->ID,
                 $roles,
             ));
-            $this->commandBus->handle(new SaveFirstLogin($this->userService->getUserPersonId()));
+
+            $votingTime = $this->queryBus->handle(new VotingTimeQuery());
+            assert($votingTime instanceof VotingTime);
+
+            if (! $votingTime->isVotingInProgress() && ! $this->userService->canBeAdmin()) {
+                $this->user->logout();
+                $this->flashMessage(sprintf('K účasti v elektronických volbách se lze přihlásit až v jejich termínu (%s - %s). Vraťte se na tento web až v termínu voleb!', $votingTime->getBegin()->format('j. n. Y G:i'), $votingTime->getEnd()->format('j. n. Y G:i')), 'danger');
+                $this->redirect(':Homepage:');
+            }
+
+            try {
+                $this->commandBus->handle(new SaveFirstLogin($this->userService->getUserPersonId()));
+            } catch (DelegateNotFound $exc) {
+            }
+
             $this->setupDefaultRole();
 
             if ($ReturnUrl !== null) {
