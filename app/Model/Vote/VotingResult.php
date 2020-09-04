@@ -193,7 +193,7 @@ class VotingResult
 
     public function isQuorumSatisfied() : bool
     {
-        return $this->countOfVotedDelegates >= $this->countOfDelegates/2.0;
+        return $this->countOfParticipatedDelegates >= $this->countOfDelegates/2.0;
     }
 
     public function getFunctionVotersCount(string $functionId) : int
