@@ -5,43 +5,42 @@
 <h1>Nastavení</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
+        <h2>Kandidáti</h2>
+        {if $candidatesCount > 0}
+            {control candidatesBox}
+        {else}
+            <a n:href="saveCandidates!" class="btn btn-primary">Stáhnout kandidáty</a>
+        {/if}
+    </div>
+    <div class="col-md-6">
         <h2>Komise pro e-volby</h2>
         {if $commissionMembersCount > 0}
             Seznam členů komise pro e-volby je již načten.
         {else}
             <a n:href="saveCommissionMembers!" class="btn btn-primary">Stáhnout členy komise pro e-volby</a>
         {/if}
-    </div>
-    <div class="col-md-4">
-        <h2>Kandidáti</h2>
-        {if $candidatesCount > 0}
-            Seznam kandidátů je již načten. Počet kandidátů:
-            {control candidatesBox}
-        {else}
-            <a n:href="saveCandidates!" class="btn btn-primary">Stáhnout kandidáty</a>
-        {/if}
-    </div>
-    <div class="col-md-4">
+
+        <hr />
         <h2>Delegáti</h2>
         {if $delegatesCount > 0}
             Seznam delegátů je již načten.<br />
             <ul>
-                <li>Přihlásilo se: {$participatedDelegatesCount}</li>
-                <li>Hlasovalo:  {$votedDelegatesCount}</li>
-                <li>Celkem: {$delegatesCount}</li>
+                <li>Zúčastnilo se voleb: {$participatedDelegatesCount}</li>
+                <li>Hlasovalo ve volbách:  {$votedDelegatesCount}</li>
+                <li>Celkem oprávněných: {$delegatesCount}</li>
             </ul>
         {else}
             <a n:href="saveDelegates!" class="btn btn-primary">Stáhnout delegáty</a>
         {/if}
-    </div>
-    <div class="col-md-4">
+
+        <hr />
         {control votingTimeForm}
     </div>
 
 </div>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         {control votingStateBox, true}
         {control publishResult}
     </div>

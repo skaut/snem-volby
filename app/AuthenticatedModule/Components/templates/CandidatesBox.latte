@@ -1,7 +1,22 @@
+{define func $list, $header}
+
+    <b>{$header} ({= count($list)})</b>
+    <ul>
+        <li n:foreach="$list as $candidate">{$candidate->getDisplayName()}</li>
+    </ul>
+    <hr />
+{/define}
+
+{block #content}
+{varType array $candidatesList}
+
 <div clas="row">
     <div class="col top-margin no-padding">
-        <ul>
-            <li n:foreach="$candidates as $candidate">{$candidate['label']}: {$candidate['count']}</li>
-        </ul>
+        {include func $candidatesList[Model\Candidate\CandidateFunction::NACELNI_ID], "Náčelní a místonáčelní"}
+        {include func $candidatesList[Model\Candidate\CandidateFunction::NACELNIK_ID], "Náčelník a místonáčelník"}
+        {include func $candidatesList[Model\Candidate\CandidateFunction::NACELNICTVO_ID], "Členky a členové náčelnictva"}
+        {include func $candidatesList[Model\Candidate\CandidateFunction::URKJ_ID], "Člen ústřední revizní komise"}
+        {include func $candidatesList[Model\Candidate\CandidateFunction::RSRJ_ID], "Člen revizní komise"}
+
     </div>
 </div>
