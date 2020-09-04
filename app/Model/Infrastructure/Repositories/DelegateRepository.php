@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Model\Delegate\Delegate;
 use Model\Delegate\DelegateNotFound;
+use Model\Delegate\FirstLoginAlreadyExists;
 use Model\Delegate\Repositories\IDelegateRepository;
 use Model\DTO\Delegate\SkautisDelegate;
 use Throwable;
@@ -85,7 +86,7 @@ final class DelegateRepository extends AggregateRepository implements IDelegateR
     {
         $delegate = $this->getDelegate($personId);
         if (! $delegate->setFirstLoginAt()) {
-            return;
+            throw new FirstLoginAlreadyExists();
         }
 
         $this->getEntityManager()->persist($delegate);

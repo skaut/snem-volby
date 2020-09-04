@@ -8,6 +8,7 @@ use eGen\MessageBus\Bus\CommandBus;
 use Model\AuthService;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Delegate\DelegateNotFound;
+use Model\Delegate\FirstLoginAlreadyExists;
 use Model\User\Commands\SaveFirstLogin;
 use Model\User\Exception\UserHasNoRole;
 use Model\UserService;
@@ -98,7 +99,9 @@ class AuthPresenter extends BasePresenter
 
             try {
                 $this->commandBus->handle(new SaveFirstLogin($this->userService->getUserPersonId()));
+                $this->flashMessage('Právě jste byli úspěšně započítáni mezi účastnící se delegáty/ky. Nyní můžete vyplnit a odevzdat hlasovací lístek.');
             } catch (DelegateNotFound $exc) {
+            } catch (FirstLoginAlreadyExists $exc) {
             }
 
             $this->setupDefaultRole();
