@@ -56,6 +56,15 @@ class Candidate
      */
     private Collection $votes;
 
+    /**
+     * Hodnota používaná pro rozlišení pořadí kandidátů při shodě hlasů a následném losování.
+     *
+     * @ORM\Column(type="integer", nullable=false, options={"default":0})
+     *
+     * @var int
+     */
+    private int $orderCorrection = 0;
+
     private string $votingResultNote = '';
 
     public function __construct(int $id, int $personId, string $sex, string $name, CandidateFunction $function)
@@ -130,5 +139,10 @@ class Candidate
     public function getElectedWord() : string
     {
         return $this->getSex() === SkautisCandidate::SEX_FEMALE ? 'zvolena' : 'zvolen';
+    }
+
+    public function setOrderCorrection(int $orderCorrection) : void
+    {
+        $this->orderCorrection = $orderCorrection;
     }
 }

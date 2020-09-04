@@ -75,7 +75,7 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
             ->leftJoin('c.votes', 'v')
             ->where('IDENTITY(c.function) = :function')
             ->groupBy('c')
-            ->orderBy('count(v)', 'DESC')
+            ->orderBy('count(v) DESC, c.orderCorrection DESC')
             ->setParameter('function', $function)
             ->getQuery()->getResult();
     }
