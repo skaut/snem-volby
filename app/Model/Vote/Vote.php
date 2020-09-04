@@ -28,9 +28,17 @@ class Vote extends Aggregate
      */
     private Candidate $candidate;
 
-    public function __construct(Candidate $candidate)
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    private $sign;
+
+    public function __construct(string $sign, Candidate $candidate)
     {
         $this->id        = VoteId::generate();
+        $this->sign      = $sign;
         $this->candidate = $candidate;
     }
 }

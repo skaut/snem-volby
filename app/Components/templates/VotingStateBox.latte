@@ -2,10 +2,10 @@
 {varType Model\Vote\VotingTime $votingTime}
 {varType bool $showResult}
 
-{define resultRows, $header, $candidates}
+{define resultRows, $header, $candidates, $voutersCount}
     <tr>
         <th>Pořadí</th>
-        <th>{$header}</th>
+        <th>{$header} (hlasovalo {$voutersCount})</th>
         <th>Hlasů</th>
         <th>Výsledek</th>
     </tr>
@@ -56,12 +56,13 @@
                     </ul>
                     {if $votingResult->isQuorumSatisfied()}
                         <table class="table table-bordered table-hover table-sm">
-                            {include resultRows, "Náčelní a místonáčelní", $votingResult->getNacelni ()}
-                            {include resultRows, "Náčelník a místonáčelník", $votingResult->getNacelnik ()}
-                            {include resultRows, "Členka náčelnictva", $votingResult->getNacelnictvoFemale ()}
-                            {include resultRows, "Člen náčelnictva", $votingResult->getNacelnictvoMale ()}
-                            {include resultRows, "Člen ústřední revizní komise", $votingResult->getUrkj ()}
-                            {include resultRows, "Člen rozhodčí a smírčí rady", $votingResult->getRsrj ()}
+                            {dump $votingResult}
+                            {include resultRows, "Náčelní a místonáčelní", $votingResult->getNacelni (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::NACELNI_ID)}
+                            {include resultRows, "Náčelník a místonáčelník", $votingResult->getNacelnik (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::NACELNIK_ID)}
+                            {include resultRows, "Členka náčelnictva", $votingResult->getNacelnictvoFemale (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::NACELNICTVO_ID."female")}
+                            {include resultRows, "Člen náčelnictva", $votingResult->getNacelnictvoMale (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::NACELNICTVO_ID."male")}
+                            {include resultRows, "Člen ústřední revizní komise", $votingResult->getUrkj (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::URKJ_ID)}
+                            {include resultRows, "Člen rozhodčí a smírčí rady", $votingResult->getRsrj (), $votingResult->getFunctionVotersCount (Model\Candidate\CandidateFunction::RSRJ_ID)}
                         </table>
                     {else}
                         <div class="alert-danger alert">Elektronických voleb se zúčastnilo méně než 50% delegátů, volby jsou <b>neplatné</b> a budou se opakovat v pozdějším termínu.</div>

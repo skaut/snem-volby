@@ -35,12 +35,16 @@ class VotingResult
 
     private int $countOfParticipatedDelegates;
 
+    /** @var array<string, int> */
+    private array $functionVotersCount;
+
     /**
-     * @param Candidate[] $nacelnik
-     * @param Candidate[] $nacelni
-     * @param Candidate[] $nacelnictvo
-     * @param Candidate[] $urkj
-     * @param Candidate[] $rsrj
+     * @param Candidate[]        $nacelnik
+     * @param Candidate[]        $nacelni
+     * @param Candidate[]        $nacelnictvo
+     * @param Candidate[]        $urkj
+     * @param Candidate[]        $rsrj
+     * @param array<string, int> $functionVotersCount
      */
     public function __construct(
         array $nacelnik,
@@ -50,7 +54,8 @@ class VotingResult
         array $rsrj,
         int $countOfDelegates,
         int $countOfVotedDelegates,
-        int $countOfParticipatedDelegates
+        int $countOfParticipatedDelegates,
+        array $functionVotersCount
     ) {
         $this->nacelnik                     = $nacelnik;
         $this->nacelni                      = $nacelni;
@@ -60,6 +65,7 @@ class VotingResult
         $this->countOfDelegates             = $countOfDelegates;
         $this->countOfVotedDelegates        = $countOfVotedDelegates;
         $this->countOfParticipatedDelegates = $countOfParticipatedDelegates;
+        $this->functionVotersCount          = $functionVotersCount;
     }
 
     public function getCountOfVotedDelegates() : int
@@ -188,5 +194,10 @@ class VotingResult
     public function isQuorumSatisfied() : bool
     {
         return $this->countOfVotedDelegates >= $this->countOfDelegates/2.0;
+    }
+
+    public function getFunctionVotersCount(string $functionId) : int
+    {
+        return $this->functionVotersCount[$functionId];
     }
 }
