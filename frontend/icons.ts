@@ -16,6 +16,8 @@ library.add(
     fas.faCaretUp,
     fas.faArrowLeft,
     fas.faArrowRight,
+    fas.faArrowDown,
+    fas.faArrowUp,
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';

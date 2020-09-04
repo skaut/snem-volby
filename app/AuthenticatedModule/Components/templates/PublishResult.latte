@@ -4,7 +4,7 @@
 {if $votingTime->isAfterVoting()}
     {snippet publishResult}
         {if $published}
-            Výsledek byl zveřejnen {$published|formatdatetime}
+            Výsledek byl zveřejněn {$published|formatdatetime}
         {else}
             <a n:href="publishResult" class="ajax btn btn-lg btn-success">Zveřejnit výsledek</a>
         {/if}

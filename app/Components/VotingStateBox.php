@@ -35,6 +35,7 @@ final class VotingStateBox extends BaseControl
             'votingResult' => $this->queryBus->handle(new VotingResultQuery()),
             'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
             'showResult' => $this->queryBus->handle(new VotingPublishedQuery()) !== null || ($this->user->isLoggedIn() && $this->userService->isAdmin() && $showUnpublished),
+            'canEdit' => $this->queryBus->handle(new VotingPublishedQuery()) === null && $this->user->isLoggedIn() && $this->userService->isAdmin() && $showUnpublished,
         ]);
 
         $this->template->render();
