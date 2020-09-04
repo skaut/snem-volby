@@ -16,6 +16,7 @@ use Model\Commission\Commands\SaveCommissionMembers;
 use Model\Commission\ReadModel\Queries\CommissionMembersCountQuery;
 use Model\Delegate\Commands\SaveDelegates;
 use Model\Delegate\ReadModel\Queries\DelegatesCountQuery;
+use Model\Delegate\ReadModel\Queries\ParticipatedDelegatesCountQuery;
 use Model\Delegate\ReadModel\Queries\VotedDelegatesCountQuery;
 
 class AdminPresenter extends BasePresenter
@@ -44,6 +45,7 @@ class AdminPresenter extends BasePresenter
                 'candidatesCount' => $this->queryBus->handle(new CandidatesCountQuery()),
                 'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
                 'votedDelegatesCount' => $this->queryBus->handle(new VotedDelegatesCountQuery()),
+                'participatedDelegatesCount' => $this->queryBus->handle(new ParticipatedDelegatesCountQuery()),
                 'commissionMembersCount' => $this->queryBus->handle(new CommissionMembersCountQuery()),
             ]);
 

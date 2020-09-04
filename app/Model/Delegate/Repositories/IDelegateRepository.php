@@ -24,5 +24,7 @@ interface IDelegateRepository
 
     public function getVotedCount() : int;
 
+    public function getParticipatedCount() : int;
+
     public function setDelegateFirstLogin(int $personId) : void;
 }
