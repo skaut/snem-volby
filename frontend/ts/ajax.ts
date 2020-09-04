@@ -3,6 +3,7 @@ import naja from 'naja';
 import {ProgressBar} from './ProgressBar';
 import {ModalExtension} from './ModalExtension';
 import {SnippetProcessor} from "./SnippetProcessor";
+import {initializeAutoSubmit} from "./autoSubmitForm";
 import netteForms from "./netteForms";
 import 'bootstrap.native/dist/bootstrap-native-v4';
 
@@ -11,6 +12,7 @@ export default function (): void {
     naja.registerExtension(ModalExtension);
 
     naja.registerExtension(SnippetProcessor, snippet => {
+        initializeAutoSubmit(naja, snippet, '[data-autosubmit], [data-autosubmit-per-page]');
         window.BSN.initCallback(snippet);
     });
 

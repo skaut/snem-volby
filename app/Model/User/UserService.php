@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Model;
 
 use eGen\MessageBus\Bus\QueryBus;
-use Model\Delegate\State;
 use Model\User\ReadModel\Queries\ActiveSkautisRoleQuery;
 use Model\User\ReadModel\Queries\IsUserOnCommissionMembersListQuery;
 use Model\User\ReadModel\Queries\IsUserOnDelegateListQuery;
@@ -107,18 +106,6 @@ final class UserService
         }
 
         return null;
-    }
-
-    /**
-     * Vrací seznam platných delegátů.
-     *
-     * @return stdClass[]
-     */
-    public function getValidDelegates() : array
-    {
-        $res = $this->skautis->event->DelegateAll(['ID_EventCongress' => $this->congressEventId, 'ID_DelegateState' => State::VALID]);
-
-        return $res instanceof stdClass ? [] : $res;
     }
 
     /**

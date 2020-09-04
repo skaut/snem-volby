@@ -23,8 +23,10 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav mr-auto">
-                    <li n:if="$isAdmin" class="nav-item"><a n:href="Admin:settings" class="nav-link">Nastavení</a></li>
+                <ul class="navbar-nav mr-auto" n:if="$isAdmin" >
+                    <li class="nav-item"><a n:href="Default:" class="nav-link">Hlasovací lístek</a></li>
+                    <li class="nav-item"><a n:href="Admin:settings" class="nav-link">Nastavení</a></li>
+                    <li class="nav-item"><a n:href="Admin:delegates" class="nav-link">Delegáti</a></li>
                 </ul>
                 <div class="my-2 my-lg-0">
                     {control loginPanel}

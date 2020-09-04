@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~nprogress/nprogress";
+@import "~ublaboo-datagrid/assets/datagrid.css";
 
 .btn-light {
   @include button-variant($light, darken($light, 30%));
@@ -205,4 +206,8 @@ body > footer {
 
 .no-padding {
   padding: 0 0 0 0;
+}
+
+.datagrid {
+  padding: 0;
 }

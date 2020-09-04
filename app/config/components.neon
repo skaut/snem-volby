@@ -2,3 +2,6 @@ autoDI:
     services:
         - implement: App\AuthenticatedModule\**\I*Factory
 
+services:
+    # Factories
+    - App\AuthenticatedModule\Factories\GridFactory

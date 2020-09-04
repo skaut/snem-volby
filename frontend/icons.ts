@@ -5,11 +5,17 @@ import { far }  from '@fortawesome/free-regular-svg-icons';
 
 library.add(
     far.faLightbulb,
+    far.faClock,
+
     fas.faCheck,
     fas.faTimes,
     fas.faBan,
-    far.faClock,
-    fas.faExclamationTriangle
+    fas.faExclamationTriangle,
+    fas.faSort,
+    fas.faCaretDown,
+    fas.faCaretUp,
+    fas.faArrowLeft,
+    fas.faArrowRight,
 );
 
 export { dom } from '@fortawesome/fontawesome-svg-core';
