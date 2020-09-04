@@ -57,7 +57,8 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
                 $this->getResult($em, CandidateFunction::URKJ_ID),
                 $this->getResult($em, CandidateFunction::RSRJ_ID),
                 $em->getRepository(Delegate::class)->count([]),
-                $delegateRepository->getVotedCount()
+                $delegateRepository->getVotedCount(),
+                $delegateRepository->getParticipatedCount()
             );
         });
     }

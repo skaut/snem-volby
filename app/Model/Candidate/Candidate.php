@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Model\DTO\Candidate\SkautisCandidate;
 use Model\Vote\Vote;
+use Model\Vote\VotingResult;
 
 /**
  * @ORM\Entity()
@@ -119,6 +120,11 @@ class Candidate
     public function getVotingResultNote() : string
     {
         return $this->votingResultNote;
+    }
+
+    public function isRemovedFromOrder() : bool
+    {
+        return $this->getVotingResultNote() === VotingResult::ALREADY_VOTED;
     }
 
     public function getElectedWord() : string
