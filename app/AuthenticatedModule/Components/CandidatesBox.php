@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\AuthenticatedModule\Components;
 
 use eGen\MessageBus\Bus\QueryBus;
-use Model\Candidate\ReadModel\Queries\FunctionsCandidatesCountsQuery;
+use Model\Candidate\ReadModel\Queries\CandidatesListByFunctionQuery;
 
 final class CandidatesBox extends BaseControl
 {
@@ -21,7 +21,7 @@ final class CandidatesBox extends BaseControl
         $this->template->setFile(__DIR__ . '/templates/CandidatesBox.latte');
 
         $this->template->setParameters([
-            'candidates' => $this->queryBus->handle(new FunctionsCandidatesCountsQuery()),
+            'candidatesList' => $this->queryBus->handle(new CandidatesListByFunctionQuery()),
         ]);
 
         $this->template->render();

@@ -15,8 +15,7 @@ use Nette\Security\User;
 
 final class VotingStateBox extends BaseControl
 {
-    /** @var QueryBus */
-    private $queryBus;
+    private QueryBus $queryBus;
     private UserService $userService;
     private User $user;
 

@@ -20,6 +20,7 @@ use Model\UserService;
 use Model\Vote\Commands\SaveVotes;
 use Model\Vote\Vote;
 use Nette\Application\UI\Form;
+use Ramsey\Uuid\Uuid;
 use Throwable;
 use function array_key_exists;
 use function array_map;
@@ -118,12 +119,13 @@ final class VoteForm extends BaseControl
             $candidatesByFunction = $this->queryBus->handle(new CandidatesListByFunctionQuery());
 
             $votes = [];
+            $sign  = Uuid::uuid4()->toString();
             if (! empty($values[CandidateFunction::NACELNI_ID])) {
-                $votes[] = new Vote($candidatesByFunction[CandidateFunction::NACELNI_ID][$this->getSingleValue($values[CandidateFunction::NACELNI_ID])]);
+                $votes[] = new Vote($sign, $candidatesByFunction[CandidateFunction::NACELNI_ID][$this->getSingleValue($values[CandidateFunction::NACELNI_ID])]);
             }
 
             if (! empty($values[CandidateFunction::NACELNIK_ID])) {
-                $votes[] = new Vote($candidatesByFunction[CandidateFunction::NACELNIK_ID][$this->getSingleValue($values[CandidateFunction::NACELNIK_ID])]);
+                $votes[] = new Vote($sign, $candidatesByFunction[CandidateFunction::NACELNIK_ID][$this->getSingleValue($values[CandidateFunction::NACELNIK_ID])]);
             }
 
             $nacelnictvo = array_merge(
@@ -131,15 +133,15 @@ final class VoteForm extends BaseControl
                 $values[CandidateFunction::NACELNICTVO_ID . 'male'],
             );
             foreach ($nacelnictvo as $i) {
-                $votes[] = new Vote($candidatesByFunction[CandidateFunction::NACELNICTVO_ID][$i]);
+                $votes[] = new Vote($sign, $candidatesByFunction[CandidateFunction::NACELNICTVO_ID][$i]);
             }
 
             foreach ($values[CandidateFunction::URKJ_ID] as $i) {
-                $votes[] = new Vote($candidatesByFunction[CandidateFunction::URKJ_ID][$i]);
+                $votes[] = new Vote($sign, $candidatesByFunction[CandidateFunction::URKJ_ID][$i]);
             }
 
             foreach ($values[CandidateFunction::RSRJ_ID] as $i) {
-                $votes[] = new Vote($candidatesByFunction[CandidateFunction::RSRJ_ID][$i]);
+                $votes[] = new Vote($sign, $candidatesByFunction[CandidateFunction::RSRJ_ID][$i]);
             }
 
             try {

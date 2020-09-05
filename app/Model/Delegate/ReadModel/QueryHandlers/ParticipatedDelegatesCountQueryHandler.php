@@ -18,6 +18,6 @@ final class ParticipatedDelegatesCountQueryHandler
 
     public function __invoke(ParticipatedDelegatesCountQuery $_) : int
     {
-        return $this->delegateRepository->getVotedCount();
+        return $this->delegateRepository->getParticipatedCount();
     }
 }

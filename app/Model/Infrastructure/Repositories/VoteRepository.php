@@ -15,6 +15,7 @@ use Model\Delegate\Repositories\IDelegateRepository;
 use Model\Vote\Repositories\IVoteRepository;
 use Model\Vote\Vote;
 use Model\Vote\VotingResult;
+use function array_merge;
 use function assert;
 
 final class VoteRepository extends AggregateRepository implements IVoteRepository
@@ -57,7 +58,9 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
                 $this->getResult($em, CandidateFunction::URKJ_ID),
                 $this->getResult($em, CandidateFunction::RSRJ_ID),
                 $em->getRepository(Delegate::class)->count([]),
-                $delegateRepository->getVotedCount()
+                $delegateRepository->getVotedCount(),
+                $delegateRepository->getParticipatedCount(),
+                $this->getFunctionVotersCount($this->getEntityManager())
             );
         });
     }
@@ -75,5 +78,31 @@ final class VoteRepository extends AggregateRepository implements IVoteRepositor
             ->orderBy('count(v)', 'DESC')
             ->setParameter('function', $function)
             ->getQuery()->getResult();
+    }
+
+    /** @return array<string, int> */
+    private function getFunctionVotersCount(EntityManager $em) : array
+    {
+        $pairs = $em->getRepository(Candidate::class)->createQueryBuilder('c')
+            ->select('IDENTITY(c.function) as function, COUNT(DISTINCT(v.sign)) as count')
+            ->leftJoin('c.votes', 'v')
+            ->groupBy('c.function')
+            ->getQuery()->getResult();
+
+        $nacelnictvo = $em->getRepository(Candidate::class)->createQueryBuilder('c')
+            ->select('CONCAT(IDENTITY(c.function), c.sex) as function, COUNT(DISTINCT(v.sign)) as count')
+            ->leftJoin('c.votes', 'v')
+            ->where('c.function IN (:ids)')
+            ->groupBy('c.function')
+            ->addGroupBy('c.sex')
+            ->setParameter('ids', [CandidateFunction::NACELNICTVO_ID])
+            ->getQuery()->getResult();
+
+        $res = [];
+        foreach (array_merge($pairs, $nacelnictvo) as $pair) {
+            $res[$pair['function']] = (int) $pair['count'];
+        }
+
+        return $res;
     }
 }
