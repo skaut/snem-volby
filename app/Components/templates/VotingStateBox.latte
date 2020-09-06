@@ -10,6 +10,7 @@
         <th>{$header} (hlasovalo {$votersCount})</th>
         <th>Hlasů</th>
         <th>Výsledek</th>
+        <th n:if="$canEdit">Pořadí</th>
     </tr>
     <tr n:foreach="$candidates as $c">
         {var $i = $iterator->getCounter() - 1}
@@ -20,18 +21,20 @@
         <td>
             {$c->getVotingResultNote()}
         </td>
-        {if $canEdit}
-        <td>
+        <td n:if="$canEdit">
             {var $upEnabled = ! $iterator->isFirst() && ! $c->isRemovedFromOrder() && $candidates[$i - 1]->getVotesCount() === $votesCount}
             {var $downEnabled = ! $iterator->isLast() && ! $c->isRemovedFromOrder() && $candidates[$i + 1]->getVotesCount() === $votesCount}
-            <a href="#" n:class="btn, btn-sm, $upEnabled ? btn-success : btn-secondary, !$upEnabled ? disabled">
+            {var $candidateId = $c->getId()}
+            {var $upCandidateId = $upEnabled ? $candidates[$i - 1]->getId() : null}
+            {var $downCandidateId = $downEnabled ? $candidates[$i + 1]->getId() : null}
+
+            <a n:href="swap! $candidateId, $upCandidateId" n:class="btn, btn-sm, $upEnabled ? btn-success : btn-secondary, !$upEnabled ? disabled">
                 <i class="fas fa-arrow-up"></i>
             </a>
-            <a href="#" n:class="btn, btn-sm, $downEnabled ? btn-danger : btn-secondary, !$downEnabled ? disabled">
+            <a n:href="swap! $downCandidateId, $candidateId" n:class="btn, btn-sm, $downEnabled ? btn-danger : btn-secondary, !$downEnabled ? disabled">
                 <i class="fas fa-arrow-down"></i>
             </a>
         </td>
-        {/if}
     </tr>
     <tr>
         <td colspan="5">&nbsp;</td>

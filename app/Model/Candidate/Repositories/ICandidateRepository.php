@@ -27,4 +27,6 @@ interface ICandidateRepository
      * @return string[][]
      */
     public function getFunctionCandidatesCounts() : array;
+
+    public function swapCandidates(int $candidateUpId, int $candidateDownId) : void;
 }
