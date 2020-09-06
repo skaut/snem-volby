@@ -1,6 +1,8 @@
 {varType Model\Vote\VotingResult $votingResult}
 {varType Model\Vote\VotingTime $votingTime}
+{varType int $delegatesCount}
 {varType bool $showResult}
+{varType bool $canEdit}
 
 {define resultRows, $header, $candidates, $votersCount}
     <tr>
@@ -8,17 +10,35 @@
         <th>{$header} (hlasovalo {$votersCount})</th>
         <th>Hlasů</th>
         <th>Výsledek</th>
+        <th n:if="$canEdit"></th>
     </tr>
     <tr n:foreach="$candidates as $c">
-        <td n:inner-if="! $c->isRemovedFromOrder()">{$iterator->getCounter ()}</td>
+        {var $i = $iterator->getCounter() - 1}
+        {var $votesCount = $c->getVotesCount()}
+        <td n:inner-if="! $c->isRemovedFromOrder()">{$iterator->getCounter()}</td>
         <td n:class="$c->isRemovedFromOrder() ? strike">{$c->getDisplayName()}</td>
-        <td>{$c->getVotesCount()}</td>
-        <td>{$c->getVotingResultNote()}</td>
+        <td>{$votesCount}</td>
+        <td>
+            {$c->getVotingResultNote()}
+        </td>
+        <td n:if="$canEdit">
+            {var $upEnabled = ! $iterator->isFirst() && ! $c->isRemovedFromOrder() && $candidates[$i - 1]->getVotesCount() === $votesCount}
+            {var $downEnabled = ! $iterator->isLast() && ! $c->isRemovedFromOrder() && $candidates[$i + 1]->getVotesCount() === $votesCount}
+            {var $candidateId = $c->getId()}
+            {var $upCandidateId = $upEnabled ? $candidates[$i - 1]->getId() : null}
+            {var $downCandidateId = $downEnabled ? $candidates[$i + 1]->getId() : null}
+
+            <a n:href="swap! $candidateId, $upCandidateId" n:class="btn, btn-sm, $upEnabled ? btn-success : btn-secondary, !$upEnabled ? disabled">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+            <a n:href="swap! $downCandidateId, $candidateId" n:class="btn, btn-sm, $downEnabled ? btn-danger : btn-secondary, !$downEnabled ? disabled">
+                <i class="fas fa-arrow-down"></i>
+            </a>
+        </td>
     </tr>
     <tr>
         <td colspan="5">&nbsp;</td>
     </tr>
-
 {/define}
 
 <div clas="row">
@@ -29,7 +49,7 @@
             </div>
         {else}
             <div class="alert alert-info" role="alert">
-                Elektronické volby {if $votingTime->isAfterVoting ()}proběhly{else}probíhají{/if}
+                Elektronické volby {if $votingTime->isAfterVoting()}proběhly{else}probíhají{/if}
                 v termínu od <strong>{$votingTime->getBegin()|formatdatetime} do {$votingTime->getEnd()|formatdatetime}</strong>
             </div>
 
@@ -67,7 +87,6 @@
                     {else}
                         <div class="alert-danger alert">Elektronických voleb se zúčastnilo méně než 50% delegátů, volby jsou <b>neplatné</b> a budou se opakovat v pozdějším termínu.</div>
                     {/if}
-
                 {/if}
             {/if}
         {/if}

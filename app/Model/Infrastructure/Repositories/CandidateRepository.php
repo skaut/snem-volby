@@ -10,6 +10,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Model\Candidate\Candidate;
 use Model\Candidate\CandidateFunction;
+use Model\Candidate\CandidateNotFound;
 use Model\Candidate\FunctionNotFound;
 use Model\Candidate\Repositories\ICandidateRepository;
 use Model\DTO\Candidate\SkautisCandidate;
@@ -110,5 +111,34 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
         }
 
         return $function;
+    }
+
+    public function getCandidate(int $id) : Candidate
+    {
+        $candidate = $this->getEntityManager()->getRepository(Candidate::class)->findOneBy(['id' => $id]);
+
+        if ($candidate === null) {
+            throw new CandidateNotFound();
+        }
+
+        return $candidate;
+    }
+
+    public function swapCandidates(int $candidateUpId, int $candidateDownId) : void
+    {
+        $this->getEntityManager()->transactional(function (EntityManager $em) use ($candidateUpId, $candidateDownId) : void {
+            $candidateUp   = $this->getCandidate($candidateUpId);
+            $candidateDown = $this->getCandidate($candidateDownId);
+
+            $candidateDownCorrection = $candidateDown->getOrderCorrection();
+            $candidateUpCorrection   = $candidateUp->getOrderCorrection();
+
+            $candidateUp->setOrderCorrection($candidateDownCorrection);
+            $candidateDown->setOrderCorrection($candidateUpCorrection);
+
+            $em->persist($candidateUp);
+            $em->persist($candidateDown);
+            $em->flush();
+        });
     }
 }
