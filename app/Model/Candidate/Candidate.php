@@ -142,9 +142,6 @@ class Candidate
         return $this->getSex() === SkautisCandidate::SEX_FEMALE ? 'zvolena' : 'zvolen';
     }
 
-    /**
-     * @return int
-     */
     public function getOrderCorrection() : int
     {
         return $this->orderCorrection;

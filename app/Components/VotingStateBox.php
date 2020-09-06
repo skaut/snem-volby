@@ -39,7 +39,7 @@ final class VotingStateBox extends BaseControl
             'votingResult' => $this->queryBus->handle(new VotingResultQuery()),
             'delegatesCount' => $this->queryBus->handle(new DelegatesCountQuery()),
             'showResult' => $this->queryBus->handle(new VotingPublishedQuery()) !== null || ($this->user->isLoggedIn() && $this->userService->isAdmin() && $showUnpublished),
-            'canEdit' => $this->canEdit() && $showUnpublished
+            'canEdit' => $this->canEdit() && $showUnpublished,
         ]);
 
         $this->template->render();
@@ -48,12 +48,13 @@ final class VotingStateBox extends BaseControl
     public function handleSwap(?string $candidateUpId, ?string $candidateDownId) : void
     {
         if ($this->canEdit()) {
-            $this->commandBus->handle(new SwapCandidates((int)$candidateUpId, (int)$candidateDownId));
+            $this->commandBus->handle(new SwapCandidates((int) $candidateUpId, (int) $candidateDownId));
         }
         $this->redirect('this');
     }
 
-    private function canEdit() : bool {
+    private function canEdit() : bool
+    {
         return $this->queryBus->handle(new VotingPublishedQuery()) === null && $this->user->isLoggedIn() && $this->userService->isAdmin();
     }
 }

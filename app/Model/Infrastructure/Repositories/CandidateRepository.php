@@ -124,14 +124,14 @@ final class CandidateRepository extends AggregateRepository implements ICandidat
         return $candidate;
     }
 
-    public function swapCandidates(int $candidateUpId, int $candidateDownId): void
+    public function swapCandidates(int $candidateUpId, int $candidateDownId) : void
     {
         $this->getEntityManager()->transactional(function (EntityManager $em) use ($candidateUpId, $candidateDownId) : void {
-            $candidateUp = $this->getCandidate($candidateUpId);
+            $candidateUp   = $this->getCandidate($candidateUpId);
             $candidateDown = $this->getCandidate($candidateDownId);
 
             $candidateDownCorrection = $candidateDown->getOrderCorrection();
-            $candidateUpCorrection = $candidateUp->getOrderCorrection();
+            $candidateUpCorrection   = $candidateUp->getOrderCorrection();
 
             $candidateUp->setOrderCorrection($candidateDownCorrection);
             $candidateDown->setOrderCorrection($candidateUpCorrection);

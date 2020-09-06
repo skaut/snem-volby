@@ -11,7 +11,8 @@ final class SwapCandidatesHandler
 {
     private ICandidateRepository $candidateRepository;
 
-    public function __construct(ICandidateRepository $candidateRepository) {
+    public function __construct(ICandidateRepository $candidateRepository)
+    {
         $this->candidateRepository = $candidateRepository;
     }
 
