@@ -10,7 +10,7 @@
         <th>{$header} (hlasovalo {$votersCount})</th>
         <th>Hlasů</th>
         <th>Výsledek</th>
-        <th n:if="$canEdit">Pořadí</th>
+        <th n:if="$canEdit"></th>
     </tr>
     <tr n:foreach="$candidates as $c">
         {var $i = $iterator->getCounter() - 1}

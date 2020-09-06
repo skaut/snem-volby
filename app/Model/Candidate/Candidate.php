@@ -57,11 +57,9 @@ class Candidate
     private Collection $votes;
 
     /**
-     * Hodnota používaná pro rozlišení pořadí kandidátů při shodě hlasů a následném losování.
+     * Hodnota používaná pro rozlišení pořadí kandidátů při shodě počtu hlasů a následném losování.
      *
      * @ORM\Column(type="integer")
-     *
-     * @var int
      */
     private int $orderCorrection;
 
