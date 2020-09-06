@@ -11,6 +11,7 @@ library.add(
     fas.faTimes,
     fas.faBan,
     fas.faExclamationTriangle,
+    fas.faExclamationCircle,
     fas.faSort,
     fas.faCaretDown,
     fas.faCaretUp,

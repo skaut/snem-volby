@@ -1,3 +1,11 @@
+<script src="https://cdn.jsdelivr.net/gh/contributte/live-form-validation@master/live-form-validation.js"></script>
+<script>
+    LiveForm.setOptions({
+        messageParentClass: "input-wrapper",
+        messageErrorPrefix: '&nbsp;<i class="fas fa-exclamation-circle" aria-hidden="true"></i>&nbsp;',
+    });
+</script>
+
 {varType bool $isUserDelegate}
 {varType \DateTimeImmutable $userVoteTime}
 {varType Model\Vote\VotingTime $votingTime}
@@ -9,25 +17,37 @@
             {form form}
                 <h4>{label Model\Candidate\CandidateFunction::NACELNI_ID /}</h4>
                 <p>Zaškrtnutím dejte hlas maximálně 1 dvojici osob</p>
-                {input Model\Candidate\CandidateFunction::NACELNI_ID }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::NACELNI_ID }
+                </div>
 
                 <h4>{label Model\Candidate\CandidateFunction::NACELNIK_ID /}</h4>
                 <p>Zaškrtnutím dejte hlas maximálně 1 dvojici osob</p>
-                {input Model\Candidate\CandidateFunction::NACELNIK_ID }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::NACELNIK_ID }
+                </div>
 
                 <h4>Členky a členové náčelnictva</h4>
                 <p>Zaškrtnutím dejte hlas maximálně 5 kandidátkám + 5 kandidátům </p>
-                {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."female" }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."female" }
+                </div>
                 <hr />
-                {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."male" }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::NACELNICTVO_ID."male" }
+                </div>
 
                 <h4>Člen ústřední revizní komise</h4>
                 <p>Zaškrtnutím dejte hlas maximálně 7 osobám</p>
-                {input Model\Candidate\CandidateFunction::URKJ_ID }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::URKJ_ID }
+                </div>
 
                 <h4>Člen rozhodčí a smírčí rady</h4>
                 <p>Zaškrtnutím dejte hlas maximálně 5 osobám</p>
-                {input Model\Candidate\CandidateFunction::RSRJ_ID }
+                <div class="input-wrapper">
+                    {input Model\Candidate\CandidateFunction::RSRJ_ID }
+                </div>
                 <br /><br />
 
                 <button n:name="save"
