@@ -18,6 +18,7 @@ final class UserService
 {
     public const ROLE_KEY_SUPERADMIN = 'superadmin';
     public const ROLE_KEY_DELEGATE   = 'EventCongress';
+    public const ROLE_KEY_RSRJ       = 'ustrediRSRJ';
 
     private Skautis $skautis;
     private QueryBus $queryBus;
@@ -149,6 +150,27 @@ final class UserService
                 return true;
             }
             if ($role->Key === self::ROLE_KEY_DELEGATE && $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isRSRJ() : bool
+    {
+        if ($this->getActualRole()->getKey() === self::ROLE_KEY_RSRJ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canBeRSRJ() : bool
+    {
+        $roles = $this->getRelatedSkautisRoles();
+        foreach ($roles as $role) {
+            if ($role->Key === self::ROLE_KEY_RSRJ) {
                 return true;
             }
         }
