@@ -20,6 +20,9 @@ final class ObjectionsTimeQueryHandler
 
     public function __invoke(ObjectionsTimeQuery $_) : ObjectionsTime
     {
-        return new ObjectionsTime($this->configRepository->getDateTimeValue(Item::VOTING_PUBLISH()) ?: null);
+        return new ObjectionsTime(
+            $this->configRepository->getDateTimeValue(Item::VOTING_BEGIN()) ?: null,
+            $this->configRepository->getDateTimeValue(Item::VOTING_PUBLISH()) ?: null
+        );
     }
 }

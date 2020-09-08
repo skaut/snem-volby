@@ -92,18 +92,14 @@ class AuthPresenter extends BasePresenter
             $objectionsTime = $this->queryBus->handle(new ObjectionsTimeQuery());
             assert($objectionsTime instanceof ObjectionsTime);
 
-            if (! $votingTime->isVotingInProgress() && ! $objectionsTime->areObjectionsInProgress() && ! $this->userService->canBeAdmin() && ! $this->userService->canBeRSRJ()) {
+            if (! $votingTime->isVotingInProgress() && ! $objectionsTime->areObjectionsInProgress() && ! $this->userService->canBeAdmin()) {
                 $this->user->logout();
                 if ($votingTime->getBegin() === null || $votingTime->getEnd() === null) {
                     $this->flashMessage('K účasti v elektronických volbách se lze přihlásit až v jejich termínu. Vraťte se na tento web až v termínu voleb. Termín voleb zatím nebyl nastaven.', 'danger');
                 } else {
                     $this->flashMessage(sprintf('K účasti v elektronických volbách se lze přihlásit až v jejich termínu (%s - %s). Vraťte se na tento web až v termínu voleb.', $votingTime->getBegin()->format('j. n. Y G:i'), $votingTime->getEnd()->format('j. n. Y G:i')), 'danger');
                 }
-                if ($votingTime->isVotingInProgress() || $this->userService->canBeAdmin()) {
-                    $this->redirect(':Homepage:');
-                } elseif ($objectionsTime->areObjectionsInProgress() || $this->userService->canBeRSRJ()) {
-                    $this->redirect(':Homepage:objections');
-                }
+                $this->redirect(':Homepage:');
             }
 
             try {

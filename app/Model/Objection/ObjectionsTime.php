@@ -10,18 +10,13 @@ use DateTimeImmutable;
 class ObjectionsTime
 {
     private ?DateTimeImmutable $begin;
+    private ?DateTimeImmutable $publish;
     private int $DAYS = 3;
 
-    public function __construct(?DateTimeImmutable $begin)
+    public function __construct(?DateTimeImmutable $begin, ?DateTimeImmutable $publish)
     {
-        $this->begin = $begin;
-    }
-
-    public static function fromFormat(string $format, string $begin) : self
-    {
-        $begin = DateTimeImmutable::createFromFormat($format, $begin);
-
-        return new self($begin);
+        $this->begin   = $begin;
+        $this->publish = $publish;
     }
 
     public function getBegin() : ?DateTimeImmutable
@@ -31,13 +26,13 @@ class ObjectionsTime
 
     public function getEnd() : ?DateTimeImmutable
     {
-        return $this->begin !== null ? $this->begin->add(new DateInterval('P' . $this->DAYS . 'D')) : null;
+        return $this->publish !== null ? $this->publish->add(new DateInterval('P' . $this->DAYS . 'D')) : null;
     }
 
     public function areObjectionsInProgress() : bool
     {
         $now = new DateTimeImmutable();
 
-        return $this->getBegin() <= $now && $now < $this->getEnd();
+        return $this->getBegin() <= $now && ($this->getEnd() === null || $now < $this->getEnd());
     }
 }

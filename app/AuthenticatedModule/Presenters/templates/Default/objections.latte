@@ -4,8 +4,22 @@
 
 <h1>Námitky</h1>
 
-<div class="row">
+{control objectionForm}
+
+<h2>Podané námitky</h2>
+<div class="row" n:if="$isUserRSRJ || $isUserAdmin">
     <div class="col-md-12">
-        Test
+        <table class="table table-bordered table-hover table-sm">
+            <tr>
+                <th>Čas podání</th>
+                <th>Podal</th>
+                <th>Text námitky</th>
+            </tr>
+            <tr n:foreach="$objections as $o">
+                <td>{$o->getCreatedAt()|formatdatetime}</td>
+                <td>{$o->getDelegate()->getName()}</td>
+                <td>{$o->getText()}</td>
+            </tr>
+        </table>
     </div>
 </div>
