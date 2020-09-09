@@ -72,12 +72,8 @@ final class ObjectionForm extends BaseControl
 
             $objection = new Objection($values['text'], $delegate);
 
-            try {
-                $this->commandBus->handle(new SaveObjection($objection));
-                $this->flashMessage('Tvoje námitka byla úspěšně uložena.', 'success');
-            } catch (Throwable $e) {
-                $this->flashMessage('Podání námitky bylo neúspěšné.', 'danger');
-            }
+            $this->commandBus->handle(new SaveObjection($objection));
+            $this->flashMessage('Tvoje námitka byla úspěšně uložena.', 'success');
 
             $this->redirect('this');
         };

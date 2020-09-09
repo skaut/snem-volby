@@ -48,12 +48,8 @@ final class VotingTimeForm extends BaseControl
         $form->addSubmit('submit', 'Uložit');
 
         $form->onSuccess[] = function (BaseForm $form, $values) : void {
-            try {
-                $this->commandBus->handle(new SaveVotingTime(new VotingTime($values->votingBegin, $values->votingEnd)));
-                $this->flashMessage('Nastavení času hlasování bylo úspěšně uloženo.', 'success');
-            } catch (Throwable $e) {
-                $this->flashMessage('Nastavení času hlasování selhalo.', 'danger');
-            }
+            $this->commandBus->handle(new SaveVotingTime(new VotingTime($values->votingBegin, $values->votingEnd)));
+            $this->flashMessage('Nastavení času hlasování bylo úspěšně uloženo.', 'success');
 
             $this->redirect('this');
         };

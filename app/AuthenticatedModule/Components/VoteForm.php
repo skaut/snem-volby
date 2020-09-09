@@ -149,8 +149,6 @@ final class VoteForm extends BaseControl
                 $this->flashMessage('Tvoje hlasy byly úspěšně uloženy.', 'success');
             } catch (DelegateAlreadyVoted $e) {
                 $this->flashMessage('Tvoje hlasování již bylo dříve zaznamenáno. Nelze hlasovat vícekrát!', 'danger');
-            } catch (Throwable $e) {
-                $this->flashMessage('Hlasování bylo neúspěšné.', 'danger');
             }
 
             $this->redirect('this');
