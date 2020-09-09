@@ -18,6 +18,7 @@ final class UserService
 {
     public const ROLE_KEY_SUPERADMIN = 'superadmin';
     public const ROLE_KEY_DELEGATE   = 'EventCongress';
+    public const ROLE_KEY_RSRJ       = 'ustrediRSRJ';
 
     private Skautis $skautis;
     private QueryBus $queryBus;
@@ -58,7 +59,7 @@ final class UserService
             }
             $isDelegate = property_exists($role, 'ID_Group') && $role->Key === 'EventCongress' && $role->ID_Group === $this->congressGroupId;
 
-            return $isDelegate || $role->Key === 'superadmin';
+            return $isDelegate || $role->Key === self::ROLE_KEY_SUPERADMIN || $role->Key === self::ROLE_KEY_RSRJ;
         });
 
         return $res;
@@ -145,7 +146,7 @@ final class UserService
     {
         $roles = $this->getRelatedSkautisRoles();
         foreach ($roles as $role) {
-            if ($role->Key === self::ROLE_KEY_SUPERADMIN) {
+            if ($role->Key === self::ROLE_KEY_SUPERADMIN || $role->Key === self::ROLE_KEY_RSRJ) {
                 return true;
             }
             if ($role->Key === self::ROLE_KEY_DELEGATE && $this->queryBus->handle(new IsUserOnCommissionMembersListQuery($this->getUserPersonId()))) {
@@ -154,6 +155,11 @@ final class UserService
         }
 
         return false;
+    }
+
+    public function isRSRJ() : bool
+    {
+        return $this->getActualRole()->getKey() === self::ROLE_KEY_RSRJ;
     }
 
     public function isDelegate() : bool

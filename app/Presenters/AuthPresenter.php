@@ -6,9 +6,11 @@ namespace App;
 
 use eGen\MessageBus\Bus\CommandBus;
 use Model\AuthService;
+use Model\Config\ReadModel\Queries\ObjectionsTimeQuery;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Delegate\DelegateNotFound;
 use Model\Delegate\FirstLoginAlreadyExists;
+use Model\Objection\ObjectionsTime;
 use Model\User\Commands\SaveFirstLogin;
 use Model\User\Exception\UserHasNoRole;
 use Model\UserService;
@@ -87,7 +89,10 @@ class AuthPresenter extends BasePresenter
             $votingTime = $this->queryBus->handle(new VotingTimeQuery());
             assert($votingTime instanceof VotingTime);
 
-            if (! $votingTime->isVotingInProgress() && ! $this->userService->canBeAdmin()) {
+            $objectionsTime = $this->queryBus->handle(new ObjectionsTimeQuery());
+            assert($objectionsTime instanceof ObjectionsTime);
+
+            if (! $votingTime->isVotingInProgress() && ! $objectionsTime->areObjectionsInProgress() && ! $this->userService->canBeAdmin()) {
                 $this->user->logout();
                 if ($votingTime->getBegin() === null || $votingTime->getEnd() === null) {
                     $this->flashMessage('K účasti v elektronických volbách se lze přihlásit až v jejich termínu. Vraťte se na tento web až v termínu voleb. Termín voleb zatím nebyl nastaven.', 'danger');
