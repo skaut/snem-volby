@@ -11,7 +11,6 @@ use eGen\MessageBus\Bus\QueryBus;
 use Model\Config\Commands\SaveVotingTime;
 use Model\Config\ReadModel\Queries\VotingTimeQuery;
 use Model\Vote\VotingTime;
-use Throwable;
 
 final class VotingTimeForm extends BaseControl
 {

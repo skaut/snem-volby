@@ -21,7 +21,6 @@ use Model\Vote\Commands\SaveVotes;
 use Model\Vote\Vote;
 use Nette\Application\UI\Form;
 use Ramsey\Uuid\Uuid;
-use Throwable;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
@@ -75,7 +74,6 @@ final class VoteForm extends BaseControl
     protected function createComponentForm() : BaseForm
     {
         $form                 = new BaseForm();
-        $candidateFunctions   = $this->queryBus->handle(new CandidateFunctionListQuery());
         $candidatesByFunction = $this->queryBus->handle(new CandidatesListByFunctionQuery());
 
         $nacelnictvoFemale = [];

@@ -13,7 +13,6 @@ use Model\Objection\Commands\SaveObjection;
 use Model\Objection\Objection;
 use Model\UserService;
 use Nette\Application\UI\Form;
-use Throwable;
 
 final class ObjectionForm extends BaseControl
 {
@@ -61,7 +60,8 @@ final class ObjectionForm extends BaseControl
         $form = new BaseForm();
 
         $form->addTextArea('text', 'Text námitky')
-            ->addRule(Form::FILLED, 'Text námitky musí být vyplněn');
+            ->addRule(Form::FILLED, 'Text námitky musí být vyplněn')
+            ->setHtmlAttribute('class', 'form-control');
 
         $form->addSubmit('save');
 
