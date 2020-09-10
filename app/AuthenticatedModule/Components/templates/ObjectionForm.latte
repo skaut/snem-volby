@@ -10,14 +10,14 @@
 {varType Model\Objection\ObjectionsTime $objectionsTime}
 
 {if $isUserDelegate}
-    {if $objectionsTime->areObjectionsInProgress()}
-        <h2>Přidání námitky</h2>
-        <div class="alert alert-info">
-            Zde můžete podat oficiální námitku proti průběhu nebo výsledku Voleb a to nejpozději do 3 dnů po vyhlášení výsledků.
-            Námitkou se bude zabývat v souladu s vnitřním právem Rozhodčí a smírčí rada.
-            Podání námitky, prosíme, nejprve velmi pečlivě zvažte, neboť jde o velmi zásadní akt.
-        </div>
+    <h2>Přidání námitky</h2>
+    <div class="alert alert-info">
+        Zde můžete podat oficiální námitku proti průběhu nebo výsledku Voleb a to nejpozději do 3 dnů po vyhlášení výsledků.
+        Námitkou se bude zabývat v souladu s vnitřním právem Rozhodčí a smírčí rada.
+        Podání námitky, prosíme, nejprve velmi pečlivě zvažte, neboť jde o velmi zásadní akt.
+    </div>
 
+    {if $objectionsTime->areObjectionsInProgress()}
         {form form}
             <h4>{label text/}</h4>
             <div class="input-wrapper">
@@ -32,5 +32,9 @@
                     data-btn-ok-label="Podat námitku"
                     data-btn-cancel-label="Storno">Podat námitku</button>
          {/form}
+    {else}
+        <div class="alert alert-warning">
+            Námitky je možné přidávat pouze během voleb a do 3 dnů po vyhlášení výsledků.
+        </div>
     {/if}
 {/if}
