@@ -20,7 +20,7 @@
     {if $objectionsTime->areObjectionsInProgress()}
         {form form}
             <h4>{label text/}</h4>
-            <div class="input-wrapper">
+            <div class="input-wrapper mb-2">
                 {input text}
             </div>
 
@@ -34,7 +34,7 @@
          {/form}
     {else}
         <div class="alert alert-warning">
-            Námitky je možné přidávat pouze během voleb a do 3 dnů po vyhlášení výsledků.
+            Námitky je možné přidávat pouze od začátku voleb a až 3 dny po vyhlášení výsledků, tedy od {$objectionsTime->getBegin ()->format ('j. n. Y G:i')} do {$objectionsTime->getEnd ()->format ('j. n. Y G:i')}.
         </div>
     {/if}
 {/if}
