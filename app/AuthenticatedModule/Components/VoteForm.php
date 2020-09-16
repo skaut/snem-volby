@@ -96,18 +96,18 @@ final class VoteForm extends BaseControl
         $form->addCheckboxList(CandidateFunction::NACELNICTVO_ID . 'female', 'Členek náčelnictva (max 5)', array_map(function (Candidate $c) {
             return $c->getName();
         }, $nacelnictvoFemale))
-            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maxiálně %d členek náčelnictva', 5);
+            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maximálně %d členek náčelnictva', 5);
 
         $form->addCheckboxList(CandidateFunction::NACELNICTVO_ID . 'male', 'Členek náčelnictva (max 5)', array_map(function (Candidate $c) {
             return $c->getName();
         }, $nacelnictvoMale))
-            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maxiálně %d členů náčelnictva', 5);
+            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maximálně %d členů náčelnictva', 5);
 
         $form->addCheckboxList(CandidateFunction::URKJ_ID, 'Člen ústřední revizní komise', $this->prepareItems($candidatesByFunction, (int) CandidateFunction::URKJ_ID))
-            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maxiálně %d členů RSRJ', 7);
+            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maximálně %d členů RSRJ', 7);
 
         $form->addCheckboxList(CandidateFunction::RSRJ_ID, 'Člen rozhodčí a smírčí rady', $this->prepareItems($candidatesByFunction, (int) CandidateFunction::RSRJ_ID))
-            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maxiálně %d členů RSRJ', 5);
+            ->addRule(Form::MAX_LENGTH, 'Zvolit lze maximálně %d členů RSRJ', 5);
 
         $form->addSubmit('save');
 
