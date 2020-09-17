@@ -1,0 +1,51 @@
+version: '3.4'
+services:
+  traefik:
+    image: traefik:1.7.24
+    command: |
+      --api \
+      --web \
+      --logLevel=warn \
+      --entryPoints="Name:http Address::80 Redirect.EntryPoint:https" \
+      --entryPoints="Name:https Address::443 TLS" \
+      --defaultentrypoints="http,https" \
+      --acme.storage=/acme/acme.json \
+      --acme=true \
+      --acme.entrypoint=https \
+      --acme.httpchallenge \
+      --acme.httpchallenge.entrypoint=http \
+      --acme.domains="volby.skaut.cz,www.volby.skaut.cz" \
+      --acme.email="sinacek@gmail.com" \
+      --docker \
+      --docker.watch=true \
+      --docker.swarmmode
+
+    ports:
+      - 80:80
+      - 443:443
+      - 9999:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_acme:/acme
+    networks:
+      - traefik
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      update_config:
+        order: start-first
+      resources:
+        reservations:
+          cpus: "0.05"
+          memory: "10M"
+        limits:
+          cpus: "0.5"
+          memory: "200M"
+
+volumes:
+  traefik_acme:
+
+networks:
+  traefik:
+    external: true

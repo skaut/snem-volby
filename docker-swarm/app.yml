@@ -4,7 +4,9 @@ services:
   app:
     image: skaut/snem-volby:latest
     volumes:
-      - sessions:/var/www/html/temp/sessions
+      - /srv/app-sessions:/var/www/html/temp/sessions
+      - /srv/app-log:/var/www/html/log
+      - /srv/app-temp:/var/www/html/temp
     networks:
       - traefik
     configs:
@@ -19,7 +21,7 @@ services:
           cpus: "0.50"
           memory: "512M"
       labels:
-        traefik.frontend.rule: 'Host:zmenastanov.skaut.cz,www.zmenastanov.skaut.cz'
+        traefik.frontend.rule: 'Host:volby.skaut.cz,www.volby.skaut.cz'
         traefik.port: '80'
         traefik.docker.network: traefik
         swarmpit.service.deployment.autoredeploy: 'true'
@@ -35,6 +37,3 @@ networks:
 configs:
   dev-config.local.neon-v2:
     external: true
-
-volumes:
-  sessions:
