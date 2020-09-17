@@ -34,7 +34,7 @@
          {/form}
     {else}
         <div class="alert alert-warning">
-            Námitky je možné přidávat pouze od začátku voleb a až 3 dny po vyhlášení výsledků, tedy od {$objectionsTime->getBegin ()->format ('j. n. Y G:i')} do {$objectionsTime->getEnd ()->format ('j. n. Y G:i')}.
+            Námitky je možné přidávat pouze od začátku voleb a až 3 dny po vyhlášení výsledků{if $objectionsTime->getBegin () !== null && $objectionsTime->getEnd () !== null}, tedy od {$objectionsTime->getBegin ()|date:'j. n. Y G:i'} do {$objectionsTime->getEnd ()|date:'j. n. Y G:i'}{/if}.
         </div>
     {/if}
 {/if}
