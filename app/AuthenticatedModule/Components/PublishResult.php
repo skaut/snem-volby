@@ -41,7 +41,7 @@ class PublishResult extends BaseControl
     {
         $this->commandBus->handle(new PublishVoting());
 
-        $this->reload();
+        $this->redirect('this');
     }
 
     protected function createComponentVotingStateBox() : VotingStateBox
